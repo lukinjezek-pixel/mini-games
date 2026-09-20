@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Reaction Test</title>
 
   <style>
@@ -31,10 +30,9 @@
 
     h1 {
       font-size: 40px;
-      margin-bottom: 10px;
     }
 
-    p {
+    #info {
       color: #aaa;
       font-size: 18px;
     }
@@ -47,83 +45,95 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 25px;
+      font-size: 28px;
       font-weight: bold;
       cursor: pointer;
       user-select: none;
     }
 
-    .ready {
-      background: #7c5cff !important;
+    #box.waiting {
+      background: #7c5cff;
     }
 
-    .go {
-      background: #19c37d !important;
+    #box.go {
+      background: #19c37d;
     }
 
     button {
       margin-top: 20px;
-      padding: 12px 25px;
-      border: 0;
+      padding: 14px 25px;
+      border: none;
       border-radius: 10px;
       background: #7c5cff;
       color: white;
-      font-size: 16px;
+      font-size: 17px;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="game">
+<div class="game">
 
-    <h1>⚡ Reaction Test</h1>
+  <h1>⚡ Reaction Test</h1>
 
-    <p id="info">Klikni na tlačítko a připrav se.</p>
+  <p id="info">Klikni na START.</p>
 
-    <div id="box">START</div>
+  <div id="box">START</div>
 
-    <button onclick="startGame()">Nová hra</button>
+  <button id="startButton">Nová hra</button>
 
-  </div>
+</div>
 
-  <script>
-    let startTime;
-    let timer;
+<script>
+  const box = document.getElementById("box");
+  const info = document.getElementById("info");
+  const startButton = document.getElementById("startButton");
 
-    const box = document.getElementById("box");
-    const info = document.getElementById("info");
+  let startTime = 0;
+  let gameRunning = false;
+  let timer = null;
 
-    function startGame() {
-      clearTimeout(timer);
+  startButton.addEventListener("click", function () {
 
-      box.className = "ready";
-      box.textContent = "ČEKEJ...";
-      info.textContent = "Počkej, dokud se barva nezmění!";
+    clearTimeout(timer);
 
-      const delay = Math.floor(Math.random() * 3000) + 1500;
+    gameRunning = false;
+    startTime = 0;
 
-      timer = setTimeout(() => {
-        box.className = "go";
-        box.textContent = "KLIKNI!";
-        info.textContent = "TEĎ!";
-        startTime = Date.now();
-      }, delay);
-    }
+    box.className = "waiting";
+    box.textContent = "ČEKEJ...";
+    info.textContent = "Počkej na zelenou!";
 
-    box.addEventListener("click", () => {
-      if (!startTime) return;
+    const delay = Math.floor(Math.random() * 3000) + 1500;
 
-      const reaction = Date.now() - startTime;
+    timer = setTimeout(function () {
 
-      info.textContent = `Tvoje reakce: ${reaction} ms`;
+      box.className = "go";
+      box.textContent = "KLIKNI!";
+      info.textContent = "TEĎ!";
 
-      box.className = "";
-      box.textContent = "ZKUSIT ZNOVU";
+      startTime = Date.now();
+      gameRunning = true;
 
-      startTime = null;
-    });
-  </script>
+    }, delay);
+  });
+
+  box.addEventListener("click", function () {
+
+    if (!gameRunning) return;
+
+    const reaction = Date.now() - startTime;
+
+    gameRunning = false;
+
+    box.className = "";
+    box.textContent = reaction + " ms";
+
+    info.textContent = "Tvoje reakce! Zkus to znovu.";
+  });
+</script>
 
 </body>
-  </html>
+</html>
