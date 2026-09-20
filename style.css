@@ -11,194 +11,475 @@ html {
 body {
   font-family: Arial, Helvetica, sans-serif;
   background:
-    radial-gradient(circle at top, #24145c 0%, #0b0b12 45%);
-  color: #ffffff;
+    radial-gradient(circle at 50% -10%, #352080 0%, transparent 45%),
+    radial-gradient(circle at 0% 50%, #171044 0%, transparent 35%),
+    #08080f;
+  color: white;
   min-height: 100vh;
-  padding: 20px;
+  padding: 25px 15px;
+  overflow-x: hidden;
 }
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
 
 .container {
   width: 100%;
-  max-width: 1100px;
+  max-width: 1000px;
   margin: auto;
 }
 
-/* HERO */
+
+/* =========================
+   HERO
+========================= */
 
 .hero {
   text-align: center;
-  padding: 70px 20px 50px;
+  margin: 30px 0 55px;
+  animation: heroAppear 0.7s ease;
 }
 
 .logo {
-  font-size: 60px;
-  margin-bottom: 15px;
-  animation: float 3s ease-in-out infinite;
+  width: 85px;
+  height: 85px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 43px;
+
+  background:
+    linear-gradient(145deg, #21164d, #11111d);
+
+  border: 1px solid #51418f;
+
+  border-radius: 25px;
+
+  box-shadow:
+    0 0 35px rgba(124, 92, 255, 0.35),
+    inset 0 0 20px rgba(124, 92, 255, 0.08);
+
+  animation: logoFloat 3s ease-in-out infinite;
 }
 
 .hero h1 {
-  font-size: clamp(45px, 10vw, 80px);
-  font-weight: 900;
-  letter-spacing: -3px;
+  font-size: clamp(42px, 10vw, 64px);
+  margin-bottom: 10px;
 
-  background: linear-gradient(90deg, #ffffff, #9c7cff);
+  background: linear-gradient(
+    90deg,
+    #ffffff,
+    #a995ff,
+    #ffffff
+  );
+
+  background-size: 200% auto;
+
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  color: transparent;
+
+  animation: gradientText 4s linear infinite;
 }
 
 .hero p {
-  margin-top: 12px;
   color: #aaa;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .hero-line {
   width: 90px;
-  height: 4px;
-  background: #7c5cff;
+  height: 3px;
+
+  margin: 22px auto 0;
+
   border-radius: 10px;
-  margin: 25px auto 0;
-  box-shadow: 0 0 20px #7c5cff;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #7c5cff,
+    transparent
+  );
+
+  box-shadow:
+    0 0 15px rgba(124, 92, 255, 0.8);
 }
 
-/* SECTION */
+
+/* =========================
+   SECTION TITLE
+========================= */
 
 .section-title {
   text-align: center;
-  font-size: 30px;
+
+  font-size: 26px;
+
   margin-bottom: 25px;
+
+  color: #eee;
 }
 
-/* GAME CARDS */
+
+/* =========================
+   GAME GRID
+========================= */
 
 .games {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 22px;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(230px, 1fr));
+
+  gap: 20px;
 }
+
+
+/* =========================
+   GAME CARD
+========================= */
 
 .game {
   position: relative;
-  overflow: hidden;
 
-  background: rgba(22, 22, 35, 0.9);
-  border: 1px solid #303047;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(28, 28, 43, 0.95),
+      rgba(15, 15, 25, 0.95)
+    );
+
+  border: 1px solid #2d2d42;
+
   border-radius: 22px;
 
-  padding: 30px;
+  padding: 28px 22px;
+
   text-align: center;
 
-  transition: 0.25s ease;
+  overflow: hidden;
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+
+  animation: cardAppear 0.6s ease both;
 }
+
+
+/* Light effect inside card */
 
 .game::before {
   content: "";
+
   position: absolute;
-  width: 120px;
-  height: 120px;
+
+  width: 150px;
+  height: 150px;
+
+  top: -80px;
+  right: -60px;
 
   background: #7c5cff;
-  filter: blur(70px);
-  opacity: 0.15;
 
-  top: -50px;
-  right: -50px;
+  border-radius: 50%;
+
+  filter: blur(70px);
+
+  opacity: 0.12;
+
+  pointer-events: none;
 }
+
+
+/* Hover */
 
 .game:hover {
-  transform: translateY(-8px);
+  transform: translateY(-8px) scale(1.015);
+
   border-color: #7c5cff;
-  box-shadow: 0 15px 40px rgba(124, 92, 255, 0.2);
+
+  box-shadow:
+    0 15px 45px rgba(0, 0, 0, 0.45),
+    0 0 25px rgba(124, 92, 255, 0.18);
 }
+
+
+/* Mobile tap */
+
+.game:active {
+  transform: scale(0.98);
+}
+
+
+/* =========================
+   GAME ICON
+========================= */
 
 .game-icon {
-  font-size: 55px;
-  margin-bottom: 15px;
+  width: 75px;
+  height: 75px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 38px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #24195a,
+      #11111d
+    );
+
+  border: 1px solid #494079;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 0 25px rgba(124, 92, 255, 0.2);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
+.game:hover .game-icon {
+  transform: scale(1.08) rotate(-3deg);
+
+  box-shadow:
+    0 0 30px rgba(124, 92, 255, 0.4);
+}
+
+
+/* =========================
+   GAME TEXT
+========================= */
+
 .game h2 {
-  font-size: 24px;
+  font-size: 23px;
+
   margin-bottom: 10px;
 }
 
 .game p {
   color: #999;
+
   line-height: 1.5;
+
   min-height: 45px;
+
+  margin-bottom: 22px;
 }
+
+
+/* =========================
+   PLAY BUTTON
+========================= */
 
 .game a {
   text-decoration: none;
 }
 
 .game button {
-  margin-top: 22px;
+  width: 100%;
 
   border: none;
-  border-radius: 12px;
 
-  background: #7c5cff;
+  background:
+    linear-gradient(
+      135deg,
+      #7c5cff,
+      #6244df
+    );
+
   color: white;
 
-  padding: 13px 24px;
+  padding: 14px 20px;
+
+  border-radius: 13px;
 
   font-size: 15px;
+
   font-weight: bold;
+
+  letter-spacing: 0.5px;
 
   cursor: pointer;
 
-  transition: 0.2s;
+  box-shadow:
+    0 7px 20px rgba(124, 92, 255, 0.25);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
 }
 
 .game button:hover {
-  background: #947bff;
-  transform: scale(1.05);
+  filter: brightness(1.12);
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(124, 92, 255, 0.4);
 }
 
-/* FOOTER */
+.game button:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
 
 footer {
   text-align: center;
-  margin: 70px 0 25px;
+
   color: #666;
-  line-height: 1.8;
+
+  margin-top: 55px;
+
+  padding-bottom: 15px;
+
+  font-size: 14px;
+
+  line-height: 1.7;
 }
 
-/* ANIMATION */
+footer p:last-child {
+  color: #444;
+}
 
-@keyframes float {
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes heroAppear {
+
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+@keyframes cardAppear {
+
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+.game:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.game:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.game:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+
+@keyframes logoFloat {
+
   0%,
   100% {
     transform: translateY(0);
   }
 
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-6px);
   }
+
 }
 
-/* MOBILE */
+
+@keyframes gradientText {
+
+  0% {
+    background-position: 0% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 600px) {
 
   body {
-    padding: 12px;
+    padding: 20px 12px;
   }
 
   .hero {
-    padding: 45px 10px 35px;
+    margin-top: 20px;
+    margin-bottom: 40px;
   }
 
-  .hero h1 {
-    letter-spacing: -2px;
+  .logo {
+    width: 75px;
+    height: 75px;
+    font-size: 37px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .section-title {
+    font-size: 23px;
   }
 
   .games {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .game {
-    padding: 25px 20px;
+    padding: 24px 20px;
   }
 
-  } 
+}
+
+
+/* =========================
+   REDUCE ANIMATIONS
+========================= */
+
+@media
