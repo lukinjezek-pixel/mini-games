@@ -4,9 +4,14 @@
 <head>
 
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Guess the Number | Mini Games</title>
+
 
   <style>
 
@@ -16,161 +21,321 @@
       padding: 0;
     }
 
+
     body {
+
       min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       background:
-        radial-gradient(circle at top, #24145c 0%, #0b0b12 45%);
+        radial-gradient(
+          circle at top,
+          #24145c 0%,
+          #0b0b12 45%
+        );
+
       color: white;
+
       display: flex;
+
       justify-content: center;
+
       align-items: center;
+
       padding: 20px;
+
     }
+
 
     .game {
+
       width: 100%;
+
       max-width: 650px;
+
       text-align: center;
+
     }
+
 
     .back {
+
       display: inline-block;
+
       margin-bottom: 25px;
+
       color: #aaa;
+
       text-decoration: none;
+
+      transition: 0.2s;
+
     }
+
 
     .back:hover {
+
       color: white;
+
     }
+
 
     h1 {
-      font-size: clamp(38px, 9vw, 60px);
+
+      font-size:
+        clamp(38px, 9vw, 60px);
+
       margin-bottom: 10px;
+
     }
+
 
     .subtitle {
+
       color: #999;
+
       font-size: 18px;
+
       margin-bottom: 25px;
+
     }
+
 
     .card {
+
       background: #151521;
+
       border: 1px solid #303047;
+
       border-radius: 25px;
+
       padding: 30px 20px;
+
       box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.25);
+        0 15px 40px
+        rgba(0, 0, 0, 0.25);
+
     }
+
 
     .number {
+
       font-size: 55px;
+
       font-weight: bold;
+
       color: #9c7cff;
+
       margin-bottom: 10px;
+
     }
+
 
     .hint {
+
       color: #aaa;
+
       font-size: 18px;
+
       margin-bottom: 25px;
+
     }
+
 
     .stats {
+
       display: flex;
+
       justify-content: center;
+
       gap: 15px;
+
       margin-bottom: 25px;
+
     }
+
 
     .stat {
+
       flex: 1;
+
       background: #0f0f18;
+
       border: 1px solid #303047;
+
       border-radius: 14px;
+
       padding: 15px;
+
     }
+
 
     .stat-title {
+
       color: #777;
+
       font-size: 13px;
+
       margin-bottom: 6px;
+
     }
+
 
     .stat-value {
+
       font-size: 24px;
+
       font-weight: bold;
+
       color: white;
+
     }
+
 
     input {
+
       width: 100%;
+
       max-width: 300px;
+
       padding: 15px;
+
       border-radius: 13px;
+
       border: 2px solid #303047;
+
       background: #0f0f18;
+
       color: white;
+
       font-size: 20px;
+
       text-align: center;
+
       outline: none;
+
     }
+
 
     input:focus {
+
       border-color: #7c5cff;
+
     }
+
 
     button {
+
       border: none;
+
       border-radius: 13px;
+
       background: #7c5cff;
+
       color: white;
+
       padding: 14px 28px;
+
       font-size: 17px;
+
       font-weight: bold;
+
       cursor: pointer;
+
       margin-top: 15px;
+
+      transition: 0.15s;
+
     }
+
 
     button:hover {
+
       background: #947bff;
+
+      transform: translateY(-2px);
+
     }
+
+
+    button:active {
+
+      transform: scale(0.97);
+
+    }
+
 
     button:disabled {
+
       opacity: 0.5;
+
       cursor: not-allowed;
+
+      transform: none;
+
     }
+
 
     #message {
+
       min-height: 30px;
+
       margin-top: 20px;
+
       font-size: 20px;
+
       font-weight: bold;
+
     }
+
 
     #restartButton {
+
       display: none;
+
       background: #19c37d;
+
     }
 
-    .new-best {
-      color: #ffd43b;
+
+    #restartButton:hover {
+
+      background: #24d991;
+
     }
+
+
+    .new-best {
+
+      color: #ffd43b;
+
+    }
+
 
     @media (max-width: 500px) {
 
       .stats {
+
         gap: 10px;
+
       }
+
 
       .stat {
+
         padding: 12px 5px;
+
       }
 
+
       .stat-value {
+
         font-size: 20px;
+
       }
 
     }
@@ -182,7 +347,9 @@
 
 <body>
 
+
   <div class="game">
+
 
     <a
       class="back"
@@ -191,25 +358,32 @@
       ← Back to games
     </a>
 
+
     <h1>
       🔢 Guess the Number
     </h1>
+
 
     <p class="subtitle">
       Can you guess the secret number?
     </p>
 
+
     <div class="card">
+
 
       <div class="number">
         1–100
       </div>
 
+
       <p class="hint">
         I'm thinking of a number between 1 and 100.
       </p>
 
+
       <div class="stats">
+
 
         <div class="stat">
 
@@ -242,6 +416,7 @@
 
         </div>
 
+
       </div>
 
 
@@ -253,7 +428,9 @@
         placeholder="Your guess"
       >
 
+
       <br>
+
 
       <button
         id="guessButton"
@@ -262,7 +439,9 @@
         GUESS
       </button>
 
+
       <p id="message"></p>
+
 
       <button
         id="restartButton"
@@ -271,95 +450,360 @@
         PLAY AGAIN
       </button>
 
+
     </div>
 
   </div>
 
 
+  <!-- =========================
+       SOUND SYSTEM
+  ========================== -->
+
+
   <script>
 
+    let audioContext = null;
+
+
+    function getAudioContext() {
+
+      if (!audioContext) {
+
+        audioContext =
+          new (
+            window.AudioContext ||
+            window.webkitAudioContext
+          )();
+
+      }
+
+
+      if (
+        audioContext.state ===
+        "suspended"
+      ) {
+
+        audioContext.resume();
+
+      }
+
+
+      return audioContext;
+
+    }
+
+
+    function playTone(
+      frequency,
+      duration,
+      type = "sine",
+      volume = 0.08
+    ) {
+
+      const ctx =
+        getAudioContext();
+
+
+      const oscillator =
+        ctx.createOscillator();
+
+
+      const gain =
+        ctx.createGain();
+
+
+      oscillator.type =
+        type;
+
+
+      oscillator.frequency.setValueAtTime(
+        frequency,
+        ctx.currentTime
+      );
+
+
+      gain.gain.setValueAtTime(
+        volume,
+        ctx.currentTime
+      );
+
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        ctx.currentTime + duration
+      );
+
+
+      oscillator.connect(gain);
+
+      gain.connect(
+        ctx.destination
+      );
+
+
+      oscillator.start();
+
+
+      oscillator.stop(
+        ctx.currentTime + duration
+      );
+
+    }
+
+
+    // 🔘 CLICK
+
+    function clickSound() {
+
+      playTone(
+        650,
+        0.08,
+        "square",
+        0.05
+      );
+
+    }
+
+
+    // ⬆️ TOO LOW
+
+    function lowSound() {
+
+      playTone(
+        350,
+        0.18,
+        "sine",
+        0.07
+      );
+
+    }
+
+
+    // ⬇️ TOO HIGH
+
+    function highSound() {
+
+      playTone(
+        850,
+        0.18,
+        "sine",
+        0.07
+      );
+
+    }
+
+
+    // 🎉 CORRECT
+
+    function winSound() {
+
+      playTone(
+        523,
+        0.12,
+        "sine",
+        0.08
+      );
+
+
+      setTimeout(function() {
+
+        playTone(
+          659,
+          0.12,
+          "sine",
+          0.08
+        );
+
+      }, 100);
+
+
+      setTimeout(function() {
+
+        playTone(
+          784,
+          0.2,
+          "sine",
+          0.1
+        );
+
+      }, 200);
+
+    }
+
+
+    // 🏆 NEW BEST
+
+    function bestSound() {
+
+      playTone(
+        523,
+        0.12,
+        "square",
+        0.07
+      );
+
+
+      setTimeout(function() {
+
+        playTone(
+          659,
+          0.12,
+          "square",
+          0.07
+        );
+
+      }, 120);
+
+
+      setTimeout(function() {
+
+        playTone(
+          784,
+          0.12,
+          "square",
+          0.07
+        );
+
+      }, 240);
+
+
+      setTimeout(function() {
+
+        playTone(
+          1047,
+          0.3,
+          "sine",
+          0.1
+        );
+
+      }, 360);
+
+    }
+
+
+    // =========================
+    // GAME
+    // =========================
+
+
     let secretNumber = 0;
+
     let attempts = 0;
 
-
-    // =========================
-    // LOAD BEST SCORE
-    // =========================
 
     function loadBestScore() {
 
       const saved =
-        localStorage.getItem("guessNumberBest");
+        localStorage.getItem(
+          "guessNumberBest"
+        );
+
 
       if (saved !== null) {
 
-        document.getElementById("bestScore").textContent =
-          saved;
+        document
+          .getElementById("bestScore")
+          .textContent = saved;
 
       } else {
 
-        document.getElementById("bestScore").textContent =
-          "—";
+        document
+          .getElementById("bestScore")
+          .textContent = "—";
 
       }
 
     }
 
 
-    // =========================
-    // START NEW GAME
-    // =========================
-
     function startNewGame() {
 
+      clickSound();
+
+
       secretNumber =
-        Math.floor(Math.random() * 100) + 1;
+        Math.floor(
+          Math.random() * 100
+        ) + 1;
+
 
       attempts = 0;
 
-      document.getElementById("currentAttempts").textContent =
-        "0";
 
-      document.getElementById("guessInput").value =
-        "";
+      document
+        .getElementById(
+          "currentAttempts"
+        )
+        .textContent = "0";
 
-      document.getElementById("guessInput").disabled =
-        false;
 
-      document.getElementById("guessButton").disabled =
-        false;
+      document
+        .getElementById(
+          "guessInput"
+        )
+        .value = "";
 
-      document.getElementById("message").textContent =
-        "";
 
-      document.getElementById("message").className =
-        "";
+      document
+        .getElementById(
+          "guessInput"
+        )
+        .disabled = false;
 
-      document.getElementById("restartButton").style.display =
-        "none";
+
+      document
+        .getElementById(
+          "guessButton"
+        )
+        .disabled = false;
+
+
+      document
+        .getElementById(
+          "message"
+        )
+        .textContent = "";
+
+
+      document
+        .getElementById(
+          "message"
+        )
+        .className = "";
+
+
+      document
+        .getElementById(
+          "restartButton"
+        )
+        .style.display = "none";
+
 
       loadBestScore();
 
     }
 
 
-    // =========================
-    // MAKE GUESS
-    // =========================
-
     function makeGuess() {
 
       const input =
-        document.getElementById("guessInput");
+        document.getElementById(
+          "guessInput"
+        );
+
 
       const message =
-        document.getElementById("message");
+        document.getElementById(
+          "message"
+        );
+
 
       const guess =
         Number(input.value);
 
 
-      // CHECK INPUT
+      // INVALID INPUT
 
       if (
         input.value === "" ||
@@ -368,36 +812,53 @@
         !Number.isInteger(guess)
       ) {
 
+        clickSound();
+
+
         message.className = "";
+
 
         message.textContent =
           "⚠️ Enter a number from 1 to 100!";
+
 
         return;
 
       }
 
 
-      // ADD ATTEMPT
+      // ATTEMPT
 
       attempts++;
 
-      document.getElementById("currentAttempts").textContent =
-        attempts;
+
+      document
+        .getElementById(
+          "currentAttempts"
+        )
+        .textContent = attempts;
 
 
       // TOO LOW
 
-      if (guess < secretNumber) {
+      if (
+        guess < secretNumber
+      ) {
+
+        lowSound();
+
 
         message.className = "";
+
 
         message.textContent =
           "⬆️ Too low!";
 
+
         input.value = "";
 
         input.focus();
+
 
         return;
 
@@ -406,16 +867,24 @@
 
       // TOO HIGH
 
-      if (guess > secretNumber) {
+      if (
+        guess > secretNumber
+      ) {
+
+        highSound();
+
 
         message.className = "";
+
 
         message.textContent =
           "⬇️ Too high!";
 
+
         input.value = "";
 
         input.focus();
+
 
         return;
 
@@ -426,24 +895,34 @@
       // CORRECT
       // =========================
 
+      winSound();
+
+
       input.disabled = true;
 
-      document.getElementById("guessButton").disabled =
-        true;
 
-      document.getElementById("restartButton").style.display =
-        "inline-block";
+      document
+        .getElementById(
+          "guessButton"
+        )
+        .disabled = true;
 
 
-      // GET OLD BEST SCORE
+      document
+        .getElementById(
+          "restartButton"
+        )
+        .style.display =
+          "inline-block";
+
 
       const oldBest =
-        localStorage.getItem("guessNumberBest");
+        localStorage.getItem(
+          "guessNumberBest"
+        );
 
 
-      // =========================
       // NEW BEST
-      // =========================
 
       if (
         oldBest === null ||
@@ -455,31 +934,47 @@
           attempts
         );
 
-        document.getElementById("bestScore").textContent =
-          attempts;
+
+        document
+          .getElementById(
+            "bestScore"
+          )
+          .textContent =
+            attempts;
+
 
         message.className =
           "new-best";
+
 
         message.textContent =
           "🔥 NEW BEST! " +
           attempts +
           " attempts!";
 
+
+        setTimeout(
+          bestSound,
+          350
+        );
+
       }
 
 
-      // =========================
       // NORMAL WIN
-      // =========================
 
       else {
 
-        document.getElementById("bestScore").textContent =
-          oldBest;
+        document
+          .getElementById(
+            "bestScore"
+          )
+          .textContent =
+            oldBest;
 
-        message.className =
-          "";
+
+        message.className = "";
+
 
         message.textContent =
           "🎉 Correct! " +
@@ -491,17 +986,19 @@
     }
 
 
-    // =========================
     // ENTER KEY
-    // =========================
 
     document
-      .getElementById("guessInput")
+      .getElementById(
+        "guessInput"
+      )
       .addEventListener(
         "keydown",
         function(event) {
 
-          if (event.key === "Enter") {
+          if (
+            event.key === "Enter"
+          ) {
 
             makeGuess();
 
@@ -511,13 +1008,12 @@
       );
 
 
-    // =========================
-    // START GAME
-    // =========================
+    // START
 
     startNewGame();
 
   </script>
+
 
 </body>
 
