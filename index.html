@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Mini Games 🎮</title>
+  <title>Mini Games</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
@@ -13,43 +13,78 @@
 
   <div class="container">
 
-    <header>
-      <h1>🎮 Mini Games</h1>
-      <p>Malé hry, velká zábava.</p>
+    <header class="hero">
+      <div class="logo">🎮</div>
+
+      <h1>Mini Games</h1>
+
+      <p>Small games. Big fun.</p>
+
+      <div class="hero-line"></div>
     </header>
 
-    <main class="games">
 
-      <div class="game">
-  <div class="icon">⚡</div>
-  <h2>Reaction Test</h2>
-  <p>Jak rychlé jsou tvoje reakce?</p>
-  <a href="games/reaction.html">
-    <button>Hrát</button>
-  </a>
-</div>
+    <main>
 
-      <div class="game">
-        <div class="icon">🔢</div>
-        <h2>Guess the Number</h2>
-        <p>Dokážeš uhodnout správné číslo?</p>
-        <button>Hrát</button>
-      </div>
+      <h2 class="section-title">Choose a game</h2>
 
-      <div class="game">
-        <div class="icon">🤔</div>
-        <h2>Impossible Choice</h2>
-        <p>Vyber jednu ze dvou možností.</p>
-        <button>Hrát</button>
+      <div class="games">
+
+        <!-- Reaction Test -->
+        <div class="game">
+          <div class="game-icon">⚡</div>
+
+          <h2>Reaction Test</h2>
+
+          <p>How fast are your reactions?</p>
+
+          <a href="games/reaction.html">
+            <button>PLAY NOW</button>
+          </a>
+        </div>
+
+
+        <!-- Guess the Number -->
+        <div class="game">
+          <div class="game-icon">🔢</div>
+
+          <h2>Guess the Number</h2>
+
+          <p>Can you guess the secret number?</p>
+
+          <button onclick="comingSoon()">PLAY NOW</button>
+        </div>
+
+
+        <!-- Impossible Choice -->
+        <div class="game">
+          <div class="game-icon">🤔</div>
+
+          <h2>Impossible Choice</h2>
+
+          <p>Choose between two impossible options.</p>
+
+          <button onclick="comingSoon()">PLAY NOW</button>
+        </div>
+
       </div>
 
     </main>
 
+
     <footer>
-      © 2026 Mini Games
+      <p>© 2026 Mini Games</p>
+      <p>More games coming soon...</p>
     </footer>
 
   </div>
+
+
+  <script>
+    function comingSoon() {
+      alert("This game is coming soon! 🎮");
+    }
+  </script>
 
 </body>
 </html>
