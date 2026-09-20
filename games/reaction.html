@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Reaction Test | Mini Games</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #24145c 0%, #0b0b12 45%);
+      color: white;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 20px;
+    }
+
+    .game {
+      width: 100%;
+      max-width: 650px;
+      text-align: center;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 25px;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    h1 {
+      font-size: clamp(38px, 9vw, 60px);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #999;
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: #151521;
+      border: 1px solid #303047;
+      border-radius: 14px;
+      padding: 12px 20px;
+      min-width: 130px;
+    }
+
+    .stat-title {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    #box {
+      height: 330px;
+      width: 100%;
+
+      border-radius: 25px;
+
+      background: #191925;
+      border: 2px solid #303047;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-size: 30px;
+      font-weight: bold;
+
+      cursor: pointer;
+      user-select: none;
+
+      transition: 0.15s;
+    }
+
+    #box.waiting {
+      background: #7c5cff;
+      border-color: #947bff;
+    }
+
+    #box.go {
+      background: #19c37d;
+      border-color: #5ff0b1;
+    }
+
+    #box.too-soon {
+      background: #e74c3c;
+      border-color: #ff7668;
+    }
+
+    #info {
+      min-height: 28px;
+      margin: 18px 0;
+
+      color: #aaa;
+      font-size: 17px;
+    }
+
+    #startButton {
+      border: none;
+      border-radius: 13px;
+
+      background: #7c5cff;
+      color: white;
+
+      padding: 14px 30px;
+
+      font-size: 17px;
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+    #startButton:hover {
+      background: #947bff;
+    }
+
+    @media (max-width: 600px) {
+
+      .stats {
+        flex-direction: row;
+      }
+
+      .stat {
+        min-width: 0;
+        flex: 1;
+      }
+
+      #box {
+        height: 280px;
+      }
+
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <div class="game">
+
+    <a class="back" href="../index.html">
+      ← Back to games
+    </a>
+
+    <h1>⚡ Reaction Test</h1>
+
+    <p class="subtitle">
+      How fast can you react?
+    </p>
+
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="stat-title">
+          Last Score
+        </div>
+
+        <div class="stat-value" id="lastScore">
+          —
+        </div>
+      </div>
+
+
+      <div class="stat">
+        <div class="stat-title">
+          Best Score
+        </div>
+
+        <div class="stat-value" id="bestScore">
+          —
+        </div>
+      </div>
+
+    </div>
+
+
+    <div id="box" onclick="clickBox()">
+      CLICK START
+    </div>
+
+
+    <p id="info">
+      Click START GAME to begin.
+    </p>
+
+
+    <button id="startButton" onclick="startGame()">
+      START GAME
+    </button>
+
+  </div>
+
+
+  <script>
+
+    let gameState = "idle";
+    let startTime = 0;
+    let timer = null;
+
+
+    // Load saved best score
+
+    const savedBest = localStorage.getItem("reactionBest");
+
+    if (savedBest) {
+      document.getElementById("bestScore").textContent =
+        savedBest + " ms";
+    }
+
+
+    // START GAME
+
+    function startGame() {
+
+      clearTimeout(timer);
+
+      gameState = "waiting";
+
+      const box = document.getElementById("box");
+      const info = document.getElementById("info");
+      const button = document.getElementById("startButton");
+
+
+      box.className = "waiting";
+      box.textContent = "WAIT...";
+
+      info.textContent = "Wait for green...";
+
+      button.textContent = "WAITING...";
+
+
+      const delay =
+        Math.floor(Math.random() * 3000) + 2000;
+
+
+      timer = setTimeout(function() {
+
+        gameState = "ready";
+
+        box.className = "go";
+        box.textContent = "CLICK!";
+
+        info.textContent = "CLICK NOW!";
+
+        startTime = Date.now();
+
+      }, delay);
+
+    }
+
+
+    // CLICK THE BIG BOX
+
+    function clickBox() {
+
+      const box = document.getElementById("box");
+      const info = document.getElementById("info");
+      const button = document.getElementById("startButton");
+
+
+      // Clicked too early
+
+      if (gameState === "waiting") {
+
+        clearTimeout(timer);
+
+        gameState = "idle";
+
+        box.className = "too-soon";
+        box.textContent = "TOO SOON!";
+
+        info.textContent =
+          "You clicked too early.";
+
+        button.textContent =
+          "TRY AGAIN";
+
+        return;
+      }
+
+
+      // Nothing happening
+
+      if (gameState !== "ready") {
+        return;
+      }
+
+
+      // Calculate reaction
+
+      const reactionTime =
+        Date.now() - startTime;
+
+
+      gameState = "idle";
+
+
+      box.className = "";
+      box.textContent =
+        reactionTime + " ms";
+
+
+      info.textContent =
+        "Nice reaction!";
+
+      button.textContent =
+        "TRY AGAIN";
+
+
+      document.getElementById("lastScore").textContent =
+        reactionTime + " ms";
+
+
+      // Best score
+
+      const oldBest =
+        localStorage.getItem("reactionBest");
+
+
+      if (
+        oldBest === null ||
+        reactionTime < Number(oldBest)
+      ) {
+
+        localStorage.setItem(
+          "reactionBest",
+          reactionTime
+        );
+
+
+        document.getElementById("bestScore").textContent =
+          reactionTime + " ms";
+
+
+        info.textContent =
+          "🔥 NEW BEST SCORE!";
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>
