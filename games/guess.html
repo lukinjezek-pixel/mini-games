@@ -36,19 +36,15 @@
     .game {
       width: 100%;
       max-width: 650px;
-
       text-align: center;
     }
 
     .back {
       display: inline-block;
-
       margin-bottom: 25px;
 
       color: #aaa;
-
       text-decoration: none;
-
       font-size: 16px;
     }
 
@@ -58,15 +54,12 @@
 
     h1 {
       font-size: clamp(38px, 9vw, 60px);
-
       margin-bottom: 10px;
     }
 
     .subtitle {
       color: #999;
-
       font-size: 18px;
-
       margin-bottom: 25px;
     }
 
@@ -74,7 +67,6 @@
       background: #151521;
 
       border: 1px solid #303047;
-
       border-radius: 25px;
 
       padding: 30px 20px;
@@ -84,8 +76,7 @@
     }
 
     .number {
-      font-size: 60px;
-
+      font-size: 55px;
       font-weight: bold;
 
       color: #9c7cff;
@@ -101,6 +92,42 @@
       min-height: 28px;
 
       margin-bottom: 25px;
+    }
+
+    .stats {
+      display: flex;
+
+      justify-content: center;
+
+      gap: 15px;
+
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      flex: 1;
+
+      background: #0f0f18;
+
+      border: 1px solid #303047;
+
+      border-radius: 14px;
+
+      padding: 12px;
+    }
+
+    .stat-title {
+      color: #777;
+
+      font-size: 13px;
+
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 22px;
+
+      font-weight: bold;
     }
 
     input {
@@ -167,14 +194,6 @@
       font-weight: bold;
     }
 
-    .attempts {
-      color: #777;
-
-      margin-top: 15px;
-
-      font-size: 15px;
-    }
-
     #restartButton {
       display: none;
 
@@ -183,6 +202,26 @@
 
     #restartButton:hover {
       background: #27d991;
+    }
+
+    .new-best {
+      color: #ffd43b;
+    }
+
+    @media (max-width: 500px) {
+
+      .stats {
+        gap: 10px;
+      }
+
+      .stat {
+        padding: 10px 5px;
+      }
+
+      .stat-value {
+        font-size: 19px;
+      }
+
     }
 
   </style>
@@ -217,6 +256,42 @@
       </p>
 
 
+      <div class="stats">
+
+        <div class="stat">
+
+          <div class="stat-title">
+            ATTEMPTS
+          </div>
+
+          <div
+            class="stat-value"
+            id="attempts"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-title">
+            BEST SCORE
+          </div>
+
+          <div
+            class="stat-value"
+            id="bestScore"
+          >
+            —
+          </div>
+
+        </div>
+
+      </div>
+
+
       <input
         id="guessInput"
         type="number"
@@ -235,11 +310,6 @@
 
 
       <p id="message"></p>
-
-
-      <p class="attempts">
-        Attempts: <span id="attempts">0</span>
-      </p>
 
 
       <button
@@ -261,6 +331,22 @@
     let attempts = 0;
 
 
+    // Load saved best score
+
+    let bestScore =
+      localStorage.getItem("guessBest");
+
+
+    if (bestScore !== null) {
+
+      document.getElementById("bestScore").textContent =
+        bestScore;
+
+    }
+
+
+    // Start a new game
+
     function newGame() {
 
       secretNumber =
@@ -268,18 +354,34 @@
 
       attempts = 0;
 
-      document.getElementById("attempts").textContent = "0";
 
-      document.getElementById("message").textContent = "";
+      document.getElementById("attempts").textContent =
+        "0";
 
-      document.getElementById("guessInput").value = "";
 
-      document.getElementById("guessInput").disabled = false;
+      document.getElementById("message").textContent =
+        "";
 
-      document.getElementById("restartButton").style.display = "none";
+
+      document.getElementById("message").className =
+        "";
+
+
+      document.getElementById("guessInput").value =
+        "";
+
+
+      document.getElementById("guessInput").disabled =
+        false;
+
+
+      document.getElementById("restartButton").style.display =
+        "none";
 
     }
 
+
+    // Check the guess
 
     function checkGuess() {
 
@@ -289,24 +391,35 @@
       const message =
         document.getElementById("message");
 
+
       const guess =
         Number(input.value);
 
 
-      if (!guess || guess < 1 || guess > 100) {
+      // Invalid number
+
+      if (
+        !Number.isInteger(guess) ||
+        guess < 1 ||
+        guess > 100
+      ) {
 
         message.textContent =
           "⚠️ Enter a number from 1 to 100!";
 
         return;
+
       }
 
 
       attempts++;
 
+
       document.getElementById("attempts").textContent =
         attempts;
 
+
+      // Too low
 
       if (guess < secretNumber) {
 
@@ -316,6 +429,8 @@
       }
 
 
+      // Too high
+
       else if (guess > secretNumber) {
 
         message.textContent =
@@ -324,22 +439,63 @@
       }
 
 
-      else {
+      // Correct
 
-        message.textContent =
-          "🎉 Correct! You got it in " +
-          attempts +
-          " attempts!";
+      else {
 
         input.disabled = true;
 
+
         document.getElementById("restartButton").style.display =
           "inline-block";
+
+
+        // New best score
+
+        if (
+          bestScore === null ||
+          attempts < Number(bestScore)
+        ) {
+
+          bestScore = attempts;
+
+
+          localStorage.setItem(
+            "guessBest",
+            bestScore
+          );
+
+
+          document.getElementById("bestScore").textContent =
+            bestScore;
+
+
+          message.className =
+            "new-best";
+
+
+          message.textContent =
+            "🔥 NEW BEST! You got it in " +
+            attempts +
+            " attempts!";
+
+        }
+
+        else {
+
+          message.textContent =
+            "🎉 Correct! You got it in " +
+            attempts +
+            " attempts!";
+
+        }
 
       }
 
     }
 
+
+    // Play again
 
     function restartGame() {
 
@@ -348,18 +504,25 @@
     }
 
 
+    // Press Enter to guess
+
     document
       .getElementById("guessInput")
-      .addEventListener("keydown", function(event) {
+      .addEventListener(
+        "keydown",
+        function(event) {
 
-        if (event.key === "Enter") {
+          if (event.key === "Enter") {
 
-          checkGuess();
+            checkGuess();
+
+          }
 
         }
+      );
 
-      });
 
+    // Start first game
 
     newGame();
 
@@ -367,4 +530,4 @@
 
 </body>
 
-        </html>
+</html> 
