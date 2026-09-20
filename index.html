@@ -2,30 +2,54 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Mini Games</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
 
 <body>
 
   <div class="container">
 
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
     <header class="hero">
 
-      <div class="logo">🎮</div>
+      <div class="logo">
+        🎮
+      </div>
 
-      <h1>Mini Games</h1>
+      <h1>
+        Mini Games
+      </h1>
 
-      <p>Small games. Big fun.</p>
+      <p>
+        Small games. Big fun.
+      </p>
 
       <div class="hero-line"></div>
 
     </header>
 
+
+    <!-- =========================
+         GAMES
+    ========================== -->
 
     <main>
 
@@ -37,7 +61,7 @@
       <div class="games">
 
 
-        <!-- Reaction Test -->
+        <!-- REACTION TEST -->
 
         <div class="game">
 
@@ -54,15 +78,17 @@
           </p>
 
           <a href="games/reaction.html">
+
             <button>
               PLAY NOW
             </button>
+
           </a>
 
         </div>
 
 
-        <!-- Guess the Number -->
+        <!-- GUESS THE NUMBER -->
 
         <div class="game">
 
@@ -79,15 +105,17 @@
           </p>
 
           <a href="games/guess.html">
+
             <button>
               PLAY NOW
             </button>
+
           </a>
 
         </div>
 
 
-        <!-- Impossible Choice -->
+        <!-- IMPOSSIBLE CHOICE -->
 
         <div class="game">
 
@@ -104,9 +132,11 @@
           </p>
 
           <a href="games/impossible-choice.html">
+
             <button>
               PLAY NOW
             </button>
+
           </a>
 
         </div>
@@ -116,6 +146,10 @@
 
     </main>
 
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
 
     <footer>
 
@@ -129,8 +163,103 @@
 
     </footer>
 
+
   </div>
+
+
+  <!-- =========================
+       CLICK SOUND
+  ========================== -->
+
+  <script>
+
+    let audioContext;
+
+
+    function playClickSound() {
+
+      if (!audioContext) {
+
+        audioContext =
+          new (
+            window.AudioContext ||
+            window.webkitAudioContext
+          )();
+
+      }
+
+
+      if (
+        audioContext.state ===
+        "suspended"
+      ) {
+
+        audioContext.resume();
+
+      }
+
+
+      const oscillator =
+        audioContext.createOscillator();
+
+
+      const gain =
+        audioContext.createGain();
+
+
+      oscillator.type =
+        "sine";
+
+
+      oscillator.frequency.setValueAtTime(
+        500,
+        audioContext.currentTime
+      );
+
+
+      gain.gain.setValueAtTime(
+        0.06,
+        audioContext.currentTime
+      );
+
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioContext.currentTime + 0.08
+      );
+
+
+      oscillator.connect(gain);
+
+      gain.connect(
+        audioContext.destination
+      );
+
+
+      oscillator.start();
+
+
+      oscillator.stop(
+        audioContext.currentTime + 0.08
+      );
+
+    }
+
+
+    document
+      .querySelectorAll(".game button")
+      .forEach(function(button) {
+
+        button.addEventListener(
+          "click",
+          playClickSound
+        );
+
+      });
+
+  </script>
+
 
 </body>
 
-</html>
+</html> 
