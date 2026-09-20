@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -16,8 +16,7 @@
     body {
       min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top, #24145c 0%, #0b0b12 45%);
+      background: radial-gradient(circle at top, #24145c 0%, #0b0b12 45%);
       color: white;
 
       display: flex;
@@ -38,7 +37,7 @@
       margin-bottom: 25px;
       color: #aaa;
       text-decoration: none;
-      transition: 0.2s;
+      font-size: 16px;
     }
 
     .back:hover {
@@ -101,11 +100,7 @@
       cursor: pointer;
       user-select: none;
 
-      transition: background 0.15s, transform 0.15s;
-    }
-
-    #box:hover {
-      transform: scale(1.01);
+      transition: 0.15s;
     }
 
     #box.waiting {
@@ -144,13 +139,10 @@
       font-weight: bold;
 
       cursor: pointer;
-
-      transition: 0.2s;
     }
 
     #startButton:hover {
       background: #947bff;
-      transform: scale(1.05);
     }
 
     @media (max-width: 600px) {
@@ -172,11 +164,14 @@
   </style>
 </head>
 
+
 <body>
 
   <div class="game">
 
-    <a class="back" href="../index.html">← Back to games</a>
+    <a class="back" href="../index.html">
+      ← Back to games
+    </a>
 
     <h1>⚡ Reaction Test</h1>
 
@@ -184,29 +179,44 @@
       How fast can you react?
     </p>
 
+
     <div class="stats">
 
       <div class="stat">
-        <div class="stat-title">Last Score</div>
-        <div class="stat-value" id="lastScore">—</div>
+        <div class="stat-title">
+          Last Score
+        </div>
+
+        <div class="stat-value" id="lastScore">
+          —
+        </div>
       </div>
 
+
       <div class="stat">
-        <div class="stat-title">Best Score</div>
-        <div class="stat-value" id="bestScore">—</div>
+        <div class="stat-title">
+          Best Score
+        </div>
+
+        <div class="stat-value" id="bestScore">
+          —
+        </div>
       </div>
 
     </div>
 
-    <div id="box">
+
+    <div id="box" onclick="clickBox()">
       CLICK START
     </div>
 
+
     <p id="info">
-      Click the button below to begin.
+      Click START GAME to begin.
     </p>
 
-    <button id="startButton">
+
+    <button id="startButton" onclick="startGame()">
       START GAME
     </button>
 
@@ -215,47 +225,153 @@
 
   <script>
 
-    const box = document.getElementById("box");
-    const info = document.getElementById("info");
-    const startButton = document.getElementById("startButton");
-
-    const lastScore = document.getElementById("lastScore");
-    const bestScore = document.getElementById("bestScore");
-
+    let gameState = "idle";
     let startTime = 0;
-    let gameRunning = false;
-    let waiting = false;
     let timer = null;
 
-    let best = localStorage.getItem("reactionBest");
 
-    if (best) {
-      bestScore.textContent = best + " ms";
+    // Load saved best score
+
+    const savedBest = localStorage.getItem("reactionBest");
+
+    if (savedBest) {
+      document.getElementById("bestScore").textContent =
+        savedBest + " ms";
     }
 
 
-    startButton.addEventListener("click", function () {
+    // START GAME
+
+    function startGame() {
 
       clearTimeout(timer);
 
-      startTime = 0;
-      gameRunning = false;
-      waiting = true;
+      gameState = "waiting";
+
+      const box = document.getElementById("box");
+      const info = document.getElementById("info");
+      const button = document.getElementById("startButton");
+
 
       box.className = "waiting";
       box.textContent = "WAIT...";
+
       info.textContent = "Wait for green...";
 
-      startButton.textContent = "WAITING...";
-
-      const delay = Math.floor(Math.random() * 3000) + 1500;
+      button.textContent = "WAITING...";
 
 
-      timer = setTimeout(function () {
+      const delay =
+        Math.floor(Math.random() * 3000) + 2000;
 
-        waiting = false;
-        gameRunning = true;
+
+      timer = setTimeout(function() {
+
+        gameState = "ready";
 
         box.className = "go";
         box.textContent = "CLICK!";
-        info.textContent = "CLICK NOW! 
+
+        info.textContent = "CLICK NOW!";
+
+        startTime = Date.now();
+
+      }, delay);
+
+    }
+
+
+    // CLICK THE BIG BOX
+
+    function clickBox() {
+
+      const box = document.getElementById("box");
+      const info = document.getElementById("info");
+      const button = document.getElementById("startButton");
+
+
+      // Clicked too early
+
+      if (gameState === "waiting") {
+
+        clearTimeout(timer);
+
+        gameState = "idle";
+
+        box.className = "too-soon";
+        box.textContent = "TOO SOON!";
+
+        info.textContent =
+          "You clicked too early.";
+
+        button.textContent =
+          "TRY AGAIN";
+
+        return;
+      }
+
+
+      // Nothing happening
+
+      if (gameState !== "ready") {
+        return;
+      }
+
+
+      // Calculate reaction
+
+      const reactionTime =
+        Date.now() - startTime;
+
+
+      gameState = "idle";
+
+
+      box.className = "";
+      box.textContent =
+        reactionTime + " ms";
+
+
+      info.textContent =
+        "Nice reaction!";
+
+      button.textContent =
+        "TRY AGAIN";
+
+
+      document.getElementById("lastScore").textContent =
+        reactionTime + " ms";
+
+
+      // Best score
+
+      const oldBest =
+        localStorage.getItem("reactionBest");
+
+
+      if (
+        oldBest === null ||
+        reactionTime < Number(oldBest)
+      ) {
+
+        localStorage.setItem(
+          "reactionBest",
+          reactionTime
+        );
+
+
+        document.getElementById("bestScore").textContent =
+          reactionTime + " ms";
+
+
+        info.textContent =
+          "🔥 NEW BEST SCORE!";
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>  
