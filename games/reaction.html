@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Reaction Test</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b0b12;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .game {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #aaa;
+      font-size: 18px;
+    }
+
+    #box {
+      margin-top: 30px;
+      height: 300px;
+      border-radius: 20px;
+      background: #191925;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .ready {
+      background: #7c5cff !important;
+    }
+
+    .go {
+      background: #19c37d !important;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      border: 0;
+      border-radius: 10px;
+      background: #7c5cff;
+      color: white;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="game">
+
+    <h1>⚡ Reaction Test</h1>
+
+    <p id="info">Klikni na tlačítko a připrav se.</p>
+
+    <div id="box">START</div>
+
+    <button onclick="startGame()">Nová hra</button>
+
+  </div>
+
+  <script>
+    let startTime;
+    let timer;
+
+    const box = document.getElementById("box");
+    const info = document.getElementById("info");
+
+    function startGame() {
+      clearTimeout(timer);
+
+      box.className = "ready";
+      box.textContent = "ČEKEJ...";
+      info.textContent = "Počkej, dokud se barva nezmění!";
+
+      const delay = Math.floor(Math.random() * 3000) + 1500;
+
+      timer = setTimeout(() => {
+        box.className = "go";
+        box.textContent = "KLIKNI!";
+        info.textContent = "TEĎ!";
+        startTime = Date.now();
+      }, delay);
+    }
+
+    box.addEventListener("click", () => {
+      if (!startTime) return;
+
+      const reaction = Date.now() - startTime;
+
+      info.textContent = `Tvoje reakce: ${reaction} ms`;
+
+      box.className = "";
+      box.textContent = "ZKUSIT ZNOVU";
+
+      startTime = null;
+    });
+  </script>
+
+</body>
+  </html>
