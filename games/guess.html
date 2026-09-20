@@ -18,18 +18,13 @@
 
     body {
       min-height: 100vh;
-
       font-family: Arial, Helvetica, sans-serif;
-
       background:
         radial-gradient(circle at top, #24145c 0%, #0b0b12 45%);
-
       color: white;
-
       display: flex;
       justify-content: center;
       align-items: center;
-
       padding: 20px;
     }
 
@@ -42,7 +37,6 @@
     .back {
       display: inline-block;
       margin-bottom: 25px;
-
       color: #aaa;
       text-decoration: none;
     }
@@ -64,13 +58,9 @@
 
     .card {
       background: #151521;
-
       border: 1px solid #303047;
-
       border-radius: 25px;
-
       padding: 30px 20px;
-
       box-shadow:
         0 15px 40px rgba(0, 0, 0, 0.25);
     }
@@ -78,77 +68,53 @@
     .number {
       font-size: 55px;
       font-weight: bold;
-
       color: #9c7cff;
-
       margin-bottom: 10px;
     }
 
     .hint {
       color: #aaa;
-
       font-size: 18px;
-
       margin-bottom: 25px;
     }
 
     .stats {
       display: flex;
-
       justify-content: center;
-
       gap: 15px;
-
       margin-bottom: 25px;
     }
 
     .stat {
       flex: 1;
-
       background: #0f0f18;
-
       border: 1px solid #303047;
-
       border-radius: 14px;
-
       padding: 15px;
     }
 
     .stat-title {
       color: #777;
-
       font-size: 13px;
-
       margin-bottom: 6px;
     }
 
     .stat-value {
       font-size: 24px;
-
       font-weight: bold;
-
       color: white;
     }
 
     input {
       width: 100%;
-
       max-width: 300px;
-
       padding: 15px;
-
       border-radius: 13px;
-
       border: 2px solid #303047;
-
       background: #0f0f18;
-
       color: white;
-
       font-size: 20px;
-
       text-align: center;
-
       outline: none;
     }
 
@@ -158,21 +124,13 @@
 
     button {
       border: none;
-
       border-radius: 13px;
-
       background: #7c5cff;
-
       color: white;
-
       padding: 14px 28px;
-
       font-size: 17px;
-
       font-weight: bold;
-
       cursor: pointer;
-
       margin-top: 15px;
     }
 
@@ -180,19 +138,20 @@
       background: #947bff;
     }
 
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     #message {
       min-height: 30px;
-
       margin-top: 20px;
-
       font-size: 20px;
-
       font-weight: bold;
     }
 
     #restartButton {
       display: none;
-
       background: #19c37d;
     }
 
@@ -232,32 +191,25 @@
       ← Back to games
     </a>
 
-
     <h1>
       🔢 Guess the Number
     </h1>
-
 
     <p class="subtitle">
       Can you guess the secret number?
     </p>
 
-
     <div class="card">
-
 
       <div class="number">
         1–100
       </div>
 
-
       <p class="hint">
         I'm thinking of a number between 1 and 100.
       </p>
 
-
       <div class="stats">
-
 
         <div class="stat">
 
@@ -290,7 +242,6 @@
 
         </div>
 
-
       </div>
 
 
@@ -302,9 +253,7 @@
         placeholder="Your guess"
       >
 
-
       <br>
-
 
       <button
         id="guessButton"
@@ -313,9 +262,7 @@
         GUESS
       </button>
 
-
       <p id="message"></p>
-
 
       <button
         id="restartButton"
@@ -323,7 +270,6 @@
       >
         PLAY AGAIN
       </button>
-
 
     </div>
 
@@ -333,13 +279,12 @@
   <script>
 
     let secretNumber = 0;
-
     let attempts = 0;
 
 
-    /*
-      LOAD BEST SCORE
-    */
+    // =========================
+    // LOAD BEST SCORE
+    // =========================
 
     function loadBestScore() {
 
@@ -361,9 +306,9 @@
     }
 
 
-    /*
-      START NEW GAME
-    */
+    // =========================
+    // START NEW GAME
+    // =========================
 
     function startNewGame() {
 
@@ -372,63 +317,58 @@
 
       attempts = 0;
 
-
       document.getElementById("currentAttempts").textContent =
         "0";
-
 
       document.getElementById("guessInput").value =
         "";
 
-
       document.getElementById("guessInput").disabled =
         false;
-
 
       document.getElementById("guessButton").disabled =
         false;
 
-
       document.getElementById("message").textContent =
         "";
-
 
       document.getElementById("message").className =
         "";
 
-
       document.getElementById("restartButton").style.display =
         "none";
-
 
       loadBestScore();
 
     }
 
 
-    /*
-      MAKE GUESS
-    */
+    // =========================
+    // MAKE GUESS
+    // =========================
 
     function makeGuess() {
 
       const input =
         document.getElementById("guessInput");
 
-
       const message =
         document.getElementById("message");
-
 
       const guess =
         Number(input.value);
 
 
+      // CHECK INPUT
+
       if (
+        input.value === "" ||
         guess < 1 ||
         guess > 100 ||
         !Number.isInteger(guess)
       ) {
+
+        message.className = "";
 
         message.textContent =
           "⚠️ Enter a number from 1 to 100!";
@@ -438,48 +378,53 @@
       }
 
 
-      attempts++;
+      // ADD ATTEMPT
 
+      attempts++;
 
       document.getElementById("currentAttempts").textContent =
         attempts;
 
 
-      /*
-        TOO LOW
-      */
+      // TOO LOW
 
       if (guess < secretNumber) {
+
+        message.className = "";
 
         message.textContent =
           "⬆️ Too low!";
 
         input.value = "";
 
+        input.focus();
+
         return;
 
       }
 
 
-      /*
-        TOO HIGH
-      */
+      // TOO HIGH
 
       if (guess > secretNumber) {
+
+        message.className = "";
 
         message.textContent =
           "⬇️ Too high!";
 
         input.value = "";
 
+        input.focus();
+
         return;
 
       }
 
 
-      /*
-        CORRECT
-      */
+      // =========================
+      // CORRECT
+      // =========================
 
       input.disabled = true;
 
@@ -490,58 +435,51 @@
         "inline-block";
 
 
-      /*
-        GET OLD BEST SCORE
-      */
+      // GET OLD BEST SCORE
 
       const oldBest =
         localStorage.getItem("guessNumberBest");
 
 
-      /*
-        NEW BEST
-      */
+      // =========================
+      // NEW BEST
+      // =========================
 
       if (
         oldBest === null ||
         attempts < Number(oldBest)
-      {
+      ) {
 
         localStorage.setItem(
           "guessNumberBest",
           attempts
         );
 
-
         document.getElementById("bestScore").textContent =
           attempts;
 
-
         message.className =
           "new-best";
-
 
         message.textContent =
           "🔥 NEW BEST! " +
           attempts +
           " attempts!";
 
-
       }
 
-      /*
-        NORMAL WIN
-      */
+
+      // =========================
+      // NORMAL WIN
+      // =========================
 
       else {
 
         document.getElementById("bestScore").textContent =
           oldBest;
 
-
         message.className =
           "";
-
 
         message.textContent =
           "🎉 Correct! " +
@@ -553,9 +491,9 @@
     }
 
 
-    /*
-      ENTER KEY
-    */
+    // =========================
+    // ENTER KEY
+    // =========================
 
     document
       .getElementById("guessInput")
@@ -573,11 +511,9 @@
       );
 
 
-    /*
-      START
-    */
-
-    loadBestScore();
+    // =========================
+    // START GAME
+    // =========================
 
     startNewGame();
 
