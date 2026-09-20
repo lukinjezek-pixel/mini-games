@@ -82,7 +82,7 @@
 
   <div id="box">START</div>
 
-  <button id="startButton">Nová hra</button>
+  <button id="startButton">New game</button>
 
 </div>
 
@@ -103,16 +103,16 @@
     startTime = 0;
 
     box.className = "waiting";
-    box.textContent = "ČEKEJ...";
-    info.textContent = "Počkej na zelenou!";
+    box.textContent = "WAIT...";
+    info.textContent = "Wait for green!";
 
     const delay = Math.floor(Math.random() * 3000) + 1500;
 
     timer = setTimeout(function () {
 
       box.className = "go";
-      box.textContent = "KLIKNI!";
-      info.textContent = "TEĎ!";
+      box.textContent = "Cklick!";
+      info.textContent = "NOW!";
 
       startTime = Date.now();
       gameRunning = true;
@@ -131,7 +131,7 @@
     box.className = "";
     box.textContent = reaction + " ms";
 
-    info.textContent = "Tvoje reakce! Zkus to znovu.";
+    info.textContent = "Your reaction! Try it again.";
   });
 </script>
 
