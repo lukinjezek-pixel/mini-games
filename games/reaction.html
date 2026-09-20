@@ -210,4 +210,403 @@
       Click START GAME to begin.
     </p>
 
-    <button id="startButton" onclick
+    <button id="startButton" onclick="startGame()">
+      START GAME
+    </button>
+
+  </div>
+
+  <script>
+
+    let gameState = "idle";
+    let startTime = 0;
+    let timer = null;
+
+    let audioContext = null;
+
+
+    // =========================
+    // SOUND SYSTEM
+    // =========================
+
+    function getAudioContext() {
+
+      if (!audioContext) {
+        audioContext =
+          new (window.AudioContext ||
+          window.webkitAudioContext)();
+      }
+
+      if (audioContext.state === "suspended") {
+        audioContext.resume();
+      }
+
+      return audioContext;
+    }
+
+
+    // START SOUND
+
+    function playStartSound() {
+
+      const audio = getAudioContext();
+
+      const oscillator =
+        audio.createOscillator();
+
+      const gain =
+        audio.createGain();
+
+      oscillator.type = "sine";
+
+      oscillator.frequency.setValueAtTime(
+        400,
+        audio.currentTime
+      );
+
+      oscillator.frequency.linearRampToValueAtTime(
+        650,
+        audio.currentTime + 0.15
+      );
+
+      gain.gain.setValueAtTime(
+        0.15,
+        audio.currentTime
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audio.currentTime + 0.2
+      );
+
+      oscillator.connect(gain);
+      gain.connect(audio.destination);
+
+      oscillator.start();
+
+      oscillator.stop(
+        audio.currentTime + 0.2
+      );
+    }
+
+
+    // GO SOUND
+
+    function playGoSound() {
+
+      const audio = getAudioContext();
+
+      const oscillator =
+        audio.createOscillator();
+
+      const gain =
+        audio.createGain();
+
+      oscillator.type = "square";
+
+      oscillator.frequency.setValueAtTime(
+        700,
+        audio.currentTime
+      );
+
+      oscillator.frequency.linearRampToValueAtTime(
+        1000,
+        audio.currentTime + 0.12
+      );
+
+      gain.gain.setValueAtTime(
+        0.12,
+        audio.currentTime
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audio.currentTime + 0.18
+      );
+
+      oscillator.connect(gain);
+      gain.connect(audio.destination);
+
+      oscillator.start();
+
+      oscillator.stop(
+        audio.currentTime + 0.18
+      );
+    }
+
+
+    // TOO SOON SOUND
+
+    function playTooSoonSound() {
+
+      const audio = getAudioContext();
+
+      const oscillator =
+        audio.createOscillator();
+
+      const gain =
+        audio.createGain();
+
+      oscillator.type = "sawtooth";
+
+      oscillator.frequency.setValueAtTime(
+        220,
+        audio.currentTime
+      );
+
+      oscillator.frequency.linearRampToValueAtTime(
+        100,
+        audio.currentTime + 0.25
+      );
+
+      gain.gain.setValueAtTime(
+        0.12,
+        audio.currentTime
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audio.currentTime + 0.25
+      );
+
+      oscillator.connect(gain);
+      gain.connect(audio.destination);
+
+      oscillator.start();
+
+      oscillator.stop(
+        audio.currentTime + 0.25
+      );
+    }
+
+
+    // BEST SCORE SOUND
+
+    function playBestSound() {
+
+      const audio = getAudioContext();
+
+      const notes = [600, 800, 1000];
+
+      notes.forEach(function(frequency, index) {
+
+        const oscillator =
+          audio.createOscillator();
+
+        const gain =
+          audio.createGain();
+
+        const time =
+          audio.currentTime + index * 0.1;
+
+        oscillator.type = "sine";
+
+        oscillator.frequency.setValueAtTime(
+          frequency,
+          time
+        );
+
+        gain.gain.setValueAtTime(
+          0.15,
+          time
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          time + 0.15
+        );
+
+        oscillator.connect(gain);
+        gain.connect(audio.destination);
+
+        oscillator.start(time);
+
+        oscillator.stop(time + 0.15);
+
+      });
+
+    }
+
+
+    // =========================
+    // LOAD BEST SCORE
+    // =========================
+
+    const savedBest =
+      localStorage.getItem("reactionBest");
+
+    if (savedBest) {
+
+      document.getElementById("bestScore").textContent =
+        savedBest + " ms";
+
+    }
+
+
+    // =========================
+    // START GAME
+    // =========================
+
+    function startGame() {
+
+      clearTimeout(timer);
+
+      getAudioContext();
+
+      playStartSound();
+
+      gameState = "waiting";
+
+      const box =
+        document.getElementById("box");
+
+      const info =
+        document.getElementById("info");
+
+      const button =
+        document.getElementById("startButton");
+
+
+      box.className = "waiting";
+
+      box.textContent = "WAIT...";
+
+      info.textContent =
+        "Wait for green...";
+
+      button.textContent =
+        "WAITING...";
+
+
+      const delay =
+        Math.floor(Math.random() * 3000) + 2000;
+
+
+      timer = setTimeout(function() {
+
+        gameState = "ready";
+
+        box.className = "go";
+
+        box.textContent = "CLICK!";
+
+        info.textContent =
+          "CLICK NOW!";
+
+        startTime = Date.now();
+
+        playGoSound();
+
+      }, delay);
+
+    }
+
+
+    // =========================
+    // CLICK BIG BOX
+    // =========================
+
+    function clickBox() {
+
+      const box =
+        document.getElementById("box");
+
+      const info =
+        document.getElementById("info");
+
+      const button =
+        document.getElementById("startButton");
+
+
+      // TOO EARLY
+
+      if (gameState === "waiting") {
+
+        clearTimeout(timer);
+
+        gameState = "idle";
+
+        box.className = "too-soon";
+
+        box.textContent =
+          "TOO SOON!";
+
+        info.textContent =
+          "You clicked too early.";
+
+        button.textContent =
+          "TRY AGAIN";
+
+        playTooSoonSound();
+
+        return;
+      }
+
+
+      // NOTHING HAPPENING
+
+      if (gameState !== "ready") {
+        return;
+      }
+
+
+      // CALCULATE REACTION
+
+      const reactionTime =
+        Date.now() - startTime;
+
+
+      gameState = "idle";
+
+
+      box.className = "";
+
+      box.textContent =
+        reactionTime + " ms";
+
+
+      info.textContent =
+        "Nice reaction!";
+
+      button.textContent =
+        "TRY AGAIN";
+
+
+      document.getElementById("lastScore").textContent =
+        reactionTime + " ms";
+
+
+      // BEST SCORE
+
+      const oldBest =
+        localStorage.getItem("reactionBest");
+
+
+      if (
+        oldBest === null ||
+        reactionTime < Number(oldBest)
+      ) {
+
+        localStorage.setItem(
+          "reactionBest",
+          reactionTime
+        );
+
+
+        document.getElementById("bestScore").textContent =
+          reactionTime + " ms";
+
+
+        info.textContent =
+          "🔥 NEW BEST SCORE!";
+
+        playBestSound();
+
+      }
+
+    }
+
+  </script>
+
+</body>
+  </html> 
