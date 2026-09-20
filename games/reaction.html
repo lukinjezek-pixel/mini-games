@@ -164,7 +164,6 @@
   </style>
 </head>
 
-
 <body>
 
   <div class="game">
@@ -179,7 +178,6 @@
       How fast can you react?
     </p>
 
-
     <div class="stats">
 
       <div class="stat">
@@ -191,7 +189,6 @@
           —
         </div>
       </div>
-
 
       <div class="stat">
         <div class="stat-title">
@@ -205,173 +202,12 @@
 
     </div>
 
-
     <div id="box" onclick="clickBox()">
       CLICK START
     </div>
-
 
     <p id="info">
       Click START GAME to begin.
     </p>
 
-
-    <button id="startButton" onclick="startGame()">
-      START GAME
-    </button>
-
-  </div>
-
-
-  <script>
-
-    let gameState = "idle";
-    let startTime = 0;
-    let timer = null;
-
-
-    // Load saved best score
-
-    const savedBest = localStorage.getItem("reactionBest");
-
-    if (savedBest) {
-      document.getElementById("bestScore").textContent =
-        savedBest + " ms";
-    }
-
-
-    // START GAME
-
-    function startGame() {
-
-      clearTimeout(timer);
-
-      gameState = "waiting";
-
-      const box = document.getElementById("box");
-      const info = document.getElementById("info");
-      const button = document.getElementById("startButton");
-
-
-      box.className = "waiting";
-      box.textContent = "WAIT...";
-
-      info.textContent = "Wait for green...";
-
-      button.textContent = "WAITING...";
-
-
-      const delay =
-        Math.floor(Math.random() * 3000) + 2000;
-
-
-      timer = setTimeout(function() {
-
-        gameState = "ready";
-
-        box.className = "go";
-        box.textContent = "CLICK!";
-
-        info.textContent = "CLICK NOW!";
-
-        startTime = Date.now();
-
-      }, delay);
-
-    }
-
-
-    // CLICK THE BIG BOX
-
-    function clickBox() {
-
-      const box = document.getElementById("box");
-      const info = document.getElementById("info");
-      const button = document.getElementById("startButton");
-
-
-      // Clicked too early
-
-      if (gameState === "waiting") {
-
-        clearTimeout(timer);
-
-        gameState = "idle";
-
-        box.className = "too-soon";
-        box.textContent = "TOO SOON!";
-
-        info.textContent =
-          "You clicked too early.";
-
-        button.textContent =
-          "TRY AGAIN";
-
-        return;
-      }
-
-
-      // Nothing happening
-
-      if (gameState !== "ready") {
-        return;
-      }
-
-
-      // Calculate reaction
-
-      const reactionTime =
-        Date.now() - startTime;
-
-
-      gameState = "idle";
-
-
-      box.className = "";
-      box.textContent =
-        reactionTime + " ms";
-
-
-      info.textContent =
-        "Nice reaction!";
-
-      button.textContent =
-        "TRY AGAIN";
-
-
-      document.getElementById("lastScore").textContent =
-        reactionTime + " ms";
-
-
-      // Best score
-
-      const oldBest =
-        localStorage.getItem("reactionBest");
-
-
-      if (
-        oldBest === null ||
-        reactionTime < Number(oldBest)
-      ) {
-
-        localStorage.setItem(
-          "reactionBest",
-          reactionTime
-        );
-
-
-        document.getElementById("bestScore").textContent =
-          reactionTime + " ms";
-
-
-        info.textContent =
-          "🔥 NEW BEST SCORE!";
-
-      }
-
-    }
-
-  </script>
-
-</body>
-</html> 
+    <button id="startButton" onclick
