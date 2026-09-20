@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
 
 <meta
@@ -12,7 +11,6 @@
 
 <title>Impossible Choice | Mini Games</title>
 
-
 <style>
 
 *{
@@ -21,15 +19,9 @@
   padding:0;
 }
 
-
 body{
-
   min-height:100vh;
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
 
   background:
     radial-gradient(
@@ -41,123 +33,76 @@ body{
   color:white;
 
   display:flex;
-
   justify-content:center;
-
   align-items:center;
 
   padding:20px;
-
 }
-
 
 .game{
-
   width:100%;
-
   max-width:700px;
-
   text-align:center;
-
 }
-
 
 .back{
-
   display:inline-block;
-
   margin-bottom:25px;
-
   color:#aaa;
-
   text-decoration:none;
-
 }
-
 
 .back:hover{
   color:white;
 }
 
-
 h1{
-
-  font-size:
-    clamp(38px,9vw,60px);
-
+  font-size:clamp(38px,9vw,60px);
   margin-bottom:10px;
-
 }
-
 
 .subtitle{
-
   color:#999;
-
   font-size:18px;
-
   margin-bottom:25px;
-
 }
 
-
 .card{
-
   background:#151521;
-
   border:1px solid #303047;
-
   border-radius:25px;
-
   padding:30px 20px;
 
   box-shadow:
     0 15px 40px
     rgba(0,0,0,.25);
-
 }
-
 
 .question{
-
   font-size:28px;
-
   font-weight:bold;
-
   margin-bottom:25px;
-
 }
-
 
 .choices{
-
   display:flex;
-
   gap:15px;
-
   justify-content:center;
-
 }
 
-
 .choice{
-
   flex:1;
-
   min-height:150px;
 
   border:2px solid #303047;
-
   border-radius:18px;
 
   background:#0f0f18;
-
   color:white;
 
   padding:20px;
 
   font-size:19px;
-
   font-weight:bold;
 
   cursor:pointer;
@@ -166,128 +111,82 @@ h1{
     transform .15s,
     border-color .15s,
     background .15s;
-
 }
-
 
 .choice:hover{
-
   transform:translateY(-4px);
-
   border-color:#7c5cff;
-
   background:#181827;
-
 }
-
 
 .choice:disabled{
-
   cursor:default;
-
 }
-
 
 .choice.selected{
-
   border-color:#19c37d;
-
   background:#123a2d;
-
 }
-
 
 .choice.not-selected{
-
   opacity:.65;
-
 }
-
 
 .percentage{
-
   display:none;
-
   margin-top:15px;
-
   font-size:17px;
-
   color:#aaa;
-
 }
-
 
 .percentage strong{
-
   color:white;
-
   font-size:23px;
-
 }
 
-
 .result{
-
   min-height:30px;
-
   margin-top:25px;
 
   font-size:18px;
-
   font-weight:bold;
 
   color:#19c37d;
-
 }
 
-
 .next{
-
   display:none;
 
   margin-top:20px;
 
   border:none;
-
   border-radius:13px;
 
   background:#7c5cff;
-
   color:white;
 
   padding:14px 28px;
 
   font-size:17px;
-
   font-weight:bold;
 
   cursor:pointer;
-
 }
-
 
 .next:hover{
-
   background:#947bff;
-
 }
 
-
 .stats{
-
   margin-top:25px;
 
   display:flex;
-
   justify-content:center;
 
   gap:15px;
-
 }
 
-
 .stat{
-
   flex:1;
 
   background:#0f0f18;
@@ -297,54 +196,36 @@ h1{
   border-radius:14px;
 
   padding:14px;
-
 }
-
 
 .stat-title{
-
   color:#777;
-
   font-size:13px;
-
   margin-bottom:5px;
-
 }
-
 
 .stat-value{
-
   font-size:23px;
-
   font-weight:bold;
-
 }
-
 
 @media(max-width:600px){
 
   .choices{
-
     flex-direction:column;
-
   }
 
   .choice{
-
     min-height:110px;
-
   }
 
   .question{
-
     font-size:24px;
-
   }
 
 }
 
 </style>
-
 </head>
 
 
@@ -400,10 +281,8 @@ h1{
     class="percentage"
     id="percent1"
   >
-
     <strong>50%</strong>
     chose this
-
   </div>
 
 </button>
@@ -423,10 +302,8 @@ h1{
     class="percentage"
     id="percent2"
   >
-
     <strong>50%</strong>
     chose this
-
   </div>
 
 </button>
@@ -495,16 +372,14 @@ h1{
 
 <script>
 
-
 /* =========================
-   SOUND SYSTEM
+   SOUND
 ========================= */
-
 
 let audioContext = null;
 
 
-function getAudioContext(){
+function startAudio(){
 
   if(!audioContext){
 
@@ -516,7 +391,6 @@ function getAudioContext(){
 
   }
 
-
   if(
     audioContext.state ===
     "suspended"
@@ -526,65 +400,55 @@ function getAudioContext(){
 
   }
 
-
-  return audioContext;
-
 }
 
 
-function playTone(
+function playSound(
   frequency,
   duration,
-  type="sine",
-  volume=0.16
+  volume
 ){
 
-  const ctx =
-    getAudioContext();
-
+  startAudio();
 
   const oscillator =
-    ctx.createOscillator();
-
+    audioContext.createOscillator();
 
   const gain =
-    ctx.createGain();
+    audioContext.createGain();
 
 
-  oscillator.type =
-    type;
+  oscillator.type = "sine";
 
-
-  oscillator.frequency.setValueAtTime(
-    frequency,
-    ctx.currentTime
-  );
+  oscillator.frequency.value =
+    frequency;
 
 
   gain.gain.setValueAtTime(
     volume,
-    ctx.currentTime
+    audioContext.currentTime
   );
 
 
   gain.gain.exponentialRampToValueAtTime(
     0.001,
-    ctx.currentTime + duration
+    audioContext.currentTime +
+    duration
   );
 
 
   oscillator.connect(gain);
 
   gain.connect(
-    ctx.destination
+    audioContext.destination
   );
 
 
   oscillator.start();
 
-
   oscillator.stop(
-    ctx.currentTime + duration
+    audioContext.currentTime +
+    duration
   );
 
 }
@@ -594,11 +458,10 @@ function playTone(
 
 function clickSound(){
 
-  playTone(
+  playSound(
     650,
-    0.08,
-    "square",
-    0.13
+    0.12,
+    0.25
   );
 
 }
@@ -608,24 +471,21 @@ function clickSound(){
 
 function choiceSound(){
 
-  playTone(
-    520,
+  playSound(
+    500,
     0.12,
-    "sine",
-    0.18
+    0.25
   );
-
 
   setTimeout(function(){
 
-    playTone(
-      720,
-      0.16,
-      "sine",
-      0.20
+    playSound(
+      750,
+      0.18,
+      0.25
     );
 
-  },100);
+  },120);
 
 }
 
@@ -634,71 +494,61 @@ function choiceSound(){
 
 function nextSound(){
 
-  playTone(
+  playSound(
     600,
     0.10,
-    "square",
-    0.15
+    0.25
   );
-
 
   setTimeout(function(){
 
-    playTone(
-      800,
-      0.14,
-      "square",
-      0.18
+    playSound(
+      850,
+      0.15,
+      0.25
     );
 
-  },90);
+  },100);
 
 }
 
 
-/* NEW BEST */
+/* BEST */
 
 function bestSound(){
 
-  playTone(
+  playSound(
     523,
-    0.13,
-    "square",
-    0.17
+    0.12,
+    0.25
   );
-
 
   setTimeout(function(){
 
-    playTone(
+    playSound(
       659,
-      0.13,
-      "square",
-      0.17
+      0.12,
+      0.25
     );
 
   },120);
 
-
   setTimeout(function(){
 
-    playTone(
+    playSound(
       784,
-      0.13,
-      "square",
-      0.18
+      0.12,
+      0.25
     );
 
   },240);
 
-
   setTimeout(function(){
 
-    playTone(
+    playSound(
       1047,
-      0.32,
-      "sine",
-      0.22
+      0.30,
+      0.30
     );
 
   },360);
@@ -710,8 +560,7 @@ function bestSound(){
    QUESTIONS
 ========================= */
 
-
-const questions=[
+const questions = [
 
 {
   option1:"🍕 Never eat pizza again",
@@ -749,8 +598,8 @@ const questions=[
 },
 
 {
-  option1:"🎬 Be able to watch every movie",
-  option2:"🎵 Be able to listen to every song",
+  option1:"🎬 Watch every movie",
+  option2:"🎵 Listen to every song",
   percent1:48,
   percent2:52
 },
@@ -791,218 +640,16 @@ let currentQuestion = 0;
 let score = 0;
 
 
-const questionElement =
-  document.getElementById(
-    "question"
-  );
-
-
-const choice1 =
-  document.getElementById(
-    "choice1"
-  );
-
-
-const choice2 =
-  document.getElementById(
-    "choice2"
-  );
-
+/* ELEMENTS */
 
 const text1 =
-  document.getElementById(
-    "text1"
-  );
-
+  document.getElementById("text1");
 
 const text2 =
-  document.getElementById(
-    "text2"
-  );
-
+  document.getElementById("text2");
 
 const percent1 =
-  document.getElementById(
-    "percent1"
-  );
-
+  document.getElementById("percent1");
 
 const percent2 =
-  document.getElementById(
-    "percent2"
-  );
-
-
-const result =
-  document.getElementById(
-    "result"
-  );
-
-
-const nextButton =
-  document.getElementById(
-    "nextButton"
-  );
-
-
-const scoreElement =
-  document.getElementById(
-    "score"
-  );
-
-
-const bestElement =
-  document.getElementById(
-    "best"
-  );
-
-
-/* =========================
-   BEST SCORE
-========================= */
-
-
-function loadBest(){
-
-  const best =
-    localStorage.getItem(
-      "impossibleChoiceBest"
-    );
-
-
-  if(best !== null){
-
-    bestElement.textContent =
-      best;
-
-  }
-
-}
-
-
-/* =========================
-   LOAD QUESTION
-========================= */
-
-
-function loadQuestion(){
-
-  const q =
-    questions[currentQuestion];
-
-
-  text1.textContent =
-    q.option1;
-
-
-  text2.textContent =
-    q.option2;
-
-
-  percent1.innerHTML =
-    "<strong>" +
-    q.percent1 +
-    "%</strong> chose this";
-
-
-  percent2.innerHTML =
-    "<strong>" +
-    q.percent2 +
-    "%</strong> chose this";
-
-
-  percent1.style.display =
-    "none";
-
-
-  percent2.style.display =
-    "none";
-
-
-  choice1.disabled =
-    false;
-
-
-  choice2.disabled =
-    false;
-
-
-  choice1.className =
-    "choice";
-
-
-  choice2.className =
-    "choice";
-
-
-  result.textContent =
-    "";
-
-
-  nextButton.style.display =
-    "none";
-
-}
-
-
-/* =========================
-   CHOOSE
-========================= */
-
-
-function choose(choice){
-
-  choiceSound();
-
-
-  const q =
-    questions[currentQuestion];
-
-
-  score++;
-
-
-  scoreElement.textContent =
-    score;
-
-
-  choice1.disabled =
-    true;
-
-
-  choice2.disabled =
-    true;
-
-
-  percent1.style.display =
-    "block";
-
-
-  percent2.style.display =
-    "block";
-
-
-  if(choice === 0){
-
-    choice1.classList.add(
-      "selected"
-    );
-
-
-    choice2.classList.add(
-      "not-selected"
-    );
-
-
-    result.textContent =
-      "You chose the " +
-      q.percent1 +
-      "% option!";
-
-  }
-
-
-  else{
-
-    choice2.classList.add(
-      "selected
+  document.getElementById("percent
