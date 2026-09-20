@@ -1,139 +1,261 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reaction Test</title>
+
+  <title>Reaction Test | Mini Games</title>
 
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
-      background: #0b0b12;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, #24145c 0%, #0b0b12 45%);
       color: white;
-      font-family: Arial, sans-serif;
+
       display: flex;
       justify-content: center;
       align-items: center;
+
       padding: 20px;
     }
 
     .game {
       width: 100%;
-      max-width: 600px;
+      max-width: 650px;
       text-align: center;
     }
 
-    h1 {
-      font-size: 40px;
+    .back {
+      display: inline-block;
+      margin-bottom: 25px;
+      color: #aaa;
+      text-decoration: none;
+      transition: 0.2s;
     }
 
-    #info {
-      color: #aaa;
+    .back:hover {
+      color: white;
+    }
+
+    h1 {
+      font-size: clamp(38px, 9vw, 60px);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #999;
       font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: #151521;
+      border: 1px solid #303047;
+      border-radius: 14px;
+      padding: 12px 20px;
+      min-width: 130px;
+    }
+
+    .stat-title {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: bold;
     }
 
     #box {
-      margin-top: 30px;
-      height: 300px;
-      border-radius: 20px;
+      height: 330px;
+      width: 100%;
+
+      border-radius: 25px;
+
       background: #191925;
+      border: 2px solid #303047;
+
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 28px;
+
+      font-size: 30px;
       font-weight: bold;
+
       cursor: pointer;
       user-select: none;
+
+      transition: background 0.15s, transform 0.15s;
+    }
+
+    #box:hover {
+      transform: scale(1.01);
     }
 
     #box.waiting {
       background: #7c5cff;
+      border-color: #947bff;
     }
 
     #box.go {
       background: #19c37d;
+      border-color: #5ff0b1;
     }
 
-    button {
-      margin-top: 20px;
-      padding: 14px 25px;
+    #box.too-soon {
+      background: #e74c3c;
+      border-color: #ff7668;
+    }
+
+    #info {
+      min-height: 28px;
+      margin: 18px 0;
+
+      color: #aaa;
+      font-size: 17px;
+    }
+
+    #startButton {
       border: none;
-      border-radius: 10px;
+      border-radius: 13px;
+
       background: #7c5cff;
       color: white;
+
+      padding: 14px 30px;
+
       font-size: 17px;
+      font-weight: bold;
+
       cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    #startButton:hover {
+      background: #947bff;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+
+      .stats {
+        flex-direction: row;
+      }
+
+      .stat {
+        min-width: 0;
+        flex: 1;
+      }
+
+      #box {
+        height: 280px;
+      }
+
     }
   </style>
 </head>
 
 <body>
 
-<div class="game">
+  <div class="game">
 
-  <h1>⚡ Reaction Test</h1>
+    <a class="back" href="../index.html">← Back to games</a>
 
-  <p id="info">Click to START</p>
+    <h1>⚡ Reaction Test</h1>
 
-  <div id="box">START</div>
+    <p class="subtitle">
+      How fast can you react?
+    </p>
 
-  <button id="startButton">New game</button>
+    <div class="stats">
 
-</div>
+      <div class="stat">
+        <div class="stat-title">Last Score</div>
+        <div class="stat-value" id="lastScore">—</div>
+      </div>
 
-<script>
-  const box = document.getElementById("box");
-  const info = document.getElementById("info");
-  const startButton = document.getElementById("startButton");
+      <div class="stat">
+        <div class="stat-title">Best Score</div>
+        <div class="stat-value" id="bestScore">—</div>
+      </div>
 
-  let startTime = 0;
-  let gameRunning = false;
-  let timer = null;
+    </div>
 
-  startButton.addEventListener("click", function () {
+    <div id="box">
+      CLICK START
+    </div>
 
-    clearTimeout(timer);
+    <p id="info">
+      Click the button below to begin.
+    </p>
 
-    gameRunning = false;
-    startTime = 0;
+    <button id="startButton">
+      START GAME
+    </button>
 
-    box.className = "waiting";
-    box.textContent = "WAIT...";
-    info.textContent = "Wait for green!";
+  </div>
 
-    const delay = Math.floor(Math.random() * 3000) + 1500;
 
-    timer = setTimeout(function () {
+  <script>
 
-      box.className = "go";
-      box.textContent = "Cklick!";
-      info.textContent = "NOW!";
+    const box = document.getElementById("box");
+    const info = document.getElementById("info");
+    const startButton = document.getElementById("startButton");
 
-      startTime = Date.now();
-      gameRunning = true;
+    const lastScore = document.getElementById("lastScore");
+    const bestScore = document.getElementById("bestScore");
 
-    }, delay);
-  });
+    let startTime = 0;
+    let gameRunning = false;
+    let waiting = false;
+    let timer = null;
 
-  box.addEventListener("click", function () {
+    let best = localStorage.getItem("reactionBest");
 
-    if (!gameRunning) return;
+    if (best) {
+      bestScore.textContent = best + " ms";
+    }
 
-    const reaction = Date.now() - startTime;
 
-    gameRunning = false;
+    startButton.addEventListener("click", function () {
 
-    box.className = "";
-    box.textContent = reaction + " ms";
+      clearTimeout(timer);
 
-    info.textContent = "Your reaction! Try it again.";
-  });
-</script>
+      startTime = 0;
+      gameRunning = false;
+      waiting = true;
 
-</body>
-</html>
+      box.className = "waiting";
+      box.textContent = "WAIT...";
+      info.textContent = "Wait for green...";
+
+      startButton.textContent = "WAITING...";
+
+      const delay = Math.floor(Math.random() * 3000) + 1500;
+
+
+      timer = setTimeout(function () {
+
+        waiting = false;
+        gameRunning = true;
+
+        box.className = "go";
+        box.textContent = "CLICK!";
+        info.textContent = "CLICK NOW! 
