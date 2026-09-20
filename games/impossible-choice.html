@@ -3,659 +3,1006 @@
 
 <head>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-  <title>Impossible Choice | Mini Games</title>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-  <style>
+<title>Impossible Choice | Mini Games</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
 
-    body {
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
+<style>
 
-      background:
-        radial-gradient(circle at top, #24145c 0%, #0b0b12 45%);
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-      color: white;
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
+body{
 
-      padding: 20px;
-    }
+  min-height:100vh;
 
-    .game {
-      width: 100%;
-      max-width: 700px;
-      text-align: center;
-    }
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
-    .back {
-      display: inline-block;
-      margin-bottom: 25px;
+  background:
+    radial-gradient(
+      circle at top,
+      #24145c 0%,
+      #0b0b12 45%
+    );
 
-      color: #aaa;
-      text-decoration: none;
-    }
+  color:white;
 
-    .back:hover {
-      color: white;
-    }
+  display:flex;
 
-    h1 {
-      font-size: clamp(38px, 9vw, 60px);
-      margin-bottom: 10px;
-    }
+  justify-content:center;
 
-    .subtitle {
-      color: #999;
-      font-size: 18px;
-      margin-bottom: 25px;
-    }
+  align-items:center;
 
-    .card {
-      background: #151521;
+  padding:20px;
 
-      border: 1px solid #303047;
+}
 
-      border-radius: 25px;
 
-      padding: 30px 20px;
+.game{
 
-      box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.25);
-    }
+  width:100%;
 
-    .question {
-      font-size: 28px;
-      font-weight: bold;
+  max-width:700px;
 
-      margin-bottom: 25px;
-    }
+  text-align:center;
 
-    .choices {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-    }
+}
 
-    .choice {
-      flex: 1;
 
-      min-height: 150px;
+.back{
 
-      border: 2px solid #303047;
-      border-radius: 18px;
+  display:inline-block;
 
-      background: #0f0f18;
+  margin-bottom:25px;
 
-      color: white;
+  color:#aaa;
 
-      padding: 20px;
+  text-decoration:none;
 
-      font-size: 19px;
-      font-weight: bold;
+}
 
-      cursor: pointer;
 
-      transition:
-        transform 0.15s,
-        border-color 0.15s,
-        background 0.15s;
-    }
+.back:hover{
+  color:white;
+}
 
-    .choice:hover {
-      transform: translateY(-4px);
-      border-color: #7c5cff;
-      background: #181827;
-    }
 
-    .choice:disabled {
-      cursor: default;
-    }
+h1{
 
-    .choice.selected {
-      border-color: #19c37d;
-      background: #123a2d;
-    }
+  font-size:
+    clamp(38px,9vw,60px);
 
-    .choice.not-selected {
-      opacity: 0.65;
-    }
+  margin-bottom:10px;
 
-    .percentage {
-      display: none;
+}
 
-      margin-top: 15px;
 
-      font-size: 17px;
-      color: #aaa;
-    }
+.subtitle{
 
-    .percentage strong {
-      color: white;
-      font-size: 23px;
-    }
+  color:#999;
 
-    .result {
-      min-height: 30px;
+  font-size:18px;
 
-      margin-top: 25px;
+  margin-bottom:25px;
 
-      font-size: 18px;
-      font-weight: bold;
+}
 
-      color: #19c37d;
-    }
 
-    .next {
-      display: none;
+.card{
 
-      margin-top: 20px;
+  background:#151521;
 
-      border: none;
-      border-radius: 13px;
+  border:1px solid #303047;
 
-      background: #7c5cff;
+  border-radius:25px;
 
-      color: white;
+  padding:30px 20px;
 
-      padding: 14px 28px;
+  box-shadow:
+    0 15px 40px
+    rgba(0,0,0,.25);
 
-      font-size: 17px;
-      font-weight: bold;
+}
 
-      cursor: pointer;
-    }
 
-    .next:hover {
-      background: #947bff;
-    }
+.question{
 
-    .stats {
-      margin-top: 25px;
+  font-size:28px;
 
-      display: flex;
-      justify-content: center;
+  font-weight:bold;
 
-      gap: 15px;
-    }
+  margin-bottom:25px;
 
-    .stat {
-      flex: 1;
+}
 
-      background: #0f0f18;
 
-      border: 1px solid #303047;
+.choices{
 
-      border-radius: 14px;
+  display:flex;
 
-      padding: 14px;
-    }
+  gap:15px;
 
-    .stat-title {
-      color: #777;
-      font-size: 13px;
-      margin-bottom: 5px;
-    }
+  justify-content:center;
 
-    .stat-value {
-      font-size: 23px;
-      font-weight: bold;
-    }
+}
 
-    @media (max-width: 600px) {
 
-      .choices {
-        flex-direction: column;
-      }
+.choice{
 
-      .choice {
-        min-height: 110px;
-      }
+  flex:1;
 
-      .question {
-        font-size: 24px;
-      }
+  min-height:150px;
 
-    }
+  border:2px solid #303047;
 
-  </style>
+  border-radius:18px;
+
+  background:#0f0f18;
+
+  color:white;
+
+  padding:20px;
+
+  font-size:19px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:
+    transform .15s,
+    border-color .15s,
+    background .15s;
+
+}
+
+
+.choice:hover{
+
+  transform:translateY(-4px);
+
+  border-color:#7c5cff;
+
+  background:#181827;
+
+}
+
+
+.choice:disabled{
+
+  cursor:default;
+
+}
+
+
+.choice.selected{
+
+  border-color:#19c37d;
+
+  background:#123a2d;
+
+}
+
+
+.choice.not-selected{
+
+  opacity:.65;
+
+}
+
+
+.percentage{
+
+  display:none;
+
+  margin-top:15px;
+
+  font-size:17px;
+
+  color:#aaa;
+
+}
+
+
+.percentage strong{
+
+  color:white;
+
+  font-size:23px;
+
+}
+
+
+.result{
+
+  min-height:30px;
+
+  margin-top:25px;
+
+  font-size:18px;
+
+  font-weight:bold;
+
+  color:#19c37d;
+
+}
+
+
+.next{
+
+  display:none;
+
+  margin-top:20px;
+
+  border:none;
+
+  border-radius:13px;
+
+  background:#7c5cff;
+
+  color:white;
+
+  padding:14px 28px;
+
+  font-size:17px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+}
+
+
+.next:hover{
+
+  background:#947bff;
+
+}
+
+
+.stats{
+
+  margin-top:25px;
+
+  display:flex;
+
+  justify-content:center;
+
+  gap:15px;
+
+}
+
+
+.stat{
+
+  flex:1;
+
+  background:#0f0f18;
+
+  border:1px solid #303047;
+
+  border-radius:14px;
+
+  padding:14px;
+
+}
+
+
+.stat-title{
+
+  color:#777;
+
+  font-size:13px;
+
+  margin-bottom:5px;
+
+}
+
+
+.stat-value{
+
+  font-size:23px;
+
+  font-weight:bold;
+
+}
+
+
+@media(max-width:600px){
+
+  .choices{
+
+    flex-direction:column;
+
+  }
+
+  .choice{
+
+    min-height:110px;
+
+  }
+
+  .question{
+
+    font-size:24px;
+
+  }
+
+}
+
+</style>
 
 </head>
 
 
 <body>
 
-  <div class="game">
 
-    <a
-      class="back"
-      href="../index.html"
-    >
-      ← Back to games
-    </a>
+<div class="game">
 
 
-    <h1>
-      🤔 Impossible Choice
-    </h1>
+<a
+  class="back"
+  href="../index.html"
+>
+  ← Back to games
+</a>
 
 
-    <p class="subtitle">
-      Choose one. There is no right answer.
-    </p>
+<h1>
+  🤔 Impossible Choice
+</h1>
 
 
-    <div class="card">
-
-      <div
-        class="question"
-        id="question"
-      >
-        Would you rather...
-      </div>
+<p class="subtitle">
+  Choose one. There is no right answer.
+</p>
 
 
-      <div class="choices">
+<div class="card">
 
 
-        <button
-          class="choice"
-          id="choice1"
-          onclick="choose(0)"
-        >
-
-          <div id="text1">
-            Option 1
-          </div>
-
-          <div
-            class="percentage"
-            id="percent1"
-          >
-            <strong>50%</strong>
-            chose this
-          </div>
-
-        </button>
+<div
+  class="question"
+  id="question"
+>
+  Would you rather...
+</div>
 
 
-        <button
-          class="choice"
-          id="choice2"
-          onclick="choose(1)"
-        >
-
-          <div id="text2">
-            Option 2
-          </div>
-
-          <div
-            class="percentage"
-            id="percent2"
-          >
-            <strong>50%</strong>
-            chose this
-          </div>
-
-        </button>
+<div class="choices">
 
 
-      </div>
+<button
+  class="choice"
+  id="choice1"
+  onclick="choose(0)"
+>
 
+  <div id="text1">
+    Option 1
+  </div>
 
-      <div
-        class="result"
-        id="result"
-      ></div>
+  <div
+    class="percentage"
+    id="percent1"
+  >
 
-
-      <button
-        class="next"
-        id="nextButton"
-        onclick="nextQuestion()"
-      >
-        NEXT CHOICE →
-      </button>
-
-
-      <div class="stats">
-
-
-        <div class="stat">
-
-          <div class="stat-title">
-            CHOICES
-          </div>
-
-          <div
-            class="stat-value"
-            id="score"
-          >
-            0
-          </div>
-
-        </div>
-
-
-        <div class="stat">
-
-          <div class="stat-title">
-            🏆 BEST
-          </div>
-
-          <div
-            class="stat-value"
-            id="best"
-          >
-            0
-          </div>
-
-        </div>
-
-
-      </div>
-
-    </div>
+    <strong>50%</strong>
+    chose this
 
   </div>
 
+</button>
 
-  <script>
-
-    const questions = [
-
-      {
-        option1: "🍕 Never eat pizza again",
-        option2: "🍔 Never eat burgers again",
-        percent1: 23,
-        percent2: 77
-      },
-
-      {
-        option1: "⚽ Never watch football again",
-        option2: "🎮 Never play video games again",
-        percent1: 42,
-        percent2: 58
-      },
 
-      {
-        option1: "✈️ Travel anywhere for free",
-        option2: "💰 Have 1 million dollars",
-        percent1: 64,
-        percent2: 36
-      },
+<button
+  class="choice"
+  id="choice2"
+  onclick="choose(1)"
+>
 
-      {
-        option1: "🌙 Never sleep again",
-        option2: "🍽️ Never eat again",
-        percent1: 91,
-        percent2: 9
-      },
+  <div id="text2">
+    Option 2
+  </div>
 
-      {
-        option1: "🏎️ Own your dream car",
-        option2: "🏠 Own your dream house",
-        percent1: 57,
-        percent2: 43
-      },
+  <div
+    class="percentage"
+    id="percent2"
+  >
 
-      {
-        option1: "🎬 Be able to watch every movie",
-        option2: "🎵 Be able to listen to every song",
-        percent1: 48,
-        percent2: 52
-      },
+    <strong>50%</strong>
+    chose this
 
-      {
-        option1: "🦸 Have super strength",
-        option2: "⚡ Have super speed",
-        percent1: 39,
-        percent2: 61
-      },
+  </div>
 
-      {
-        option1: "📱 Lose your phone for a month",
-        option2: "🎮 Lose your console for a month",
-        percent1: 34,
-        percent2: 66
-      },
+</button>
 
-      {
-        option1: "🌊 Live by the ocean",
-        option2: "🏔️ Live in the mountains",
-        percent1: 68,
-        percent2: 32
-      },
 
-      {
-        option1: "💤 Sleep 12 hours every night",
-        option2: "⚡ Never feel tired",
-        percent1: 27,
-        percent2: 73
-      }
+</div>
 
-    ];
 
+<div
+  class="result"
+  id="result"
+></div>
 
-    let currentQuestion = 0;
-    let score = 0;
 
+<button
+  class="next"
+  id="nextButton"
+  onclick="nextQuestion()"
+>
+  NEXT CHOICE →
+</button>
 
-    const questionElement =
-      document.getElementById("question");
 
-    const choice1 =
-      document.getElementById("choice1");
+<div class="stats">
 
-    const choice2 =
-      document.getElementById("choice2");
 
-    const text1 =
-      document.getElementById("text1");
+<div class="stat">
 
-    const text2 =
-      document.getElementById("text2");
+  <div class="stat-title">
+    CHOICES
+  </div>
 
-    const percent1 =
-      document.getElementById("percent1");
+  <div
+    class="stat-value"
+    id="score"
+  >
+    0
+  </div>
 
-    const percent2 =
-      document.getElementById("percent2");
+</div>
 
-    const result =
-      document.getElementById("result");
 
-    const nextButton =
-      document.getElementById("nextButton");
+<div class="stat">
 
-    const scoreElement =
-      document.getElementById("score");
+  <div class="stat-title">
+    🏆 BEST
+  </div>
 
-    const bestElement =
-      document.getElementById("best");
+  <div
+    class="stat-value"
+    id="best"
+  >
+    0
+  </div>
 
+</div>
 
-    function loadBest() {
 
-      const best =
-        localStorage.getItem("impossibleChoiceBest");
+</div>
 
-      if (best !== null) {
 
-        bestElement.textContent = best;
+</div>
 
-      }
+</div>
 
-    }
 
+<script>
 
-    function loadQuestion() {
 
-      const q =
-        questions[currentQuestion];
+/* =========================
+   SOUND SYSTEM
+========================= */
 
 
-      text1.textContent =
-        q.option1;
+let audioContext = null;
 
-      text2.textContent =
-        q.option2;
 
+function getAudioContext(){
 
-      percent1.innerHTML =
-        "<strong>" +
-        q.percent1 +
-        "%</strong> chose this";
+  if(!audioContext){
 
-      percent2.innerHTML =
-        "<strong>" +
-        q.percent2 +
-        "%</strong> chose this";
+    audioContext =
+      new (
+        window.AudioContext ||
+        window.webkitAudioContext
+      )();
 
+  }
 
-      percent1.style.display =
-        "none";
 
-      percent2.style.display =
-        "none";
+  if(
+    audioContext.state ===
+    "suspended"
+  ){
 
+    audioContext.resume();
 
-      choice1.disabled =
-        false;
+  }
 
-      choice2.disabled =
-        false;
 
+  return audioContext;
 
-      choice1.className =
-        "choice";
+}
 
-      choice2.className =
-        "choice";
 
+function playTone(
+  frequency,
+  duration,
+  type="sine",
+  volume=0.16
+){
 
-      result.textContent =
-        "";
+  const ctx =
+    getAudioContext();
 
 
-      nextButton.style.display =
-        "none";
+  const oscillator =
+    ctx.createOscillator();
 
-    }
 
+  const gain =
+    ctx.createGain();
 
-    function choose(choice) {
 
-      const q =
-        questions[currentQuestion];
+  oscillator.type =
+    type;
 
 
-      score++;
+  oscillator.frequency.setValueAtTime(
+    frequency,
+    ctx.currentTime
+  );
 
 
-      scoreElement.textContent =
-        score;
+  gain.gain.setValueAtTime(
+    volume,
+    ctx.currentTime
+  );
 
 
-      choice1.disabled =
-        true;
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,
+    ctx.currentTime + duration
+  );
 
-      choice2.disabled =
-        true;
 
+  oscillator.connect(gain);
 
-      percent1.style.display =
-        "block";
+  gain.connect(
+    ctx.destination
+  );
 
-      percent2.style.display =
-        "block";
 
+  oscillator.start();
 
-      if (choice === 0) {
 
-        choice1.classList.add("selected");
-        choice2.classList.add("not-selected");
+  oscillator.stop(
+    ctx.currentTime + duration
+  );
 
-        result.textContent =
-          "You chose the " +
-          q.percent1 +
-          "% option!";
+}
 
-      } else {
 
-        choice2.classList.add("selected");
-        choice1.classList.add("not-selected");
+/* CLICK */
 
-        result.textContent =
-          "You chose the " +
-          q.percent2 +
-          "% option!";
+function clickSound(){
 
-      }
+  playTone(
+    650,
+    0.08,
+    "square",
+    0.13
+  );
 
+}
 
-      const oldBest =
-        Number(
-          localStorage.getItem(
-            "impossibleChoiceBest"
-          ) || 0
-        );
 
+/* CHOICE */
 
-      if (score > oldBest) {
+function choiceSound(){
 
-        localStorage.setItem(
-          "impossibleChoiceBest",
-          score
-        );
+  playTone(
+    520,
+    0.12,
+    "sine",
+    0.18
+  );
 
-        bestElement.textContent =
-          score;
 
-      }
+  setTimeout(function(){
 
+    playTone(
+      720,
+      0.16,
+      "sine",
+      0.20
+    );
 
-      nextButton.style.display =
-        "inline-block";
+  },100);
 
-    }
+}
 
 
-    function nextQuestion() {
+/* NEXT */
 
-      currentQuestion++;
+function nextSound(){
 
+  playTone(
+    600,
+    0.10,
+    "square",
+    0.15
+  );
 
-      if (
-        currentQuestion >=
-        questions.length
-      ) {
 
-        currentQuestion = 0;
+  setTimeout(function(){
 
-      }
+    playTone(
+      800,
+      0.14,
+      "square",
+      0.18
+    );
 
+  },90);
 
-      loadQuestion();
+}
 
-    }
 
+/* NEW BEST */
 
-    loadBest();
-    loadQuestion();
+function bestSound(){
 
-  </script>
+  playTone(
+    523,
+    0.13,
+    "square",
+    0.17
+  );
 
-</body>
 
-  </html>
+  setTimeout(function(){
+
+    playTone(
+      659,
+      0.13,
+      "square",
+      0.17
+    );
+
+  },120);
+
+
+  setTimeout(function(){
+
+    playTone(
+      784,
+      0.13,
+      "square",
+      0.18
+    );
+
+  },240);
+
+
+  setTimeout(function(){
+
+    playTone(
+      1047,
+      0.32,
+      "sine",
+      0.22
+    );
+
+  },360);
+
+}
+
+
+/* =========================
+   QUESTIONS
+========================= */
+
+
+const questions=[
+
+{
+  option1:"🍕 Never eat pizza again",
+  option2:"🍔 Never eat burgers again",
+  percent1:23,
+  percent2:77
+},
+
+{
+  option1:"⚽ Never watch football again",
+  option2:"🎮 Never play video games again",
+  percent1:42,
+  percent2:58
+},
+
+{
+  option1:"✈️ Travel anywhere for free",
+  option2:"💰 Have 1 million dollars",
+  percent1:64,
+  percent2:36
+},
+
+{
+  option1:"🌙 Never sleep again",
+  option2:"🍽️ Never eat again",
+  percent1:91,
+  percent2:9
+},
+
+{
+  option1:"🏎️ Own your dream car",
+  option2:"🏠 Own your dream house",
+  percent1:57,
+  percent2:43
+},
+
+{
+  option1:"🎬 Be able to watch every movie",
+  option2:"🎵 Be able to listen to every song",
+  percent1:48,
+  percent2:52
+},
+
+{
+  option1:"🦸 Have super strength",
+  option2:"⚡ Have super speed",
+  percent1:39,
+  percent2:61
+},
+
+{
+  option1:"📱 Lose your phone for a month",
+  option2:"🎮 Lose your console for a month",
+  percent1:34,
+  percent2:66
+},
+
+{
+  option1:"🌊 Live by the ocean",
+  option2:"🏔️ Live in the mountains",
+  percent1:68,
+  percent2:32
+},
+
+{
+  option1:"💤 Sleep 12 hours every night",
+  option2:"⚡ Never feel tired",
+  percent1:27,
+  percent2:73
+}
+
+];
+
+
+let currentQuestion = 0;
+
+let score = 0;
+
+
+const questionElement =
+  document.getElementById(
+    "question"
+  );
+
+
+const choice1 =
+  document.getElementById(
+    "choice1"
+  );
+
+
+const choice2 =
+  document.getElementById(
+    "choice2"
+  );
+
+
+const text1 =
+  document.getElementById(
+    "text1"
+  );
+
+
+const text2 =
+  document.getElementById(
+    "text2"
+  );
+
+
+const percent1 =
+  document.getElementById(
+    "percent1"
+  );
+
+
+const percent2 =
+  document.getElementById(
+    "percent2"
+  );
+
+
+const result =
+  document.getElementById(
+    "result"
+  );
+
+
+const nextButton =
+  document.getElementById(
+    "nextButton"
+  );
+
+
+const scoreElement =
+  document.getElementById(
+    "score"
+  );
+
+
+const bestElement =
+  document.getElementById(
+    "best"
+  );
+
+
+/* =========================
+   BEST SCORE
+========================= */
+
+
+function loadBest(){
+
+  const best =
+    localStorage.getItem(
+      "impossibleChoiceBest"
+    );
+
+
+  if(best !== null){
+
+    bestElement.textContent =
+      best;
+
+  }
+
+}
+
+
+/* =========================
+   LOAD QUESTION
+========================= */
+
+
+function loadQuestion(){
+
+  const q =
+    questions[currentQuestion];
+
+
+  text1.textContent =
+    q.option1;
+
+
+  text2.textContent =
+    q.option2;
+
+
+  percent1.innerHTML =
+    "<strong>" +
+    q.percent1 +
+    "%</strong> chose this";
+
+
+  percent2.innerHTML =
+    "<strong>" +
+    q.percent2 +
+    "%</strong> chose this";
+
+
+  percent1.style.display =
+    "none";
+
+
+  percent2.style.display =
+    "none";
+
+
+  choice1.disabled =
+    false;
+
+
+  choice2.disabled =
+    false;
+
+
+  choice1.className =
+    "choice";
+
+
+  choice2.className =
+    "choice";
+
+
+  result.textContent =
+    "";
+
+
+  nextButton.style.display =
+    "none";
+
+}
+
+
+/* =========================
+   CHOOSE
+========================= */
+
+
+function choose(choice){
+
+  choiceSound();
+
+
+  const q =
+    questions[currentQuestion];
+
+
+  score++;
+
+
+  scoreElement.textContent =
+    score;
+
+
+  choice1.disabled =
+    true;
+
+
+  choice2.disabled =
+    true;
+
+
+  percent1.style.display =
+    "block";
+
+
+  percent2.style.display =
+    "block";
+
+
+  if(choice === 0){
+
+    choice1.classList.add(
+      "selected"
+    );
+
+
+    choice2.classList.add(
+      "not-selected"
+    );
+
+
+    result.textContent =
+      "You chose the " +
+      q.percent1 +
+      "% option!";
+
+  }
+
+
+  else{
+
+    choice2.classList.add(
+      "selected
