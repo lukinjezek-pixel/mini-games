@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Memory Game | Mini Games</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+
+      min-height: 100vh;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #24145c 0%,
+          #0b0b12 50%
+        );
+
+      color: white;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 20px;
+
+    }
+
+    .game {
+
+      width: 100%;
+      max-width: 650px;
+
+      text-align: center;
+
+    }
+
+    .back {
+
+      display: inline-block;
+
+      margin-bottom: 20px;
+
+      color: #aaa;
+
+      text-decoration: none;
+
+      font-size: 16px;
+
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    h1 {
+
+      font-size:
+        clamp(
+          38px,
+          9vw,
+          60px
+        );
+
+      margin-bottom: 8px;
+
+    }
+
+    .subtitle {
+
+      color: #999;
+
+      font-size: 18px;
+
+      margin-bottom: 22px;
+
+    }
+
+    /* STATS */
+
+    .stats {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 12px;
+
+      margin-bottom: 18px;
+
+    }
+
+    .stat {
+
+      background: #151521;
+
+      border: 1px solid #303047;
+
+      border-radius: 14px;
+
+      padding: 10px 18px;
+
+      min-width: 120px;
+
+    }
+
+    .stat-title {
+
+      color: #888;
+
+      font-size: 12px;
+
+      margin-bottom: 4px;
+
+    }
+
+    .stat-value {
+
+      font-size: 21px;
+
+      font-weight: bold;
+
+    }
+
+    /* BOARD */
+
+    .board {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 10px;
+
+      max-width: 500px;
+
+      margin: auto;
+
+    }
+
+    .card {
+
+      aspect-ratio: 1 / 1;
+
+      border: none;
+
+      border-radius: 14px;
+
+      background: #25253a;
+
+      border: 2px solid #3a3a55;
+
+      color: white;
+
+      font-size: 34px;
+
+      cursor: pointer;
+
+      perspective: 600px;
+
+      transition:
+        transform 0.15s,
+        border-color 0.2s;
+
+      position: relative;
+
+    }
+
+    .card:hover {
+
+      border-color: #7c5cff;
+
+      transform: scale(1.03);
+
+    }
+
+    .card.flipped {
+
+      background: #7c5cff;
+
+      border-color: #a08cff;
+
+      animation: flip 0.25s ease;
+
+    }
+
+    .card.matched {
+
+      background: #19c37d;
+
+      border-color: #5ff0b1;
+
+      animation: matched 0.35s ease;
+
+      cursor: default;
+
+    }
+
+    .card.wrong {
+
+      background: #e74c3c;
+
+      border-color: #ff7668;
+
+      animation: shake 0.3s ease;
+
+    }
+
+    @keyframes flip {
+
+      0% {
+        transform: rotateY(90deg);
+      }
+
+      100% {
+        transform: rotateY(0);
+      }
+    }
+
+    @keyframes matched {
+
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.12);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-7px);
+      }
+
+      75% {
+        transform: translateX(7px);
+      }
+
+    }
+
+    /* MESSAGE */
+
+    #message {
+
+      min-height: 28px;
+
+      margin: 17px 0;
+
+      color: #aaa;
+
+      font-size: 17px;
+
+      font-weight: bold;
+
+    }
+
+    /* BUTTON */
+
+    #restartButton {
+
+      border: none;
+
+      border-radius: 12px;
+
+      background: #7c5cff;
+
+      color: white;
+
+      padding: 13px 25px;
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+
+    }
+
+    #restartButton:hover {
+
+      background: #947bff;
+
+      transform: scale(1.05);
+
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 500px) {
+
+      .board {
+
+        gap: 7px;
+
+      }
+
+      .card {
+
+        font-size: 27px;
+
+        border-radius: 11px;
+
+      }
+
+      .stat {
+
+        min-width: 0;
+
+        flex: 1;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <div class="game">
+
+
+    <a
+      class="back"
+      href="../index.html"
+    >
+      ← Back to games
+    </a>
+
+
+    <h1>
+      🧠 Memory Game
+    </h1>
+
+
+    <p class="subtitle">
+      Find all matching pairs!
+    </p>
+
+
+    <div class="stats">
+
+
+      <div class="stat">
+
+        <div class="stat-title">
+          MOVES
+        </div>
+
+        <div
+          class="stat-value"
+          id="moves"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-title">
+          🏆 BEST
+        </div>
+
+        <div
+          class="stat-value"
+          id="best"
+        >
+          —
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <div
+      class="board"
+      id="board"
+    ></div>
+
+
+    <div id="message">
+      Find the matching pairs!
+    </div>
+
+
+    <button
+      id="restartButton"
+      onclick="startGame()"
+    >
+      🔄 NEW GAME
+    </button>
+
+
+  </div>
+
+
+  <script>
+
+    let cards = [];
+
+    let firstCard = null;
+
+    let secondCard = null;
+
+    let locked = false;
+
+    let moves = 0;
+
+    let matches = 0;
+
+    let audioContext = null;
+
+
+    const symbols = [
+      "🍕",
+      "🚀",
+      "⚽",
+      "🎮",
+      "🐱",
+      "🔥",
+      "👻",
+      "💎"
+    ];
+
+
+    // =========================
+    // SOUND SYSTEM
+    // =========================
+
+    function getAudio() {
+
+      if (!audioContext) {
+
+        audioContext =
+          new (
+            window.AudioContext ||
+            window.webkitAudioContext
+          )();
+
+      }
+
+      if (
+        audioContext.state ===
+        "suspended"
+      ) {
+
+        audioContext.resume();
+
+      }
+
+      return audioContext;
+
+    }
+
+
+    function tone(
+      frequency,
+      duration,
+      type = "sine"
+    ) {
+
+      const audio =
+        getAudio();
+
+      const oscillator =
+        audio.createOscillator();
+
+      const gain =
+        audio.createGain();
+
+      oscillator.type =
+        type;
+
+      oscillator.frequency.setValueAtTime(
+        frequency,
+        audio.currentTime
+      );
+
+      gain.gain.setValueAtTime(
+        0.12,
+        audio.currentTime
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audio.currentTime +
+        duration
+      );
+
+      oscillator.connect(gain);
+
+      gain.connect(
+        audio.destination
+      );
+
+      oscillator.start();
+
+      oscillator.stop(
+        audio.currentTime +
+        duration
+      );
+
+    }
+
+
+    function flipSound() {
+
+      tone(
+        500,
+        0.08
+      );
+
+    }
+
+
+    function matchSound() {
+
+      tone(
+        750,
+        0.12
+      );
+
+      setTimeout(
+        () => tone(
+          1000,
+          0.12
+        ),
+        90
+      );
+
+    }
+
+
+    function wrongSound() {
+
+      tone(
+        180,
+        0.2,
+        "sawtooth"
+      );
+
+    }
+
+
+    function winSound() {
+
+      const notes = [
+        600,
+        750,
+        900,
+        1100
+      ];
+
+      notes.forEach(
+        (
+          note,
+          index
+        ) => {
+
+          setTimeout(
+            () =>
+              tone(
+                note,
+                0.15
+              ),
+            index * 100
+          );
+
+        }
+      );
+
+    }
+
+
+    // =========================
+    // BEST SCORE
+    // =========================
+
+    function loadBest() {
+
+      const saved =
+        localStorage.getItem(
+          "memoryBest"
+        );
+
+      document
+        .getElementById("best")
+        .textContent =
+        saved || "—";
+
+    }
+
+
+    // =========================
+    // SHUFFLE
+    // =========================
+
+    function shuffle(array) {
+
+      for (
+        let i =
+          array.length - 1;
+        i > 0;
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() *
+            (i + 1)
+          );
+
+        [
+          array[i],
+          array[j]
+        ] =
+        [
+          array[j],
+          array[i]
+        ];
+
+      }
+
+    }
+
+
+    // =========================
+    // START GAME
+    // =========================
+
+    function startGame() {
+
+      getAudio();
+
+      cards = [
+        ...symbols,
+        ...symbols
+      ];
+
+      shuffle(cards);
+
+      firstCard = null;
+
+      secondCard = null;
+
+      locked = false;
+
+      moves = 0;
+
+      matches = 0;
+
+
+      document
+        .getElementById("moves")
+        .textContent = "0";
+
+
+      document
+        .getElementById("message")
+        .textContent =
+        "Find the matching pairs!";
+
+
+      const board =
+        document
+          .getElementById("board");
+
+
+      board.innerHTML = "";
+
+
+      cards.forEach(
+        (
+          symbol,
+          index
+        ) => {
+
+          const card =
+            document.createElement(
+              "button"
+            );
+
+          card.className =
+            "card";
+
+          card.dataset.symbol =
+            symbol;
+
+          card.dataset.index =
+            index;
+
+          card.textContent =
+            "❓";
+
+          card.onclick =
+            () => flipCard(card);
+
+          board.appendChild(
+            card
+          );
+
+        }
+      );
+
+
+      loadBest();
+
+    }
+
+
+    // =========================
+    // FLIP CARD
+    // =========================
+
+    function flipCard(card) {
+
+      if (locked) return;
+
+      if (
+        card.classList.contains(
+          "flipped"
+        )
+      ) return;
+
+      if (
+        card.classList.contains(
+          "matched"
+        )
+      ) return;
+
+
+      flipSound();
+
+
+      card.classList.add(
+        "flipped"
+      );
+
+
+      card.textContent =
+        card.dataset.symbol;
+
+
+      if (!firstCard) {
+
+        firstCard = card;
+
+        return;
+
+      }
+
+
+      secondCard = card;
+
+      moves++;
+
+
+      document
+        .getElementById("moves")
+        .textContent =
+        moves;
+
+
+      checkMatch();
+
+    }
+
+
+    // =========================
+    // CHECK MATCH
+    // =========================
+
+    function checkMatch() {
+
+      locked = true;
+
+
+      if (
+        firstCard.dataset.symbol ===
+        secondCard.dataset.symbol
+      ) {
+
+        setTimeout(
+          function() {
+
+            firstCard.classList
+              .add("matched");
+
+            secondCard.classList
+              .add("matched");
+
+
+            matchSound();
+
+
+            matches++;
+
+
+            firstCard = null;
+
+            secondCard = null;
+
+            locked = false;
+
+
+            if (
+              matches ===
+              symbols.length
+            ) {
+
+              gameWon();
+
+            }
+
+          },
+          250
+        );
+
+
+      } else {
+
+        firstCard.classList
+          .add("wrong");
+
+        secondCard.classList
+          .add("wrong");
+
+
+        wrongSound();
+
+
+        setTimeout(
+          function() {
+
+            firstCard.classList
+              .remove(
+                "flipped",
+                "wrong"
+              );
+
+            secondCard.classList
+              .remove(
+                "flipped",
+                "wrong"
+              );
+
+
+            firstCard.textContent =
+              "❓";
+
+            secondCard.textContent =
+              "❓";
+
+
+            firstCard = null;
+
+            secondCard = null;
+
+            locked = false;
+
+          },
+          650
+        );
+
+      }
+
+    }
+
+
+    // =========================
+    // WIN
+    // =========================
+
+    function gameWon() {
+
+      const message =
+        document
+          .getElementById(
+            "message"
+          );
+
+
+      const oldBest =
+        localStorage.getItem(
+          "memoryBest"
+        );
+
+
+      if (
+        oldBest === null ||
+        moves < Number(oldBest)
+      ) {
+
+        localStorage.setItem(
+          "memoryBest",
+          moves
+        );
+
+
+        document
+          .getElementById("best")
+          .textContent =
+          moves;
+
+
+        message.textContent =
+          "🏆 NEW BEST! " +
+          moves +
+          " moves!";
+
+      } else {
+
+        message.textContent =
+          "🎉 You won in " +
+          moves +
+          " moves!";
+
+      }
+
+
+      winSound();
+
+    }
+
+
+    // =========================
+    // START
+    // =========================
+
+    startGame();
+
+  </script>
+
+
+</body>
+
+</html>
