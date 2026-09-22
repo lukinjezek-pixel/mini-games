@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tic-Tac-Toe | Mini Games</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
+
+            font-family: Arial, sans-serif;
+
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #1e293b
+            );
+
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 38px;
+        }
+
+        .subtitle {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .player {
+            min-width: 110px;
+            padding: 10px 15px;
+
+            background: #1e293b;
+            border: 1px solid #475569;
+
+            border-radius: 12px;
+
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .turn {
+            font-size: 20px;
+            font-weight: bold;
+
+            margin: 15px 0;
+        }
+
+        .board {
+            width: min(90vw, 360px);
+            aspect-ratio: 1;
+
+            margin: 20px auto;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 10px;
+        }
+
+        .cell {
+            border: none;
+
+            border-radius: 18px;
+
+            background: #334155;
+
+            color: white;
+
+            font-size: clamp(45px, 15vw, 75px);
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            transition:
+                transform 0.12s,
+                background 0.12s;
+        }
+
+        .cell:hover {
+            background: #475569;
+            transform: scale(1.03);
+        }
+
+        .cell:active {
+            transform: scale(0.95);
+        }
+
+        .x {
+            color: #60a5fa;
+        }
+
+        .o {
+            color: #f472b6;
+        }
+
+        .winning {
+            background: #16a34a !important;
+            color: white !important;
+
+            animation: winner 0.5s infinite alternate;
+        }
+
+        @keyframes winner {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.04);
+            }
+        }
+
+        #restart {
+            border: none;
+
+            background: #2563eb;
+            color: white;
+
+            padding: 14px 28px;
+
+            border-radius: 12px;
+
+            font-size: 17px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.15s;
+        }
+
+        #restart:hover {
+            background: #1d4ed8;
+        }
+
+        #restart:active {
+            transform: scale(0.96);
+        }
+
+        .sound {
+            margin-top: 15px;
+
+            border: none;
+
+            background: #334155;
+            color: white;
+
+            padding: 10px 16px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+        }
+
+        .back {
+            display: inline-block;
+
+            margin-top: 20px;
+
+            color: #cbd5e1;
+
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="game">
+
+    <h1>❌ Tic-Tac-Toe ⭕</h1>
+
+    <div class="subtitle">
+        2 hráči • jeden mobil
+    </div>
+
+
+    <div class="score">
+
+        <div class="player">
+            ❌ <span id="scoreX">0</span>
+        </div>
+
+        <div class="player">
+            ⭕ <span id="scoreO">0</span>
+        </div>
+
+    </div>
+
+
+    <div
+        class="turn"
+        id="turn"
+        aria-live="polite"
+    >
+        Na tahu je ❌
+    </div>
+
+
+    <div
+        class="board"
+        id="board"
+    ></div>
+
+
+    <button
+        id="restart"
+        type="button"
+    >
+        🔄 Nová hra
+    </button>
+
+
+    <br>
+
+
+    <button
+        id="soundButton"
+        class="sound"
+        type="button"
+    >
+        🔊 Zvuky: zapnuté
+    </button>
+
+
+    <br>
+
+
+    <a
+        href="../index.html"
+        class="back"
+    >
+        ← Zpět na Mini Games
+    </a>
+
+</div>
+
+
+<script>
+
+    /* =========================
+       ZÁKLADNÍ HRA
+    ========================= */
+
+    const board = document.getElementById("board");
+
+    const turnText = document.getElementById("turn");
+
+    const restartButton =
+        document.getElementById("restart");
+
+    const soundButton =
+        document.getElementById("soundButton");
+
+    const scoreXText =
+        document.getElementById("scoreX");
+
+    const scoreOText =
+        document.getElementById("scoreO");
+
+
+    let game = [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ];
+
+
+    let currentPlayer = "X";
+
+    let gameActive = true;
+
+
+    let scoreX = 0;
+
+    let scoreO = 0;
+
+
+    let soundsEnabled = true;
+
+
+    const winningCombinations = [
+
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+
+        [0, 4, 8],
+        [2, 4, 6]
+
+    ];
+
+
+    /* =========================
+       ZVUKY
+    ========================= */
+
+    let audioContext = null;
+
+
+    function getAudioContext() {
+
+        if (!audioContext) {
+
+            audioContext =
+                new (
+                    window.AudioContext ||
+                    window.webkitAudioContext
+                )();
+
+        }
+
+        if (audioContext.state === "suspended") {
+
+            audioContext.resume();
+
+        }
+
+        return audioContext;
+    }
+
+
+    function playTone(
+        frequency,
+        duration,
+        type = "sine",
+        volume = 0.08
+    ) {
+
+        if (!soundsEnabled) {
+            return;
+        }
+
+        try {
+
+            const context = getAudioContext();
+
+            const oscillator =
+                context.createOscillator();
+
+            const gain =
+                context.createGain();
+
+
+            oscillator.type = type;
+
+            oscillator.frequency.value =
+                frequency;
+
+
+            gain.gain.setValueAtTime(
+                volume,
+                context.currentTime
+            );
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                context.currentTime + duration
+            );
+
+
+            oscillator.connect(gain);
+
+            gain.connect(context.destination);
+
+
+            oscillator.start();
+
+            oscillator.stop(
+                context.currentTime + duration
+            );
+
+        } catch (error) {
+
+            console.log(
+                "Zvuk není podporován."
+            );
+
+        }
+
+    }
+
+
+    function playMoveSound() {
+
+        playTone(
+            500,
+            0.08,
+            "sine",
+            0.08
+        );
+
+    }
+
+
+    function playWinSound() {
+
+        if (!soundsEnabled) {
+            return;
+        }
+
+        playTone(
+            523,
+            0.15,
+            "sine",
+            0.08
+        );
+
+        setTimeout(() => {
+
+            playTone(
+                659,
+                0.15,
+                "sine",
+                0.08
+            );
+
+        }, 120);
+
+
+        setTimeout(() => {
+
+            playTone(
+                784,
+                0.3,
+                "sine",
+                0.08
+            );
+
+        }, 240);
+
+    }
+
+
+    function playDrawSound() {
+
+        playTone(
+            300,
+            0.18,
+            "triangle",
+            0.07
+        );
+
+        setTimeout(() => {
+
+            playTone(
+                250,
+                0.25,
+                "triangle",
+                0.07
+            );
+
+        }, 150);
+
+    }
+
+
+    function playRestartSound() {
+
+        playTone(
+            350,
+            0.08,
+            "sine",
+            0.05
+        );
+
+    }
+
+
+    /* =========================
+       VYKRESLENÍ HRY
+    ========================= */
+
+    function createBoard() {
+
+        board.innerHTML = "";
+
+
+        for (let i = 0; i < 9; i++) {
+
+            const cell =
+                document.createElement("button");
+
+
+            cell.type = "button";
+
+            cell.classList.add("cell");
+
+            cell.dataset.index = i;
+
+
+            cell.setAttribute(
+                "aria-label",
+                `Pole ${i + 1}`
+            );
+
+
+            cell.addEventListener(
+                "click",
+                playMove
+            );
+
+
+            board.appendChild(cell);
+
+        }
+
+    }
+
+
+    function updateBoard() {
+
+        const cells =
+            document.querySelectorAll(".cell");
+
+
+        cells.forEach(
+            (cell, index) => {
+
+                cell.textContent = "";
+
+                cell.classList.remove(
+                    "x",
+                    "o"
+                );
+
+
+                if (game[index] === "X") {
+
+                    cell.textContent = "❌";
+
+                    cell.classList.add("x");
+
+                }
+
+
+                if (game[index] === "O") {
+
+                    cell.textContent = "⭕";
+
+                    cell.classList.add("o");
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================
+       TAH
+    ========================= */
+
+    function playMove(event) {
+
+        const cell =
+            event.currentTarget;
+
+
+        const index =
+            Number(cell.dataset.index);
+
+
+        if (!gameActive) {
+            return;
+        }
+
+
+        if (game[index] !== "") {
+            return;
+        }
+
+
+        game[index] =
+            currentPlayer;
+
+
+        playMoveSound();
+
+
+        updateBoard();
+
+        checkGame();
+
+    }
+
+
+    /* =========================
+       KONTROLA VÝHRY
+    ========================= */
+
+    function checkGame() {
+
+        for (
+            const combination
+            of winningCombinations
+        ) {
+
+            const a = combination[0];
+
+            const b = combination[1];
+
+            const c = combination[2];
+
+
+            if (
+
+                game[a] !== "" &&
+
+                game[a] === game[b] &&
+
+                game[a] === game[c]
+
+            ) {
+
+                endGame(
+                    combination
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        if (!game.includes("")) {
+
+            gameActive = false;
+
+            turnText.textContent =
+                "🤝 Remíza!";
+
+            playDrawSound();
+
+            return;
+
+        }
+
+
+        currentPlayer =
+            currentPlayer === "X"
+                ? "O"
+                : "X";
+
+
+        updateTurn();
+
+    }
+
+
+    /* =========================
+       KONEC HRY
+    ========================= */
+
+    function endGame(
+        winningCombination
+    ) {
+
+        gameActive = false;
+
+
+        const winner =
+            currentPlayer === "X"
+                ? "❌"
+                : "⭕";
+
+
+        if (currentPlayer === "X") {
+
+            scoreX++;
+
+            scoreXText.textContent =
+                scoreX;
+
+        } else {
+
+            scoreO++;
+
+            scoreOText.textContent =
+                scoreO;
+
+        }
+
+
+        turnText.textContent =
+            `${winner} vyhrává! 🎉`;
+
+
+        winningCombination.forEach(
+            index => {
+
+                const cell =
+                    document.querySelector(
+                        `.cell[data-index="${index}"]`
+                    );
+
+
+                if (cell) {
+
+                    cell.classList.add(
+                        "winning"
+                    );
+
+                }
+
+            }
+        );
+
+
+        playWinSound();
+
+    }
+
+
+    /* =========================
+       UKAZATEL TAHU
+    ========================= */
+
+    function updateTurn() {
+
+        if (currentPlayer === "X") {
+
+            turnText.textContent =
+                "Na tahu je ❌";
+
+        } else {
+
+            turnText.textContent =
+                "Na tahu je ⭕";
+
+        }
+
+    }
+
+
+    /* =========================
+       NOVÁ HRA
+    ========================= */
+
+    function restartGame() {
+
+        game = [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ];
+
+
+        currentPlayer = "X";
+
+        gameActive = true;
+
+
+        createBoard();
+
+        updateTurn();
+
+        playRestartSound();
+
+    }
+
+
+    /* =========================
+       ZAPNUTÍ / VYPNUTÍ ZVUKŮ
+    ========================= */
+
+    soundButton.addEventListener(
+        "click",
+        () => {
+
+            soundsEnabled =
+                !soundsEnabled;
+
+
+            if (soundsEnabled) {
+
+                soundButton.textContent =
+                    "🔊 Zvuky: zapnuté";
+
+
+                playTone(
+                    600,
+                    0.1
+                );
+
+            } else {
+
+                soundButton.textContent =
+                    "🔇 Zvuky: vypnuté";
+
+            }
+
+        }
+    );
+
+
+    /* =========================
+       TLAČÍTKO NOVÁ HRA
+    ========================= */
+
+    restartButton.addEventListener(
+        "click",
+        restartGame
+    );
+
+
+    /* =========================
+       START
+    ========================= */
+
+    createBoard();
+
+    updateTurn();
+
+</script>
+
+</body>
+</html>
