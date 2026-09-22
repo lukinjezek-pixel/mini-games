@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Color Rush - Mini Games</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #111827;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .game-container {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .back {
+      display: inline-block;
+      color: #aaa;
+      text-decoration: none;
+      margin-bottom: 15px;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    h1 {
+      margin: 5px 0;
+      font-size: 42px;
+    }
+
+    .subtitle {
+      color: #aaa;
+      margin-bottom: 25px;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      flex: 1;
+      background: #1f2937;
+      border-radius: 15px;
+      padding: 15px;
+    }
+
+    .stat-title {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .color-box {
+      width: 100%;
+      height: 260px;
+      border-radius: 25px;
+      background: #374151;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.08s;
+    }
+
+    .color-box:active {
+      transform: scale(0.97);
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #2563eb;
+      color: white;
+    }
+
+    button:hover {
+      filter: brightness(1.15);
+    }
+
+    .start {
+      grid-column: span 2;
+      background: #16a34a;
+      font-size: 19px;
+    }
+
+    .sound {
+      background: #4b5563;
+    }
+
+    .message {
+      min-height: 30px;
+      margin: 18px 0 5px;
+      font-weight: bold;
+      color: #d1d5db;
+    }
+
+    @media (max-width: 500px) {
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .color-box {
+        height: 220px;
+      }
+
+      .stat-value {
+        font-size: 23px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="game-container">
+
+    <a class="back" href="../index.html">
+      ← Back to Mini Games
+    </a>
+
+    <h1>🎨 Color Rush</h1>
+
+    <p class="subtitle">
+      Click the correct color as fast as you can!
+    </p>
+
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="stat-title">SCORE</div>
+        <div class="stat-value" id="score">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">TIME</div>
+        <div class="stat-value" id="time">30</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">BEST</div>
+        <div class="stat-value" id="best">0</div>
+      </div>
+
+    </div>
+
+
+    <div
+      class="color-box"
+      id="colorBox"
+    >
+      PRESS START
+    </div>
+
+
+    <div
+      class="message"
+      id="message"
+    >
+      Choose the color shown by the word.
+    </div>
+
+
+    <div class="buttons">
+
+      <button
+        class="start"
+        id="startButton"
+      >
+        START GAME
+      </button>
+
+      <button
+        class="sound"
+        id="soundButton"
+      >
+        🔊 SOUND ON
+      </button>
+
+      <button
+        id="restartButton"
+      >
+        🔄 RESTART
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const colorBox = document.getElementById("colorBox");
+    const scoreElement = document.getElementById("score");
+    const timeElement = document.getElementById("time");
+    const bestElement = document.getElementById("best");
+    const messageElement = document.getElementById("message");
+
+    const startButton = document.getElementById("startButton");
+    const restartButton = document.getElementById("restartButton");
+    const soundButton = document.getElementById("soundButton");
+
+
+    const colors = [
+      {
+        name: "RED",
+        value: "#ef4444"
+      },
+      {
+        name: "BLUE",
+        value: "#3b82f6"
+      },
+      {
+        name: "GREEN",
+        value: "#22c55e"
+      },
+      {
+        name: "YELLOW",
+        value: "#eab308"
+      },
+      {
+        name: "PURPLE",
+        value: "#a855f7"
+      },
+      {
+        name: "ORANGE",
+        value: "#f97316"
+      }
+    ];
+
+
+    let score = 0;
+    let time = 30;
+    let best = 0;
+
+    let gameRunning = false;
+    let timer = null;
+
+    let currentColor = null;
+    let soundEnabled = true;
+
+
+    /*
+      Load best score
+    */
+
+    try {
+      best = Number(localStorage.getItem("colorRushBest")) || 0;
+    } catch (error) {
+      best = 0;
+    }
+
+    bestElement.textContent = best;
+
+
+    /*
+      Sound
+    */
+
+    function playSound(type) {
+
+      if (!soundEnabled) return;
+
+      try {
+
+        const AudioContext =
+          window.AudioContext ||
+          window.webkitAudioContext;
+
+        if (!AudioContext) return;
+
+        const audio = new AudioContext();
+
+        const oscillator = audio.createOscillator();
+        const gain = audio.createGain();
+
+        oscillator.connect(gain);
+        gain.connect(audio.destination);
+
+
+        if (type === "correct") {
+
+          oscillator.frequency.value = 700;
+
+        } else if (type === "wrong") {
+
+          oscillator.frequency.value = 180;
+
+        } else if (type === "win") {
+
+          oscillator.frequency.value = 900;
+
+        }
+
+
+        gain.gain.setValueAtTime(
+          0.08,
+          audio.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          audio.currentTime + 0.15
+        );
+
+
+        oscillator.start();
+
+        oscillator.stop(
+          audio.currentTime + 0.15
+        );
+
+      } catch (error) {
+
+        console.log("Sound unavailable");
+
+      }
+
+    }
+
+
+    /*
+      Generate new color
+    */
+
+    function newColor() {
+
+      const randomIndex =
+        Math.floor(
+          Math.random() * colors.length
+        );
+
+      currentColor = colors[randomIndex];
+
+
+      /*
+        The background is the correct answer.
+        The text can display another color name.
+      */
+
+      let textColor;
+
+      do {
+
+        textColor =
+          colors[
+            Math.floor(
+              Math.random() * colors.length
+            )
+          ];
+
+      } while (
+        textColor.name === currentColor.name
+      );
+
+
+      colorBox.style.background =
+        currentColor.value;
+
+      colorBox.textContent =
+        textColor.name;
+
+      colorBox.style.color =
+        "#ffffff";
+
+    }
+
+
+    /*
+      Start game
+    */
+
+    function startGame() {
+
+      if (gameRunning) return;
+
+
+      score = 0;
+      time = 30;
+
+      scoreElement.textContent = score;
+      timeElement.textContent = time;
+
+      gameRunning = true;
+
+      startButton.textContent =
+        "GAME RUNNING";
+
+      messageElement.textContent =
+        "GO! Click the color matching the word.";
+
+      newColor();
+
+
+      timer = setInterval(() => {
+
+        time--;
+
+        timeElement.textContent = time;
+
+
+        if (time <= 0) {
+
+          endGame();
+
+        }
+
+      }, 1000);
+
+    }
+
+
+    /*
+      Handle click
+    */
+
+    colorBox.addEventListener(
+      "click",
+      () => {
+
+        if (!gameRunning) return;
+
+
+        /*
+          The displayed word is intentionally
+          different from the background.
+
+          Player has to identify the actual
+          background color.
+        */
+
+        const displayedName =
+          colorBox.textContent;
+
+        /*
+          In this version the correct answer
+          is the background color.
+        */
+
+        if (
+          currentColor &&
+          currentColor.name !== displayedName
+        ) {
+
+          score++;
+
+          scoreElement.textContent =
+            score;
+
+          playSound("correct");
+
+          messageElement.textContent =
+            "✓ Correct!";
+
+          newColor();
+
+        } else {
+
+          playSound("wrong");
+
+          messageElement.textContent =
+            "✕ Try again!";
+
+        }
+
+      }
+    );
+
+
+    /*
+      End game
+    */
+
+    function endGame() {
+
+      gameRunning = false;
+
+      clearInterval(timer);
+
+      timer = null;
+
+      colorBox.style.background =
+        "#374151";
+
+      colorBox.textContent =
+        "GAME OVER";
+
+      startButton.textContent =
+        "START GAME";
+
+
+      if (score > best) {
+
+        best = score;
+
+        bestElement.textContent =
+          best;
+
+        try {
+
+          localStorage.setItem(
+            "colorRushBest",
+            best
+          );
+
+        } catch (error) {}
+
+        messageElement.textContent =
+          "🏆 NEW HIGH SCORE!";
+
+        playSound("win");
+
+      } else {
+
+        messageElement.textContent =
+          "Game over! Score: " + score;
+
+      }
+
+    }
+
+
+    /*
+      Restart
+    */
+
+    function restartGame() {
+
+      clearInterval(timer);
+
+      timer = null;
+
+      gameRunning = false;
+
+      score = 0;
+      time = 30;
+
+      scoreElement.textContent = score;
+      timeElement.textContent = time;
+
+      colorBox.style.background =
+        "#374151";
+
+      colorBox.textContent =
+        "PRESS START";
+
+      startButton.textContent =
+        "START GAME";
+
+      messageElement.textContent =
+        "Choose the color shown by the word.";
+
+    }
+
+
+    /*
+      Sound toggle
+    */
+
+    soundButton.addEventListener(
+      "click",
+      () => {
+
+        soundEnabled =
+          !soundEnabled;
+
+        soundButton.textContent =
+          soundEnabled
+            ? "🔊 SOUND ON"
+            : "🔇 SOUND OFF";
+
+      }
+    );
+
+
+    startButton.addEventListener(
+      "click",
+      startGame
+    );
+
+
+    restartButton.addEventListener(
+      "click",
+      restartGame
+    );
+
+  </script>
+
+</body>
+
+</html>
