@@ -2,55 +2,34 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Mini Games</title>
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
+  <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
   <div class="container">
 
-
-    <!-- =========================
-         HERO
-    ========================== -->
+    <!-- HERO -->
 
     <header class="hero">
 
-      <div class="logo">
-        🎮
-      </div>
+      <div class="logo">🎮</div>
 
-      <h1>
-        Mini Games
-      </h1>
+      <h1>Mini Games</h1>
 
-      <p>
-        Small games. Big fun.
-      </p>
+      <p>Small games. Big fun.</p>
 
       <div class="hero-line"></div>
 
     </header>
 
 
-    <!-- =========================
-         GAMES
-    ========================== -->
+    <!-- GAMES -->
 
     <main>
 
@@ -62,7 +41,7 @@
       <div class="games">
 
 
-        <!-- REACTION TEST -->
+        <!-- Reaction Test -->
 
         <div class="game">
 
@@ -79,17 +58,15 @@
           </p>
 
           <a href="games/reaction.html">
-
-            <button type="button">
+            <button>
               PLAY NOW
             </button>
-
           </a>
 
         </div>
 
 
-        <!-- GUESS THE NUMBER -->
+        <!-- Guess the Number -->
 
         <div class="game">
 
@@ -106,17 +83,40 @@
           </p>
 
           <a href="games/guess.html">
-
-            <button type="button">
+            <button>
               PLAY NOW
             </button>
-
           </a>
 
         </div>
 
 
-        <!-- IMPOSSIBLE CHOICE -->
+        <!-- Memory Game -->
+
+        <div class="game">
+
+          <div class="game-icon">
+            🧠
+          </div>
+
+          <h2>
+            Memory Game
+          </h2>
+
+          <p>
+            Find all matching pairs!
+          </p>
+
+          <a href="games/memory.html">
+            <button>
+              PLAY NOW
+            </button>
+          </a>
+
+        </div>
+
+
+        <!-- Impossible Choice -->
 
         <div class="game">
 
@@ -132,12 +132,10 @@
             Choose between two impossible options.
           </p>
 
-          <a href="games/impossible-choice.html">
-
-            <button type="button">
+          <a href="games/impossible.html">
+            <button>
               PLAY NOW
             </button>
-
           </a>
 
         </div>
@@ -148,9 +146,7 @@
     </main>
 
 
-    <!-- =========================
-         FOOTER
-    ========================== -->
+    <!-- FOOTER -->
 
     <footer>
 
@@ -164,145 +160,7 @@
 
     </footer>
 
-
   </div>
-
-
-  <!-- =========================
-       SOUND
-  ========================== -->
-
-  <script>
-
-    let audioContext = null;
-
-
-    function playClickSound() {
-
-      try {
-
-        if (!audioContext) {
-
-          audioContext =
-            new (
-              window.AudioContext ||
-              window.webkitAudioContext
-            )();
-
-        }
-
-
-        if (
-          audioContext.state ===
-          "suspended"
-        ) {
-
-          audioContext.resume();
-
-        }
-
-
-        const oscillator =
-          audioContext.createOscillator();
-
-
-        const gain =
-          audioContext.createGain();
-
-
-        oscillator.type =
-          "square";
-
-
-        oscillator.frequency.setValueAtTime(
-          700,
-          audioContext.currentTime
-        );
-
-
-        oscillator.frequency.exponentialRampToValueAtTime(
-          450,
-          audioContext.currentTime + 0.12
-        );
-
-
-        gain.gain.setValueAtTime(
-          0.08,
-          audioContext.currentTime
-        );
-
-
-        gain.gain.exponentialRampToValueAtTime(
-          0.001,
-          audioContext.currentTime + 0.12
-        );
-
-
-        oscillator.connect(gain);
-
-        gain.connect(
-          audioContext.destination
-        );
-
-
-        oscillator.start();
-
-
-        oscillator.stop(
-          audioContext.currentTime + 0.12
-        );
-
-      } catch (error) {
-
-        console.log(
-          "Sound error:",
-          error
-        );
-
-      }
-
-    }
-
-
-    document
-      .querySelectorAll(".game a")
-      .forEach(function(link) {
-
-        link.addEventListener(
-          "click",
-          function(event) {
-
-            event.preventDefault();
-
-
-            const destination =
-              link.href;
-
-
-            // 🔊 PLAY SOUND
-
-            playClickSound();
-
-
-            // ⏱️ WAIT FOR SOUND
-
-            setTimeout(
-              function() {
-
-                window.location.href =
-                  destination;
-
-              },
-              180
-            );
-
-          }
-        );
-
-      });
-
-  </script>
-
 
 </body>
 
