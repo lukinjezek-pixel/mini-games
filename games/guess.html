@@ -41,9 +41,7 @@
       color: white;
 
       display: flex;
-
       justify-content: center;
-
       align-items: center;
 
       padding: 20px;
@@ -54,7 +52,6 @@
     .game {
 
       width: 100%;
-
       max-width: 650px;
 
       text-align: center;
@@ -78,9 +75,7 @@
 
 
     .back:hover {
-
       color: white;
-
     }
 
 
@@ -109,6 +104,8 @@
     }
 
 
+    /* STATS */
+
     .stats {
 
       display: flex;
@@ -134,6 +131,17 @@
 
       min-width: 140px;
 
+      transition: 0.2s;
+
+    }
+
+
+    .stat:hover {
+
+      border-color: #7c5cff;
+
+      transform: translateY(-3px);
+
     }
 
 
@@ -157,6 +165,8 @@
     }
 
 
+    /* GAME BOX */
+
     .game-box {
 
       background: #191925;
@@ -165,7 +175,24 @@
 
       border-radius: 25px;
 
-      padding: 30px 25px;
+      padding: 35px 25px;
+
+      transition: 0.2s;
+
+    }
+
+
+    .game-box.correct {
+
+      border-color: #19c37d;
+
+      box-shadow:
+        0 0 35px rgba(
+          25,
+          195,
+          125,
+          0.25
+        );
 
     }
 
@@ -176,10 +203,12 @@
 
       font-size: 17px;
 
-      margin-bottom: 22px;
+      margin-bottom: 25px;
 
     }
 
+
+    /* INPUT */
 
     .input-area {
 
@@ -194,7 +223,7 @@
 
     #guessInput {
 
-      width: 160px;
+      width: 170px;
 
       padding: 14px;
 
@@ -212,6 +241,8 @@
 
       outline: none;
 
+      transition: 0.2s;
+
     }
 
 
@@ -219,8 +250,25 @@
 
       border-color: #7c5cff;
 
+      box-shadow:
+        0 0 15px rgba(
+          124,
+          92,
+          255,
+          0.25
+        );
+
     }
 
+
+    #guessInput:disabled {
+
+      opacity: 0.5;
+
+    }
+
+
+    /* GUESS BUTTON */
 
     #guessButton {
 
@@ -240,12 +288,16 @@
 
       cursor: pointer;
 
+      transition: 0.2s;
+
     }
 
 
     #guessButton:hover {
 
       background: #947bff;
+
+      transform: scale(1.05);
 
     }
 
@@ -256,8 +308,12 @@
 
       cursor: not-allowed;
 
+      transform: none;
+
     }
 
+
+    /* MESSAGE */
 
     #message {
 
@@ -269,6 +325,8 @@
 
       font-weight: bold;
 
+      transition: 0.2s;
+
     }
 
 
@@ -276,8 +334,21 @@
 
       color: #5ff0b1;
 
+      animation: pop 0.35s ease;
+
     }
 
+
+    #message.success {
+
+      color: #5ff0b1;
+
+      animation: pop 0.35s ease;
+
+    }
+
+
+    /* RESTART */
 
     #restartButton {
 
@@ -301,6 +372,8 @@
 
       cursor: pointer;
 
+      transition: 0.2s;
+
     }
 
 
@@ -308,8 +381,60 @@
 
       background: #44445f;
 
+      transform: scale(1.05);
+
     }
 
+
+    /* ANIMATION */
+
+    @keyframes pop {
+
+      0% {
+
+        transform: scale(0.8);
+
+        opacity: 0;
+
+      }
+
+      100% {
+
+        transform: scale(1);
+
+        opacity: 1;
+
+      }
+
+    }
+
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-6px);
+      }
+
+      75% {
+        transform: translateX(6px);
+      }
+
+    }
+
+
+    .shake {
+
+      animation: shake 0.25s ease;
+
+    }
+
+
+    /* MOBILE */
 
     @media (max-width: 600px) {
 
@@ -424,11 +549,17 @@
     </div>
 
 
-    <div class="game-box">
+    <div
+      class="game-box"
+      id="gameBox"
+    >
 
 
       <p class="instruction">
-        Guess a number between 1 and 100.
+
+        I'm thinking of a number between
+        <strong>1 and 100</strong>.
+
       </p>
 
 
@@ -441,6 +572,7 @@
           min="1"
           max="100"
           placeholder="1–100"
+          autocomplete="off"
         >
 
 
@@ -462,7 +594,7 @@
         id="restartButton"
         onclick="startNewGame()"
       >
-        PLAY AGAIN
+        🔄 PLAY AGAIN
       </button>
 
 
@@ -479,8 +611,288 @@
 
     let attempts = 0;
 
+    let audioContext = null;
 
-    // LOAD BEST SCORE
+
+    // =========================
+    // SOUND SYSTEM
+    // =========================
+
+    function getAudioContext() {
+
+      if (!audioContext) {
+
+        audioContext =
+          new (
+            window.AudioContext ||
+            window.webkitAudioContext
+          )();
+
+      }
+
+
+      if (
+        audioContext.state === "suspended"
+      ) {
+
+        audioContext.resume();
+
+      }
+
+
+      return audioContext;
+
+    }
+
+
+    function playTone(
+      frequency,
+      duration,
+      type = "sine"
+    ) {
+
+      const audio =
+        getAudioContext();
+
+
+      const oscillator =
+        audio.createOscillator();
+
+
+      const gain =
+        audio.createGain();
+
+
+      oscillator.type = type;
+
+
+      oscillator.frequency.setValueAtTime(
+        frequency,
+        audio.currentTime
+      );
+
+
+      gain.gain.setValueAtTime(
+        0.12,
+        audio.currentTime
+      );
+
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audio.currentTime + duration
+      );
+
+
+      oscillator.connect(gain);
+
+      gain.connect(
+        audio.destination
+      );
+
+
+      oscillator.start();
+
+      oscillator.stop(
+        audio.currentTime + duration
+      );
+
+    }
+
+
+    // GUESS SOUND
+
+    function playGuessSound() {
+
+      playTone(
+        500,
+        0.08,
+        "sine"
+      );
+
+    }
+
+
+    // TOO LOW
+
+    function playLowSound() {
+
+      playTone(
+        280,
+        0.18,
+        "triangle"
+      );
+
+    }
+
+
+    // TOO HIGH
+
+    function playHighSound() {
+
+      playTone(
+        700,
+        0.18,
+        "triangle"
+      );
+
+    }
+
+
+    // CORRECT
+
+    function playCorrectSound() {
+
+      const audio =
+        getAudioContext();
+
+
+      const notes = [
+        500,
+        650,
+        800
+      ];
+
+
+      notes.forEach(
+        function(
+          frequency,
+          index
+        ) {
+
+          const oscillator =
+            audio.createOscillator();
+
+
+          const gain =
+            audio.createGain();
+
+
+          const time =
+            audio.currentTime +
+            index * 0.1;
+
+
+          oscillator.type =
+            "sine";
+
+
+          oscillator.frequency.setValueAtTime(
+            frequency,
+            time
+          );
+
+
+          gain.gain.setValueAtTime(
+            0.15,
+            time
+          );
+
+
+          gain.gain.exponentialRampToValueAtTime(
+            0.001,
+            time + 0.16
+          );
+
+
+          oscillator.connect(gain);
+
+          gain.connect(
+            audio.destination
+          );
+
+
+          oscillator.start(time);
+
+          oscillator.stop(
+            time + 0.16
+          );
+
+        }
+      );
+
+    }
+
+
+    // NEW BEST
+
+    function playBestSound() {
+
+      const audio =
+        getAudioContext();
+
+
+      const notes = [
+        600,
+        800,
+        1000,
+        1200
+      ];
+
+
+      notes.forEach(
+        function(
+          frequency,
+          index
+        ) {
+
+          const oscillator =
+            audio.createOscillator();
+
+
+          const gain =
+            audio.createGain();
+
+
+          const time =
+            audio.currentTime +
+            index * 0.09;
+
+
+          oscillator.type =
+            "square";
+
+
+          oscillator.frequency.setValueAtTime(
+            frequency,
+            time
+          );
+
+
+          gain.gain.setValueAtTime(
+            0.1,
+            time
+          );
+
+
+          gain.gain.exponentialRampToValueAtTime(
+            0.001,
+            time + 0.14
+          );
+
+
+          oscillator.connect(gain);
+
+          gain.connect(
+            audio.destination
+          );
+
+
+          oscillator.start(time);
+
+          oscillator.stop(
+            time + 0.14
+          );
+
+        }
+      );
+
+    }
+
+
+    // =========================
+    // BEST SCORE
+    // =========================
 
     function loadBestScore() {
 
@@ -490,24 +902,21 @@
         );
 
 
-      if (saved !== null) {
-
-        document
-          .getElementById("bestScore")
-          .textContent = saved;
-
-      } else {
-
-        document
-          .getElementById("bestScore")
-          .textContent = "—";
-
-      }
+      document
+        .getElementById(
+          "bestScore"
+        )
+        .textContent =
+        saved !== null
+          ? saved
+          : "—";
 
     }
 
 
-    // START NEW GAME
+    // =========================
+    // NEW GAME
+    // =========================
 
     function startNewGame() {
 
@@ -518,11 +927,6 @@
 
 
       attempts = 0;
-
-
-      document
-        .getElementById("currentAttempts")
-        .textContent = "0";
 
 
       const input =
@@ -537,23 +941,47 @@
 
 
       document
-        .getElementById("guessButton")
+        .getElementById(
+          "guessButton"
+        )
         .disabled = false;
 
 
       document
-        .getElementById("message")
+        .getElementById(
+          "currentAttempts"
+        )
+        .textContent = "0";
+
+
+      document
+        .getElementById(
+          "message"
+        )
         .textContent = "";
 
 
       document
-        .getElementById("message")
+        .getElementById(
+          "message"
+        )
         .className = "";
 
 
       document
-        .getElementById("restartButton")
-        .style.display = "none";
+        .getElementById(
+          "gameBox"
+        )
+        .className =
+        "game-box";
+
+
+      document
+        .getElementById(
+          "restartButton"
+        )
+        .style.display =
+        "none";
 
 
       loadBestScore();
@@ -564,7 +992,9 @@
     }
 
 
+    // =========================
     // MAKE GUESS
+    // =========================
 
     function makeGuess() {
 
@@ -581,15 +1011,23 @@
         );
 
 
+      const gameBox =
+        document.getElementById(
+          "gameBox"
+        );
+
+
       const guess =
         Number(input.value);
 
 
-      // INVALID NUMBER
+      // INVALID
 
       if (
 
-        !Number.isInteger(guess) ||
+        !Number.isInteger(
+          guess
+        ) ||
 
         guess < 1 ||
 
@@ -599,6 +1037,18 @@
 
         message.textContent =
           "⚠️ Enter a number from 1 to 100!";
+
+
+        gameBox.classList
+          .remove("shake");
+
+
+        void gameBox.offsetWidth;
+
+
+        gameBox.classList
+          .add("shake");
+
 
         return;
 
@@ -612,7 +1062,11 @@
         .getElementById(
           "currentAttempts"
         )
-        .textContent = attempts;
+        .textContent =
+        attempts;
+
+
+      playGuessSound();
 
 
       // TOO LOW
@@ -621,12 +1075,19 @@
         guess < secretNumber
       ) {
 
+        message.className = "";
+
         message.textContent =
           "⬆️ Too low!";
+
+
+        playLowSound();
+
 
         input.value = "";
 
         input.focus();
+
 
         return;
 
@@ -639,19 +1100,28 @@
         guess > secretNumber
       ) {
 
+        message.className = "";
+
         message.textContent =
           "⬇️ Too high!";
+
+
+        playHighSound();
+
 
         input.value = "";
 
         input.focus();
+
 
         return;
 
       }
 
 
+      // =========================
       // CORRECT
+      // =========================
 
       input.disabled = true;
 
@@ -668,7 +1138,11 @@
           "restartButton"
         )
         .style.display =
-          "inline-block";
+        "inline-block";
+
+
+      gameBox.className =
+        "game-box correct";
 
 
       const oldBest =
@@ -683,7 +1157,8 @@
 
         oldBest === null ||
 
-        attempts < Number(oldBest)
+        attempts <
+        Number(oldBest)
 
       ) {
 
@@ -698,7 +1173,8 @@
           .getElementById(
             "bestScore"
           )
-          .textContent = attempts;
+          .textContent =
+          attempts;
 
 
         message.className =
@@ -706,9 +1182,12 @@
 
 
         message.textContent =
-          "🔥 NEW BEST! " +
+          "🏆 NEW BEST! " +
           attempts +
           " attempts!";
+
+
+        playBestSound();
 
 
       } else {
@@ -718,10 +1197,12 @@
           .getElementById(
             "bestScore"
           )
-          .textContent = oldBest;
+          .textContent =
+          oldBest;
 
 
-        message.className = "";
+        message.className =
+          "success";
 
 
         message.textContent =
@@ -729,12 +1210,17 @@
           attempts +
           " attempts!";
 
+
+        playCorrectSound();
+
       }
 
     }
 
 
+    // =========================
     // ENTER KEY
+    // =========================
 
     document
       .getElementById(
@@ -756,7 +1242,9 @@
       );
 
 
-    // START GAME
+    // =========================
+    // START
+    // =========================
 
     loadBestScore();
 
