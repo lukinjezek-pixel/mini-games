@@ -5,9 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Color Rush - Mini Games</title>
+  <title>Color Rush</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -16,7 +17,7 @@
       margin: 0;
       min-height: 100vh;
       font-family: Arial, sans-serif;
-      background: #111827;
+      background: #111;
       color: white;
       display: flex;
       justify-content: center;
@@ -30,20 +31,9 @@
       text-align: center;
     }
 
-    .back {
-      display: inline-block;
-      color: #aaa;
-      text-decoration: none;
-      margin-bottom: 15px;
-    }
-
-    .back:hover {
-      color: white;
-    }
-
     h1 {
-      margin: 5px 0;
       font-size: 42px;
+      margin-bottom: 8px;
     }
 
     .subtitle {
@@ -60,78 +50,154 @@
 
     .stat {
       flex: 1;
-      background: #1f2937;
-      border-radius: 15px;
-      padding: 15px;
+      background: #1d1d1d;
+      border-radius: 14px;
+      padding: 14px 10px;
+      border: 1px solid #333;
     }
 
     .stat-title {
-      color: #9ca3af;
-      font-size: 14px;
+      color: #999;
+      font-size: 13px;
+      margin-bottom: 5px;
     }
 
     .stat-value {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: bold;
-      margin-top: 5px;
     }
 
-    .color-box {
-      width: 100%;
-      height: 260px;
-      border-radius: 25px;
-      background: #374151;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 26px;
-      font-weight: bold;
+    .target-box {
+      background: #1d1d1d;
+      border: 1px solid #333;
+      border-radius: 18px;
+      padding: 25px 15px;
       margin-bottom: 20px;
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.08s;
     }
 
-    .color-box:active {
-      transform: scale(0.97);
+    .target-label {
+      color: #aaa;
+      font-size: 15px;
+      margin-bottom: 8px;
     }
 
-    .buttons {
+    #targetColor {
+      font-size: 34px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .colors {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
     }
 
-    button {
+    .color-button {
+      height: 100px;
       border: none;
-      border-radius: 14px;
-      padding: 16px;
-      font-size: 16px;
-      font-weight: bold;
+      border-radius: 18px;
       cursor: pointer;
-      background: #2563eb;
-      color: white;
+      transition: transform 0.08s, filter 0.08s;
     }
 
-    button:hover {
+    .color-button:hover {
       filter: brightness(1.15);
     }
 
-    .start {
-      grid-column: span 2;
-      background: #16a34a;
-      font-size: 19px;
+    .color-button:active {
+      transform: scale(0.93);
     }
 
-    .sound {
-      background: #4b5563;
+    .red {
+      background: #ff3b30;
     }
 
-    .message {
-      min-height: 30px;
-      margin: 18px 0 5px;
+    .blue {
+      background: #3478f6;
+    }
+
+    .green {
+      background: #34c759;
+    }
+
+    .yellow {
+      background: #ffd60a;
+    }
+
+    .purple {
+      background: #af52de;
+    }
+
+    .orange {
+      background: #ff9500;
+    }
+
+    #message {
+      min-height: 25px;
+      margin: 18px 0;
       font-weight: bold;
-      color: #d1d5db;
+    }
+
+    .correct {
+      color: #34c759;
+    }
+
+    .wrong {
+      color: #ff453a;
+    }
+
+    .start-button,
+    .restart-button,
+    .back-button {
+      border: none;
+      border-radius: 12px;
+      padding: 13px 22px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .start-button,
+    .restart-button {
+      background: white;
+      color: #111;
+    }
+
+    .back-button {
+      background: #222;
+      color: white;
+      border: 1px solid #444;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    #gameOver {
+      display: none;
+      background: #1d1d1d;
+      border: 1px solid #333;
+      border-radius: 18px;
+      padding: 25px;
+      margin-top: 20px;
+    }
+
+    #gameOver h2 {
+      margin-top: 0;
+      font-size: 30px;
+    }
+
+    .final-score {
+      font-size: 22px;
+      margin: 10px 0;
+    }
+
+    .new-record {
+      color: #ffd60a;
+      font-weight: bold;
     }
 
     @media (max-width: 500px) {
@@ -140,24 +206,24 @@
         font-size: 34px;
       }
 
-      .color-box {
-        height: 220px;
+      .color-button {
+        height: 85px;
       }
 
-      .stat-value {
-        font-size: 23px;
+      #targetColor {
+        font-size: 28px;
       }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
   <div class="game-container">
-
-    <a class="back" href="../index.html">
-      ← Back to Mini Games
-    </a>
 
     <h1>🎨 Color Rush</h1>
 
@@ -166,158 +232,250 @@
     </p>
 
 
+    <!-- STATS -->
+
     <div class="stats">
 
       <div class="stat">
-        <div class="stat-title">SCORE</div>
-        <div class="stat-value" id="score">0</div>
+
+        <div class="stat-title">
+          SCORE
+        </div>
+
+        <div class="stat-value" id="score">
+          0
+        </div>
+
       </div>
+
 
       <div class="stat">
-        <div class="stat-title">TIME</div>
-        <div class="stat-value" id="time">30</div>
+
+        <div class="stat-title">
+          TIME
+        </div>
+
+        <div class="stat-value" id="time">
+          30
+        </div>
+
       </div>
+
 
       <div class="stat">
-        <div class="stat-title">BEST</div>
-        <div class="stat-value" id="best">0</div>
+
+        <div class="stat-title">
+          BEST
+        </div>
+
+        <div class="stat-value" id="best">
+          0
+        </div>
+
       </div>
 
     </div>
 
 
-    <div
-      class="color-box"
-      id="colorBox"
-    >
-      PRESS START
+    <!-- TARGET -->
+
+    <div class="target-box">
+
+      <div class="target-label">
+        CLICK THIS COLOR
+      </div>
+
+      <div id="targetColor">
+        PRESS START
+      </div>
+
+    </div>
+
+
+    <!-- COLORS -->
+
+    <div class="colors">
+
+      <button class="color-button red"
+        data-color="red"
+        aria-label="Red">
+      </button>
+
+      <button class="color-button blue"
+        data-color="blue"
+        aria-label="Blue">
+      </button>
+
+      <button class="color-button green"
+        data-color="green"
+        aria-label="Green">
+      </button>
+
+      <button class="color-button yellow"
+        data-color="yellow"
+        aria-label="Yellow">
+      </button>
+
+      <button class="color-button purple"
+        data-color="purple"
+        aria-label="Purple">
+      </button>
+
+      <button class="color-button orange"
+        data-color="orange"
+        aria-label="Orange">
+      </button>
+
     </div>
 
 
-    <div
-      class="message"
-      id="message"
-    >
-      Choose the color shown by the word.
+    <div id="message"></div>
+
+
+    <button
+      class="start-button"
+      id="startButton">
+      START GAME
+    </button>
+
+
+    <!-- GAME OVER -->
+
+    <div id="gameOver">
+
+      <h2>🏆 Game Over!</h2>
+
+      <div class="final-score">
+        Your score:
+        <strong id="finalScore">0</strong>
+      </div>
+
+      <div
+        class="new-record"
+        id="recordMessage">
+      </div>
+
+      <button
+        class="restart-button"
+        id="restartButton">
+        PLAY AGAIN
+      </button>
+
     </div>
 
 
-    <div class="buttons">
+    <br>
 
-      <button
-        class="start"
-        id="startButton"
-      >
-        START GAME
-      </button>
-
-      <button
-        class="sound"
-        id="soundButton"
-      >
-        🔊 SOUND ON
-      </button>
-
-      <button
-        id="restartButton"
-      >
-        🔄 RESTART
-      </button>
-
-    </div>
+    <button
+      class="back-button"
+      onclick="location.href='../index.html'">
+      ← BACK TO MINI GAMES
+    </button>
 
   </div>
 
 
   <script>
 
-    const colorBox = document.getElementById("colorBox");
-    const scoreElement = document.getElementById("score");
-    const timeElement = document.getElementById("time");
-    const bestElement = document.getElementById("best");
-    const messageElement = document.getElementById("message");
-
-    const startButton = document.getElementById("startButton");
-    const restartButton = document.getElementById("restartButton");
-    const soundButton = document.getElementById("soundButton");
-
+    // -----------------------------
+    // GAME VARIABLES
+    // -----------------------------
 
     const colors = [
-      {
-        name: "RED",
-        value: "#ef4444"
-      },
-      {
-        name: "BLUE",
-        value: "#3b82f6"
-      },
-      {
-        name: "GREEN",
-        value: "#22c55e"
-      },
-      {
-        name: "YELLOW",
-        value: "#eab308"
-      },
-      {
-        name: "PURPLE",
-        value: "#a855f7"
-      },
-      {
-        name: "ORANGE",
-        value: "#f97316"
-      }
+      "red",
+      "blue",
+      "green",
+      "yellow",
+      "purple",
+      "orange"
     ];
 
+    const colorNames = {
+      red: "RED",
+      blue: "BLUE",
+      green: "GREEN",
+      yellow: "YELLOW",
+      purple: "PURPLE",
+      orange: "ORANGE"
+    };
 
     let score = 0;
-    let time = 30;
-    let best = 0;
-
+    let timeLeft = 30;
+    let target = "";
     let gameRunning = false;
-    let timer = null;
-
-    let currentColor = null;
-    let soundEnabled = true;
+    let timer;
+    let speed = 1000;
 
 
-    /*
-      Load best score
-    */
+    // -----------------------------
+    // ELEMENTS
+    // -----------------------------
 
-    try {
-      best = Number(localStorage.getItem("colorRushBest")) || 0;
-    } catch (error) {
-      best = 0;
-    }
+    const scoreElement =
+      document.getElementById("score");
 
-    bestElement.textContent = best;
+    const timeElement =
+      document.getElementById("time");
+
+    const bestElement =
+      document.getElementById("best");
+
+    const targetElement =
+      document.getElementById("targetColor");
+
+    const messageElement =
+      document.getElementById("message");
+
+    const startButton =
+      document.getElementById("startButton");
+
+    const gameOver =
+      document.getElementById("gameOver");
+
+    const finalScore =
+      document.getElementById("finalScore");
+
+    const restartButton =
+      document.getElementById("restartButton");
+
+    const recordMessage =
+      document.getElementById("recordMessage");
 
 
-    /*
-      Sound
-    */
+    // -----------------------------
+    // BEST SCORE
+    // -----------------------------
+
+    let bestScore =
+      Number(localStorage.getItem("colorRushBest")) || 0;
+
+    bestElement.textContent = bestScore;
+
+
+    // -----------------------------
+    // SOUND
+    // -----------------------------
+
+    let audioContext;
 
     function playSound(type) {
 
-      if (!soundEnabled) return;
-
       try {
 
-        const AudioContext =
-          window.AudioContext ||
-          window.webkitAudioContext;
+        if (!audioContext) {
+          audioContext =
+            new (window.AudioContext ||
+            window.webkitAudioContext)();
+        }
 
-        if (!AudioContext) return;
+        const oscillator =
+          audioContext.createOscillator();
 
-        const audio = new AudioContext();
-
-        const oscillator = audio.createOscillator();
-        const gain = audio.createGain();
+        const gain =
+          audioContext.createGain();
 
         oscillator.connect(gain);
-        gain.connect(audio.destination);
-
+        gain.connect(audioContext.destination);
 
         if (type === "correct") {
 
@@ -327,120 +485,88 @@
 
           oscillator.frequency.value = 180;
 
-        } else if (type === "win") {
+        } else {
 
-          oscillator.frequency.value = 900;
+          oscillator.frequency.value = 400;
 
         }
 
-
         gain.gain.setValueAtTime(
           0.08,
-          audio.currentTime
+          audioContext.currentTime
         );
 
         gain.gain.exponentialRampToValueAtTime(
           0.001,
-          audio.currentTime + 0.15
+          audioContext.currentTime + 0.12
         );
-
 
         oscillator.start();
 
         oscillator.stop(
-          audio.currentTime + 0.15
+          audioContext.currentTime + 0.12
         );
 
       } catch (error) {
 
-        console.log("Sound unavailable");
+        // Sound is optional.
 
       }
 
     }
 
 
-    /*
-      Generate new color
-    */
+    // -----------------------------
+    // NEW TARGET
+    // -----------------------------
 
-    function newColor() {
+    function newTarget() {
 
-      const randomIndex =
-        Math.floor(
+      target =
+        colors[Math.floor(
           Math.random() * colors.length
-        );
+        )];
 
-      currentColor = colors[randomIndex];
-
-
-      /*
-        The background is the correct answer.
-        The text can display another color name.
-      */
-
-      let textColor;
-
-      do {
-
-        textColor =
-          colors[
-            Math.floor(
-              Math.random() * colors.length
-            )
-          ];
-
-      } while (
-        textColor.name === currentColor.name
-      );
-
-
-      colorBox.style.background =
-        currentColor.value;
-
-      colorBox.textContent =
-        textColor.name;
-
-      colorBox.style.color =
-        "#ffffff";
+      targetElement.textContent =
+        colorNames[target];
 
     }
 
 
-    /*
-      Start game
-    */
+    // -----------------------------
+    // START GAME
+    // -----------------------------
 
     function startGame() {
 
-      if (gameRunning) return;
-
+      clearInterval(timer);
 
       score = 0;
-      time = 30;
-
-      scoreElement.textContent = score;
-      timeElement.textContent = time;
-
+      timeLeft = 30;
+      speed = 1000;
       gameRunning = true;
 
-      startButton.textContent =
-        "GAME RUNNING";
+      scoreElement.textContent = score;
+      timeElement.textContent = timeLeft;
 
-      messageElement.textContent =
-        "GO! Click the color matching the word.";
+      messageElement.textContent = "";
+      messageElement.className = "";
 
-      newColor();
+      gameOver.style.display = "none";
 
+      startButton.disabled = true;
+      startButton.textContent = "GAME RUNNING";
+
+      newTarget();
 
       timer = setInterval(() => {
 
-        time--;
+        timeLeft--;
 
-        timeElement.textContent = time;
+        timeElement.textContent =
+          timeLeft;
 
-
-        if (time <= 0) {
+        if (timeLeft <= 0) {
 
           endGame();
 
@@ -451,178 +577,150 @@
     }
 
 
-    /*
-      Handle click
-    */
+    // -----------------------------
+    // COLOR CLICK
+    // -----------------------------
 
-    colorBox.addEventListener(
-      "click",
-      () => {
+    document
+      .querySelectorAll(".color-button")
+      .forEach(button => {
 
-        if (!gameRunning) return;
+        button.addEventListener("click", () => {
 
+          if (!gameRunning) {
+            return;
+          }
 
-        /*
-          The displayed word is intentionally
-          different from the background.
-
-          Player has to identify the actual
-          background color.
-        */
-
-        const displayedName =
-          colorBox.textContent;
-
-        /*
-          In this version the correct answer
-          is the background color.
-        */
-
-        if (
-          currentColor &&
-          currentColor.name !== displayedName
-        ) {
-
-          score++;
-
-          scoreElement.textContent =
-            score;
-
-          playSound("correct");
-
-          messageElement.textContent =
-            "✓ Correct!";
-
-          newColor();
-
-        } else {
-
-          playSound("wrong");
-
-          messageElement.textContent =
-            "✕ Try again!";
-
-        }
-
-      }
-    );
+          const clickedColor =
+            button.dataset.color;
 
 
-    /*
-      End game
-    */
+          // CORRECT
+
+          if (clickedColor === target) {
+
+            score++;
+
+            scoreElement.textContent =
+              score;
+
+            messageElement.textContent =
+              "✓ CORRECT!";
+
+            messageElement.className =
+              "correct";
+
+            playSound("correct");
+
+
+            // Make the game faster
+
+            if (speed > 400) {
+              speed -= 50;
+            }
+
+
+            newTarget();
+
+          }
+
+
+          // WRONG
+
+          else {
+
+            timeLeft -= 2;
+
+            if (timeLeft < 0) {
+              timeLeft = 0;
+            }
+
+            timeElement.textContent =
+              timeLeft;
+
+            messageElement.textContent =
+              "✗ WRONG! -2 seconds";
+
+            messageElement.className =
+              "wrong";
+
+            playSound("wrong");
+
+            if (timeLeft <= 0) {
+              endGame();
+            }
+
+          }
+
+        });
+
+      });
+
+
+    // -----------------------------
+    // END GAME
+    // -----------------------------
 
     function endGame() {
 
+      if (!gameRunning) {
+        return;
+      }
+
       gameRunning = false;
 
       clearInterval(timer);
 
-      timer = null;
-
-      colorBox.style.background =
-        "#374151";
-
-      colorBox.textContent =
+      targetElement.textContent =
         "GAME OVER";
 
-      startButton.textContent =
-        "START GAME";
+      startButton.disabled = false;
+      startButton.textContent = "START GAME";
+
+      finalScore.textContent =
+        score;
+
+      gameOver.style.display =
+        "block";
 
 
-      if (score > best) {
+      if (score > bestScore) {
 
-        best = score;
+        bestScore = score;
+
+        localStorage.setItem(
+          "colorRushBest",
+          bestScore
+        );
 
         bestElement.textContent =
-          best;
+          bestScore;
 
-        try {
-
-          localStorage.setItem(
-            "colorRushBest",
-            best
-          );
-
-        } catch (error) {}
-
-        messageElement.textContent =
-          "🏆 NEW HIGH SCORE!";
-
-        playSound("win");
+        recordMessage.textContent =
+          "🔥 NEW HIGH SCORE!";
 
       } else {
 
-        messageElement.textContent =
-          "Game over! Score: " + score;
+        recordMessage.textContent =
+          "Best score: " + bestScore;
 
       }
 
     }
 
 
-    /*
-      Restart
-    */
-
-    function restartGame() {
-
-      clearInterval(timer);
-
-      timer = null;
-
-      gameRunning = false;
-
-      score = 0;
-      time = 30;
-
-      scoreElement.textContent = score;
-      timeElement.textContent = time;
-
-      colorBox.style.background =
-        "#374151";
-
-      colorBox.textContent =
-        "PRESS START";
-
-      startButton.textContent =
-        "START GAME";
-
-      messageElement.textContent =
-        "Choose the color shown by the word.";
-
-    }
-
-
-    /*
-      Sound toggle
-    */
-
-    soundButton.addEventListener(
-      "click",
-      () => {
-
-        soundEnabled =
-          !soundEnabled;
-
-        soundButton.textContent =
-          soundEnabled
-            ? "🔊 SOUND ON"
-            : "🔇 SOUND OFF";
-
-      }
-    );
-
+    // -----------------------------
+    // BUTTONS
+    // -----------------------------
 
     startButton.addEventListener(
       "click",
       startGame
     );
 
-
     restartButton.addEventListener(
       "click",
-      restartGame
+      startGame
     );
 
   </script>
