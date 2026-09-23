@@ -2,46 +2,173 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Mini Games</title>
 
   <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
+
+  <!-- SIDE MENU -->
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <aside class="side-menu" id="sideMenu">
+
+    <div class="menu-header">
+
+      <h2>🎮 Mini Games</h2>
+
+      <button
+        class="close-menu"
+        id="closeMenu">
+        ×
+      </button>
+
+    </div>
+
+
+    <nav class="menu-links">
+
+      <a href="index.html">
+        🏠 Home
+      </a>
+
+      <a href="#games">
+        🎮 All Games
+      </a>
+
+      <a href="#games">
+        🔥 Popular Games
+      </a>
+
+      <a href="#about">
+        ℹ️ About
+      </a>
+
+    </nav>
+
+  </aside>
+
+
   <div class="container">
 
-    <!-- HERO -->
 
-    <header class="hero">
+    <!-- TOP BAR -->
 
-      <div class="logo">🎮</div>
+    <header class="topbar">
 
-      <h1>Mini Games</h1>
+      <a
+        href="index.html"
+        class="brand"
+      >
 
-      <p>Small games. Big fun.</p>
+        <div class="brand-icon">
+          🎮
+        </div>
 
-      <div class="hero-line"></div>
+        <span>
+          Mini Games
+        </span>
+
+      </a>
+
+
+      <button
+        class="menu-button"
+        id="menuButton"
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
 
     </header>
 
 
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-badge">
+        🎮 12 GAMES • MORE COMING SOON
+      </div>
+
+
+      <h1>
+        PLAY.
+        <span>COMPETE.</span>
+        HAVE FUN.
+      </h1>
+
+
+      <p>
+        Fast, simple and fun mini games you can play
+        anytime. Challenge yourself and beat your
+        high score!
+      </p>
+
+
+      <div class="hero-buttons">
+
+        <a
+          href="#games"
+          class="hero-button primary"
+        >
+          🎮 PLAY GAMES
+        </a>
+
+
+        <a
+          href="#about"
+          class="hero-button secondary"
+        >
+          LEARN MORE
+        </a>
+
+      </div>
+
+    </section>
+
+
     <!-- GAMES -->
 
-    <main>
+    <main
+      class="section"
+      id="games"
+    >
 
-      <h2 class="section-title">
-        Choose a game
-      </h2>
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+            🎮 Games
+          </h2>
+
+          <p>
+            Pick a game and start playing.
+          </p>
+
+        </div>
+
+      </div>
 
 
       <div class="games">
 
 
-        <!-- 1. Reaction Test -->
+        <!-- 1 -->
 
         <div class="game">
 
@@ -58,15 +185,17 @@
           </p>
 
           <a href="games/reaction.html">
+
             <button>
               PLAY NOW
             </button>
+
           </a>
 
         </div>
 
 
-        <!-- 2. Guess the Number -->
+        <!-- 2 -->
 
         <div class="game">
 
@@ -83,15 +212,17 @@
           </p>
 
           <a href="games/guess.html">
+
             <button>
               PLAY NOW
             </button>
+
           </a>
 
         </div>
 
 
-        <!-- 3. Memory Game -->
+        <!-- 3 -->
 
         <div class="game">
 
@@ -108,15 +239,17 @@
           </p>
 
           <a href="games/memory.html">
+
             <button>
               PLAY NOW
             </button>
+
           </a>
 
         </div>
 
 
-        <!-- 4. Impossible Choice -->
+        <!-- 4 -->
 
         <div class="game">
 
@@ -133,15 +266,17 @@
           </p>
 
           <a href="games/impossible.html">
+
             <button>
               PLAY NOW
             </button>
+
           </a>
 
         </div>
 
 
-        <!-- 5. Tic-Tac-Toe -->
+        <!-- 5 -->
 
         <div class="game">
 
@@ -158,15 +293,17 @@
           </p>
 
           <a href="games/tic-tac-toe.html">
+
             <button>
               PLAY NOW
             </button>
+
           </a>
 
         </div>
 
 
-        <!-- 6. Color Rush -->
+        <!-- 6 -->
 
         <div class="game">
 
@@ -179,19 +316,21 @@
           </h2>
 
           <p>
-            Test how fast you can match the colors!
+            Click the correct color as fast as you can!
           </p>
 
           <a href="games/color-rush.html">
+
             <button>
               PLAY NOW
             </button>
+
           </a>
 
         </div>
 
 
-        <!-- 7. Target Clicker -->
+        <!-- 7 -->
 
         <div class="game">
 
@@ -214,7 +353,7 @@
         </div>
 
 
-        <!-- 8. 2048 Mini -->
+        <!-- 8 -->
 
         <div class="game">
 
@@ -237,7 +376,7 @@
         </div>
 
 
-        <!-- 9. Don't Touch Red -->
+        <!-- 9 -->
 
         <div class="game">
 
@@ -260,7 +399,7 @@
         </div>
 
 
-        <!-- 10. Quick Math -->
+        <!-- 10 -->
 
         <div class="game">
 
@@ -283,7 +422,7 @@
         </div>
 
 
-        <!-- 11. Dodge -->
+        <!-- 11 -->
 
         <div class="game">
 
@@ -306,7 +445,7 @@
         </div>
 
 
-        <!-- 12. Coin Flip -->
+        <!-- 12 -->
 
         <div class="game">
 
@@ -334,6 +473,32 @@
     </main>
 
 
+    <!-- ABOUT -->
+
+    <section
+      class="section"
+      id="about"
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+            ℹ️ About Mini Games
+          </h2>
+
+          <p>
+            A collection of small games made for fun.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
     <!-- FOOTER -->
 
     <footer>
@@ -343,12 +508,81 @@
       </p>
 
       <p>
-        More games coming soon...
+        Play. Compete. Have fun.
       </p>
 
     </footer>
 
+
   </div>
+
+
+  <!-- MENU SCRIPT -->
+
+  <script>
+
+    const menuButton =
+      document.getElementById("menuButton");
+
+    const closeMenu =
+      document.getElementById("closeMenu");
+
+    const sideMenu =
+      document.getElementById("sideMenu");
+
+    const menuOverlay =
+      document.getElementById("menuOverlay");
+
+
+    function openMenu() {
+
+      sideMenu.classList.add("open");
+
+      menuOverlay.classList.add("show");
+
+    }
+
+
+    function closeSideMenu() {
+
+      sideMenu.classList.remove("open");
+
+      menuOverlay.classList.remove("show");
+
+    }
+
+
+    menuButton.addEventListener(
+      "click",
+      openMenu
+    );
+
+
+    closeMenu.addEventListener(
+      "click",
+      closeSideMenu
+    );
+
+
+    menuOverlay.addEventListener(
+      "click",
+      closeSideMenu
+    );
+
+
+    document
+      .querySelectorAll(".menu-links a")
+      .forEach(link => {
+
+        link.addEventListener(
+          "click",
+          closeSideMenu
+        );
+
+      });
+
+  </script>
+
 
 </body>
 
