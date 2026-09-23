@@ -5,56 +5,155 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Mini Games</title>
-  <meta name="description" content="Play fun, fast and addictive mini games online for free.">
+  <meta
+    name="description"
+    content="Play fun, fast and addictive mini games online for free."
+  >
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- SIDE MENU -->
+  <!-- ================================
+       MENU OVERLAY
+  ================================= -->
+
   <div class="menu-overlay" id="menuOverlay"></div>
 
+
+  <!-- ================================
+       SIDE MENU
+  ================================= -->
+
   <aside class="side-menu" id="sideMenu">
+
     <div class="menu-header">
+
       <div class="menu-logo">
         <span class="menu-logo-icon">🎮</span>
-        <span>MINI GAMES</span>
+
+        <div>
+          <span>MINI</span>
+          <strong>GAMES</strong>
+        </div>
       </div>
 
-      <button class="close-menu" id="closeMenu">×</button>
+      <button
+        class="close-menu"
+        id="closeMenu"
+        aria-label="Close menu"
+      >
+        ×
+      </button>
+
     </div>
 
-    <nav>
-      <a href="#home">🏠 Home</a>
-      <a href="#games">🎮 All Games</a>
-      <a href="#games">🔥 Popular Games</a>
-      <a href="#about">ℹ️ About</a>
+
+    <div class="menu-title">
+      GAME CATEGORIES
+    </div>
+
+
+    <nav class="category-menu">
+
+      <button class="category-link active" data-filter="all">
+        <span>🎮</span>
+        <span>All Games</span>
+      </button>
+
+      <button class="category-link" data-filter="two-players">
+        <span>👥</span>
+        <span>Two Players</span>
+      </button>
+
+      <button class="category-link" data-filter="brain">
+        <span>🧠</span>
+        <span>Brain & Memory</span>
+      </button>
+
+      <button class="category-link" data-filter="math">
+        <span>🧮</span>
+        <span>Math</span>
+      </button>
+
+      <button class="category-link" data-filter="reflex">
+        <span>⚡</span>
+        <span>Reflex</span>
+      </button>
+
+      <button class="category-link" data-filter="action">
+        <span>🏃</span>
+        <span>Action</span>
+      </button>
+
+      <button class="category-link" data-filter="choice">
+        <span>🎲</span>
+        <span>Luck & Choice</span>
+      </button>
+
     </nav>
+
+
+    <div class="menu-divider"></div>
+
+
+    <nav class="extra-menu">
+
+      <a href="#home">
+        🏠 Home
+      </a>
+
+      <a href="#about">
+        ℹ️ About
+      </a>
+
+    </nav>
+
   </aside>
 
 
-  <!-- TOP BAR -->
+  <!-- ================================
+       TOP BAR
+  ================================= -->
+
   <header class="topbar">
+
     <div class="topbar-logo">
-      <div class="topbar-icon">🎮</div>
+
+      <div class="topbar-icon">
+        🎮
+      </div>
 
       <div class="topbar-name">
         <span>MINI</span>
         <strong>GAMES</strong>
       </div>
+
     </div>
 
-    <button class="menu-button" id="openMenu" aria-label="Open menu">
+
+    <button
+      class="menu-button"
+      id="openMenu"
+      aria-label="Open menu"
+    >
       <span></span>
       <span></span>
       <span></span>
     </button>
+
   </header>
 
 
-  <!-- HERO -->
+  <!-- ================================
+       MAIN
+  ================================= -->
+
   <main id="home">
+
+
+    <!-- HERO -->
 
     <section class="hero">
 
@@ -64,7 +163,7 @@
           🎮 A WORLD OF MINI GAMES
         </div>
 
-        <!-- BIG LOGO -->
+
         <div class="hero-logo">
 
           <div class="hero-logo-icon">
@@ -78,11 +177,13 @@
 
         </div>
 
+
         <h1>
           PLAY.
           <span>COMPETE.</span>
           HAVE FUN.
         </h1>
+
 
         <p>
           Fast, fun and addictive mini games.
@@ -90,14 +191,23 @@
           and discover something new.
         </p>
 
+
         <div class="hero-buttons">
-          <a href="#games" class="btn btn-primary">
+
+          <a
+            href="#games"
+            class="btn btn-primary"
+          >
             🎮 PLAY GAMES
           </a>
 
-          <a href="#games" class="btn btn-secondary">
+          <a
+            href="#games"
+            class="btn btn-secondary"
+          >
             🔥 EXPLORE GAMES
           </a>
+
         </div>
 
       </div>
@@ -105,236 +215,548 @@
     </section>
 
 
-    <!-- GAMES -->
-    <section class="games-section" id="games">
+    <!-- ================================
+         GAMES
+    ================================= -->
+
+    <section
+      class="games-section"
+      id="games"
+    >
 
       <div class="section-heading">
+
         <div>
-          <span class="section-label">GAME COLLECTION</span>
-          <h2>Choose Your Game</h2>
+
+          <span class="section-label">
+            GAME COLLECTION
+          </span>
+
+          <h2 id="gamesTitle">
+            All Games
+          </h2>
+
         </div>
 
-        <p>
-          Pick a game and start playing.
+        <p id="gamesCount">
+          12 games available
         </p>
+
       </div>
 
 
-      <div class="games-grid">
+      <div class="games-grid" id="gamesGrid">
 
-        <!-- 1 -->
-        <article class="game-card">
-          <div class="game-icon">⚡</div>
 
-          <div class="game-info">
-            <span class="game-number">01</span>
-            <h3>Reaction Test</h3>
-            <p>How fast are your reactions?</p>
+        <!-- ================================
+             01 REACTION TEST
+        ================================= -->
+
+        <article
+          class="game-card"
+          data-category="reflex"
+        >
+
+          <div class="game-icon">
+            ⚡
           </div>
 
-          <a href="games/reaction.html" class="game-button">
+          <div class="game-info">
+
+            <span class="game-number">
+              01
+            </span>
+
+            <h3>
+              Reaction Test
+            </h3>
+
+            <p>
+              How fast are your reactions?
+            </p>
+
+          </div>
+
+          <a
+            href="games/reaction.html"
+            class="game-button"
+          >
             PLAY NOW →
           </a>
+
         </article>
 
 
-        <!-- 2 -->
-        <article class="game-card">
-          <div class="game-icon">🔢</div>
+        <!-- ================================
+             02 GUESS THE NUMBER
+        ================================= -->
 
-          <div class="game-info">
-            <span class="game-number">02</span>
-            <h3>Guess the Number</h3>
-            <p>Can you find the secret number?</p>
+        <article
+          class="game-card"
+          data-category="brain"
+        >
+
+          <div class="game-icon">
+            🔢
           </div>
 
-          <a href="games/guess.html" class="game-button">
+          <div class="game-info">
+
+            <span class="game-number">
+              02
+            </span>
+
+            <h3>
+              Guess the Number
+            </h3>
+
+            <p>
+              Can you find the secret number?
+            </p>
+
+          </div>
+
+          <a
+            href="games/guess.html"
+            class="game-button"
+          >
             PLAY NOW →
           </a>
+
         </article>
 
 
-        <!-- 3 -->
-        <article class="game-card">
-          <div class="game-icon">🧠</div>
+        <!-- ================================
+             03 MEMORY
+        ================================= -->
 
-          <div class="game-info">
-            <span class="game-number">03</span>
-            <h3>Memory Game</h3>
-            <p>Test and train your memory.</p>
+        <article
+          class="game-card"
+          data-category="brain"
+        >
+
+          <div class="game-icon">
+            🧠
           </div>
 
-          <a href="games/memory.html" class="game-button">
+          <div class="game-info">
+
+            <span class="game-number">
+              03
+            </span>
+
+            <h3>
+              Memory Game
+            </h3>
+
+            <p>
+              Test and train your memory.
+            </p>
+
+          </div>
+
+          <a
+            href="games/memory.html"
+            class="game-button"
+          >
             PLAY NOW →
           </a>
+
         </article>
 
 
-        <!-- 4 -->
-        <article class="game-card">
-          <div class="game-icon">🤔</div>
+        <!-- ================================
+             04 IMPOSSIBLE CHOICE
+        ================================= -->
 
-          <div class="game-info">
-            <span class="game-number">04</span>
-            <h3>Impossible Choice</h3>
-            <p>Would you rather choose?</p>
+        <article
+          class="game-card"
+          data-category="choice"
+        >
+
+          <div class="game-icon">
+            🤔
           </div>
 
-          <a href="games/impossible.html" class="game-button">
+          <div class="game-info">
+
+            <span class="game-number">
+              04
+            </span>
+
+            <h3>
+              Impossible Choice
+            </h3>
+
+            <p>
+              Would you rather choose?
+            </p>
+
+          </div>
+
+          <a
+            href="games/impossible.html"
+            class="game-button"
+          >
             PLAY NOW →
           </a>
+
         </article>
 
 
-        <!-- 5 -->
-        <article class="game-card">
-          <div class="game-icon">❌⭕</div>
+        <!-- ================================
+             05 TIC TAC TOE
+        ================================= -->
 
-          <div class="game-info">
-            <span class="game-number">05</span>
-            <h3>Tic-Tac-Toe</h3>
-            <p>Challenge a friend in a classic battle.</p>
+        <article
+          class="game-card"
+          data-category="two-players"
+        >
+
+          <div class="game-icon">
+            ❌⭕
           </div>
 
-          <a href="games/tic-tac-toe.html" class="game-button">
+          <div class="game-info">
+
+            <span class="game-number">
+              05
+            </span>
+
+            <h3>
+              Tic-Tac-Toe
+            </h3>
+
+            <p>
+              Challenge a friend in a classic battle.
+            </p>
+
+          </div>
+
+          <a
+            href="games/tic-tac-toe.html"
+            class="game-button"
+          >
             PLAY NOW →
           </a>
+
         </article>
 
 
-        <!-- 6 -->
-        <article class="game-card">
-          <div class="game-icon">🎨</div>
+        <!-- ================================
+             06 COLOR RUSH
+        ================================= -->
 
-          <div class="game-info">
-            <span class="game-number">06</span>
-            <h3>Color Rush</h3>
-            <p>Click the correct color as fast as possible.</p>
+        <article
+          class="game-card"
+          data-category="reflex"
+        >
+
+          <div class="game-icon">
+            🎨
           </div>
 
-          <a href="games/color-rush.html" class="game-button">
+          <div class="game-info">
+
+            <span class="game-number">
+              06
+            </span>
+
+            <h3>
+              Color Rush
+            </h3>
+
+            <p>
+              Click the correct color as fast as possible.
+            </p>
+
+          </div>
+
+          <a
+            href="games/color-rush.html"
+            class="game-button"
+          >
             PLAY NOW →
           </a>
+
         </article>
 
 
-        <!-- 7 -->
-        <article class="game-card coming-soon">
-          <div class="game-icon">🎯</div>
+        <!-- ================================
+             07 TARGET CLICKER
+        ================================= -->
+
+        <article
+          class="game-card coming-soon"
+          data-category="reflex"
+        >
+
+          <div class="game-icon">
+            🎯
+          </div>
 
           <div class="game-info">
-            <span class="game-number">07</span>
-            <h3>Target Clicker</h3>
-            <p>Hit the targets before time runs out.</p>
+
+            <span class="game-number">
+              07
+            </span>
+
+            <h3>
+              Target Clicker
+            </h3>
+
+            <p>
+              Hit the targets before time runs out.
+            </p>
+
           </div>
 
           <span class="coming-label">
             COMING SOON
           </span>
+
         </article>
 
 
-        <!-- 8 -->
-        <article class="game-card coming-soon">
-          <div class="game-icon">🧩</div>
+        <!-- ================================
+             08 2048
+        ================================= -->
+
+        <article
+          class="game-card coming-soon"
+          data-category="brain"
+        >
+
+          <div class="game-icon">
+            🧩
+          </div>
 
           <div class="game-info">
-            <span class="game-number">08</span>
-            <h3>2048 Mini</h3>
-            <p>Combine numbers and reach 2048.</p>
+
+            <span class="game-number">
+              08
+            </span>
+
+            <h3>
+              2048 Mini
+            </h3>
+
+            <p>
+              Combine numbers and reach 2048.
+            </p>
+
           </div>
 
           <span class="coming-label">
             COMING SOON
           </span>
+
         </article>
 
 
-        <!-- 9 -->
-        <article class="game-card coming-soon">
-          <div class="game-icon">🔴</div>
+        <!-- ================================
+             09 DON'T TOUCH RED
+        ================================= -->
+
+        <article
+          class="game-card coming-soon"
+          data-category="action"
+        >
+
+          <div class="game-icon">
+            🔴
+          </div>
 
           <div class="game-info">
-            <span class="game-number">09</span>
-            <h3>Don't Touch Red</h3>
-            <p>One wrong move and it's game over.</p>
+
+            <span class="game-number">
+              09
+            </span>
+
+            <h3>
+              Don't Touch Red
+            </h3>
+
+            <p>
+              One wrong move and it's game over.
+            </p>
+
           </div>
 
           <span class="coming-label">
             COMING SOON
           </span>
+
         </article>
 
 
-        <!-- 10 -->
-        <article class="game-card coming-soon">
-          <div class="game-icon">🧮</div>
+        <!-- ================================
+             10 QUICK MATH
+        ================================= -->
+
+        <article
+          class="game-card coming-soon"
+          data-category="math"
+        >
+
+          <div class="game-icon">
+            🧮
+          </div>
 
           <div class="game-info">
-            <span class="game-number">10</span>
-            <h3>Quick Math</h3>
-            <p>Solve calculations before time runs out.</p>
+
+            <span class="game-number">
+              10
+            </span>
+
+            <h3>
+              Quick Math
+            </h3>
+
+            <p>
+              Solve calculations before time runs out.
+            </p>
+
           </div>
 
           <span class="coming-label">
             COMING SOON
           </span>
+
         </article>
 
 
-        <!-- 11 -->
-        <article class="game-card coming-soon">
-          <div class="game-icon">🏃</div>
+        <!-- ================================
+             11 DODGE
+        ================================= -->
+
+        <article
+          class="game-card coming-soon"
+          data-category="action"
+        >
+
+          <div class="game-icon">
+            🏃
+          </div>
 
           <div class="game-info">
-            <span class="game-number">11</span>
-            <h3>Dodge</h3>
-            <p>Avoid obstacles and survive.</p>
+
+            <span class="game-number">
+              11
+            </span>
+
+            <h3>
+              Dodge
+            </h3>
+
+            <p>
+              Avoid obstacles and survive.
+            </p>
+
           </div>
 
           <span class="coming-label">
             COMING SOON
           </span>
+
         </article>
 
 
-        <!-- 12 -->
-        <article class="game-card coming-soon">
-          <div class="game-icon">🪙</div>
+        <!-- ================================
+             12 COIN FLIP
+        ================================= -->
+
+        <article
+          class="game-card coming-soon"
+          data-category="choice"
+        >
+
+          <div class="game-icon">
+            🪙
+          </div>
 
           <div class="game-info">
-            <span class="game-number">12</span>
-            <h3>Coin Flip</h3>
-            <p>Heads or tails?</p>
+
+            <span class="game-number">
+              12
+            </span>
+
+            <h3>
+              Coin Flip
+            </h3>
+
+            <p>
+              Heads or tails?
+            </p>
+
           </div>
 
           <span class="coming-label">
             COMING SOON
           </span>
+
         </article>
+
+
+      </div>
+
+
+      <!-- NO RESULTS -->
+
+      <div
+        class="no-results"
+        id="noResults"
+      >
+
+        <div>
+          🎮
+        </div>
+
+        <h3>
+          No games here yet
+        </h3>
+
+        <p>
+          More games are coming soon!
+        </p>
 
       </div>
 
     </section>
 
 
-    <!-- ABOUT -->
-    <section class="about-section" id="about">
+    <!-- ================================
+         ABOUT
+    ================================= -->
+
+    <section
+      class="about-section"
+      id="about"
+    >
 
       <div class="about-box">
 
-        <div class="about-icon">🎮</div>
+        <div class="about-icon">
+          🎮
+        </div>
 
         <div>
-          <span class="section-label">ABOUT MINI GAMES</span>
 
-          <h2>Small Games. Big Fun.</h2>
+          <span class="section-label">
+            ABOUT MINI GAMES
+          </span>
+
+          <h2>
+            Small Games. Big Fun.
+          </h2>
 
           <p>
-            Mini Games is a collection of simple, fast and fun
-            browser games. Play whenever you want, challenge
-            yourself and try to beat your best scores.
+            Mini Games is a collection of simple,
+            fast and fun browser games. Play whenever
+            you want, challenge yourself and try to
+            beat your best scores.
           </p>
+
         </div>
 
       </div>
@@ -344,12 +766,20 @@
   </main>
 
 
-  <!-- FOOTER -->
+  <!-- ================================
+       FOOTER
+  ================================= -->
+
   <footer>
 
     <div class="footer-logo">
+
       <span>🎮</span>
-      <strong>MINI GAMES</strong>
+
+      <strong>
+        MINI GAMES
+      </strong>
+
     </div>
 
     <p>
@@ -363,33 +793,245 @@
   </footer>
 
 
-  <!-- MENU SCRIPT -->
+  <!-- ================================
+       JAVASCRIPT
+  ================================= -->
+
   <script>
 
-    const openMenu = document.getElementById("openMenu");
-    const closeMenu = document.getElementById("closeMenu");
-    const sideMenu = document.getElementById("sideMenu");
-    const menuOverlay = document.getElementById("menuOverlay");
+    /* -------------------------------
+       MENU
+    -------------------------------- */
+
+    const openMenu =
+      document.getElementById("openMenu");
+
+    const closeMenu =
+      document.getElementById("closeMenu");
+
+    const sideMenu =
+      document.getElementById("sideMenu");
+
+    const menuOverlay =
+      document.getElementById("menuOverlay");
+
 
     function showMenu() {
+
       sideMenu.classList.add("active");
+
       menuOverlay.classList.add("active");
+
       document.body.classList.add("menu-open");
+
     }
+
 
     function hideMenu() {
+
       sideMenu.classList.remove("active");
+
       menuOverlay.classList.remove("active");
+
       document.body.classList.remove("menu-open");
+
     }
 
-    openMenu.addEventListener("click", showMenu);
-    closeMenu.addEventListener("click", hideMenu);
-    menuOverlay.addEventListener("click", hideMenu);
 
-    document.querySelectorAll(".side-menu a").forEach(link => {
-      link.addEventListener("click", hideMenu);
+    openMenu.addEventListener(
+      "click",
+      showMenu
+    );
+
+    closeMenu.addEventListener(
+      "click",
+      hideMenu
+    );
+
+    menuOverlay.addEventListener(
+      "click",
+      hideMenu
+    );
+
+
+    /* -------------------------------
+       GAME FILTER
+    -------------------------------- */
+
+    const categoryLinks =
+      document.querySelectorAll(
+        ".category-link"
+      );
+
+    const gameCards =
+      document.querySelectorAll(
+        ".game-card"
+      );
+
+    const gamesTitle =
+      document.getElementById(
+        "gamesTitle"
+      );
+
+    const gamesCount =
+      document.getElementById(
+        "gamesCount"
+      );
+
+    const noResults =
+      document.getElementById(
+        "noResults"
+      );
+
+
+    const categoryNames = {
+
+      "all": "All Games",
+
+      "two-players":
+        "Two Players",
+
+      "brain":
+        "Brain & Memory",
+
+      "math":
+        "Math",
+
+      "reflex":
+        "Reflex",
+
+      "action":
+        "Action",
+
+      "choice":
+        "Luck & Choice"
+
+    };
+
+
+    function filterGames(category) {
+
+      let visibleGames = 0;
+
+
+      gameCards.forEach(card => {
+
+        const cardCategory =
+          card.dataset.category;
+
+
+        if (
+          category === "all" ||
+          cardCategory === category
+        ) {
+
+          card.classList.remove(
+            "hidden-game"
+          );
+
+          visibleGames++;
+
+        } else {
+
+          card.classList.add(
+            "hidden-game"
+          );
+
+        }
+
+      });
+
+
+      gamesTitle.textContent =
+        categoryNames[category];
+
+
+      if (visibleGames === 1) {
+
+        gamesCount.textContent =
+          "1 game";
+
+      } else {
+
+        gamesCount.textContent =
+          visibleGames + " games";
+
+      }
+
+
+      if (visibleGames === 0) {
+
+        noResults.classList.add(
+          "show"
+        );
+
+      } else {
+
+        noResults.classList.remove(
+          "show"
+        );
+
+      }
+
+    }
+
+
+    categoryLinks.forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          categoryLinks.forEach(
+            item =>
+              item.classList.remove(
+                "active"
+              )
+          );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          const category =
+            button.dataset.filter;
+
+
+          filterGames(category);
+
+          hideMenu();
+
+
+          document.getElementById(
+            "games"
+          ).scrollIntoView({
+            behavior: "smooth"
+          });
+
+        }
+      );
+
     });
+
+
+    /* -------------------------------
+       CLOSE MENU WITH ESC
+    -------------------------------- */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (event.key === "Escape") {
+
+          hideMenu();
+
+        }
+
+      }
+    );
 
   </script>
 
