@@ -1,140 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Mini Games</title>
+  <meta name="description" content="Play fun, fast and addictive mini games online for free.">
 
   <link rel="stylesheet" href="style.css">
-
 </head>
-
 
 <body>
 
-
   <!-- SIDE MENU -->
-
   <div class="menu-overlay" id="menuOverlay"></div>
 
   <aside class="side-menu" id="sideMenu">
-
     <div class="menu-header">
+      <div class="menu-logo">
+        <span class="menu-logo-icon">🎮</span>
+        <span>MINI GAMES</span>
+      </div>
 
-      <h2>🎮 Mini Games</h2>
-
-      <button
-        class="close-menu"
-        id="closeMenu">
-        ×
-      </button>
-
+      <button class="close-menu" id="closeMenu">×</button>
     </div>
 
-
-    <nav class="menu-links">
-
-      <a href="index.html">
-        🏠 Home
-      </a>
-
-      <a href="#games">
-        🎮 All Games
-      </a>
-
-      <a href="#games">
-        🔥 Popular Games
-      </a>
-
-      <a href="#about">
-        ℹ️ About
-      </a>
-
+    <nav>
+      <a href="#home">🏠 Home</a>
+      <a href="#games">🎮 All Games</a>
+      <a href="#games">🔥 Popular Games</a>
+      <a href="#about">ℹ️ About</a>
     </nav>
-
   </aside>
 
 
-  <div class="container">
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <div class="topbar-icon">🎮</div>
+
+      <div class="topbar-name">
+        <span>MINI</span>
+        <strong>GAMES</strong>
+      </div>
+    </div>
+
+    <button class="menu-button" id="openMenu" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
 
 
-    <!-- TOP BAR -->
-
-    <header class="topbar">
-
-      <a
-        href="index.html"
-        class="brand"
-      >
-
-        <div class="brand-icon">
-          🎮
-        </div>
-
-        <span>
-          Mini Games
-        </span>
-
-      </a>
-
-
-      <button
-        class="menu-button"
-        id="menuButton"
-        aria-label="Open menu"
-      >
-        ☰
-      </button>
-
-    </header>
-
-
-    <!-- HERO -->
+  <!-- HERO -->
+  <main id="home">
 
     <section class="hero">
 
-      <div class="hero-badge">
-        🎮 12 GAMES • MORE COMING SOON
-      </div>
+      <div class="hero-content">
 
+        <div class="hero-badge">
+          🎮 A WORLD OF MINI GAMES
+        </div>
 
-      <h1>
-        PLAY.
-        <span>COMPETE.</span>
-        HAVE FUN.
-      </h1>
+        <!-- BIG LOGO -->
+        <div class="hero-logo">
 
+          <div class="hero-logo-icon">
+            🎮
+          </div>
 
-      <p>
-        Fast, simple and fun mini games you can play
-        anytime. Challenge yourself and beat your
-        high score!
-      </p>
+          <div class="hero-logo-text">
+            <span>MINI</span>
+            <strong>GAMES</strong>
+          </div>
 
+        </div>
 
-      <div class="hero-buttons">
+        <h1>
+          PLAY.
+          <span>COMPETE.</span>
+          HAVE FUN.
+        </h1>
 
-        <a
-          href="#games"
-          class="hero-button primary"
-        >
-          🎮 PLAY GAMES
-        </a>
+        <p>
+          Fast, fun and addictive mini games.
+          Challenge yourself, beat your scores
+          and discover something new.
+        </p>
 
+        <div class="hero-buttons">
+          <a href="#games" class="btn btn-primary">
+            🎮 PLAY GAMES
+          </a>
 
-        <a
-          href="#about"
-          class="hero-button secondary"
-        >
-          LEARN MORE
-        </a>
+          <a href="#games" class="btn btn-secondary">
+            🔥 EXPLORE GAMES
+          </a>
+        </div>
 
       </div>
 
@@ -142,448 +106,292 @@
 
 
     <!-- GAMES -->
-
-    <main
-      class="section"
-      id="games"
-    >
+    <section class="games-section" id="games">
 
       <div class="section-heading">
-
         <div>
-
-          <h2>
-            🎮 Games
-          </h2>
-
-          <p>
-            Pick a game and start playing.
-          </p>
-
+          <span class="section-label">GAME COLLECTION</span>
+          <h2>Choose Your Game</h2>
         </div>
 
+        <p>
+          Pick a game and start playing.
+        </p>
       </div>
 
 
-      <div class="games">
-
+      <div class="games-grid">
 
         <!-- 1 -->
+        <article class="game-card">
+          <div class="game-icon">⚡</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            ⚡
+          <div class="game-info">
+            <span class="game-number">01</span>
+            <h3>Reaction Test</h3>
+            <p>How fast are your reactions?</p>
           </div>
 
-          <h2>
-            Reaction Test
-          </h2>
-
-          <p>
-            How fast are your reactions?
-          </p>
-
-          <a href="games/reaction.html">
-
-            <button>
-              PLAY NOW
-            </button>
-
+          <a href="games/reaction.html" class="game-button">
+            PLAY NOW →
           </a>
-
-        </div>
+        </article>
 
 
         <!-- 2 -->
+        <article class="game-card">
+          <div class="game-icon">🔢</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            🔢
+          <div class="game-info">
+            <span class="game-number">02</span>
+            <h3>Guess the Number</h3>
+            <p>Can you find the secret number?</p>
           </div>
 
-          <h2>
-            Guess the Number
-          </h2>
-
-          <p>
-            Can you guess the secret number?
-          </p>
-
-          <a href="games/guess.html">
-
-            <button>
-              PLAY NOW
-            </button>
-
+          <a href="games/guess.html" class="game-button">
+            PLAY NOW →
           </a>
-
-        </div>
+        </article>
 
 
         <!-- 3 -->
+        <article class="game-card">
+          <div class="game-icon">🧠</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            🧠
+          <div class="game-info">
+            <span class="game-number">03</span>
+            <h3>Memory Game</h3>
+            <p>Test and train your memory.</p>
           </div>
 
-          <h2>
-            Memory Game
-          </h2>
-
-          <p>
-            Find all matching pairs!
-          </p>
-
-          <a href="games/memory.html">
-
-            <button>
-              PLAY NOW
-            </button>
-
+          <a href="games/memory.html" class="game-button">
+            PLAY NOW →
           </a>
-
-        </div>
+        </article>
 
 
         <!-- 4 -->
+        <article class="game-card">
+          <div class="game-icon">🤔</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            🤔
+          <div class="game-info">
+            <span class="game-number">04</span>
+            <h3>Impossible Choice</h3>
+            <p>Would you rather choose?</p>
           </div>
 
-          <h2>
-            Impossible Choice
-          </h2>
-
-          <p>
-            Choose between two impossible options.
-          </p>
-
-          <a href="games/impossible.html">
-
-            <button>
-              PLAY NOW
-            </button>
-
+          <a href="games/impossible.html" class="game-button">
+            PLAY NOW →
           </a>
-
-        </div>
+        </article>
 
 
         <!-- 5 -->
+        <article class="game-card">
+          <div class="game-icon">❌⭕</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            ❌⭕
+          <div class="game-info">
+            <span class="game-number">05</span>
+            <h3>Tic-Tac-Toe</h3>
+            <p>Challenge a friend in a classic battle.</p>
           </div>
 
-          <h2>
-            Tic-Tac-Toe
-          </h2>
-
-          <p>
-            Play 3×3 Tic-Tac-Toe with a friend!
-          </p>
-
-          <a href="games/tic-tac-toe.html">
-
-            <button>
-              PLAY NOW
-            </button>
-
+          <a href="games/tic-tac-toe.html" class="game-button">
+            PLAY NOW →
           </a>
-
-        </div>
+        </article>
 
 
         <!-- 6 -->
+        <article class="game-card">
+          <div class="game-icon">🎨</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            🎨
+          <div class="game-info">
+            <span class="game-number">06</span>
+            <h3>Color Rush</h3>
+            <p>Click the correct color as fast as possible.</p>
           </div>
 
-          <h2>
-            Color Rush
-          </h2>
-
-          <p>
-            Click the correct color as fast as you can!
-          </p>
-
-          <a href="games/color-rush.html">
-
-            <button>
-              PLAY NOW
-            </button>
-
+          <a href="games/color-rush.html" class="game-button">
+            PLAY NOW →
           </a>
-
-        </div>
+        </article>
 
 
         <!-- 7 -->
+        <article class="game-card coming-soon">
+          <div class="game-icon">🎯</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            🎯
+          <div class="game-info">
+            <span class="game-number">07</span>
+            <h3>Target Clicker</h3>
+            <p>Hit the targets before time runs out.</p>
           </div>
 
-          <h2>
-            Target Clicker
-          </h2>
-
-          <p>
-            Click the targets as fast as you can!
-          </p>
-
-          <button disabled>
+          <span class="coming-label">
             COMING SOON
-          </button>
-
-        </div>
+          </span>
+        </article>
 
 
         <!-- 8 -->
+        <article class="game-card coming-soon">
+          <div class="game-icon">🧩</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            🧩
+          <div class="game-info">
+            <span class="game-number">08</span>
+            <h3>2048 Mini</h3>
+            <p>Combine numbers and reach 2048.</p>
           </div>
 
-          <h2>
-            2048 Mini
-          </h2>
-
-          <p>
-            Combine numbers and reach 2048!
-          </p>
-
-          <button disabled>
+          <span class="coming-label">
             COMING SOON
-          </button>
-
-        </div>
+          </span>
+        </article>
 
 
         <!-- 9 -->
+        <article class="game-card coming-soon">
+          <div class="game-icon">🔴</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            🔴
+          <div class="game-info">
+            <span class="game-number">09</span>
+            <h3>Don't Touch Red</h3>
+            <p>One wrong move and it's game over.</p>
           </div>
 
-          <h2>
-            Don't Touch Red
-          </h2>
-
-          <p>
-            Avoid the red and survive as long as possible!
-          </p>
-
-          <button disabled>
+          <span class="coming-label">
             COMING SOON
-          </button>
-
-        </div>
+          </span>
+        </article>
 
 
         <!-- 10 -->
+        <article class="game-card coming-soon">
+          <div class="game-icon">🧮</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            🧮
+          <div class="game-info">
+            <span class="game-number">10</span>
+            <h3>Quick Math</h3>
+            <p>Solve calculations before time runs out.</p>
           </div>
 
-          <h2>
-            Quick Math
-          </h2>
-
-          <p>
-            Solve math problems before time runs out!
-          </p>
-
-          <button disabled>
+          <span class="coming-label">
             COMING SOON
-          </button>
-
-        </div>
+          </span>
+        </article>
 
 
         <!-- 11 -->
+        <article class="game-card coming-soon">
+          <div class="game-icon">🏃</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            🏃
+          <div class="game-info">
+            <span class="game-number">11</span>
+            <h3>Dodge</h3>
+            <p>Avoid obstacles and survive.</p>
           </div>
 
-          <h2>
-            Dodge
-          </h2>
-
-          <p>
-            Dodge obstacles and survive!
-          </p>
-
-          <button disabled>
+          <span class="coming-label">
             COMING SOON
-          </button>
-
-        </div>
+          </span>
+        </article>
 
 
         <!-- 12 -->
+        <article class="game-card coming-soon">
+          <div class="game-icon">🪙</div>
 
-        <div class="game">
-
-          <div class="game-icon">
-            🪙
+          <div class="game-info">
+            <span class="game-number">12</span>
+            <h3>Coin Flip</h3>
+            <p>Heads or tails?</p>
           </div>
 
-          <h2>
-            Coin Flip
-          </h2>
-
-          <p>
-            Flip the coin and test your luck!
-          </p>
-
-          <button disabled>
+          <span class="coming-label">
             COMING SOON
-          </button>
-
-        </div>
-
-
-      </div>
-
-    </main>
-
-
-    <!-- ABOUT -->
-
-    <section
-      class="section"
-      id="about"
-    >
-
-      <div class="section-heading">
-
-        <div>
-
-          <h2>
-            ℹ️ About Mini Games
-          </h2>
-
-          <p>
-            A collection of small games made for fun.
-          </p>
-
-        </div>
+          </span>
+        </article>
 
       </div>
 
     </section>
 
 
-    <!-- FOOTER -->
+    <!-- ABOUT -->
+    <section class="about-section" id="about">
 
-    <footer>
+      <div class="about-box">
 
-      <p>
-        © 2026 Mini Games
-      </p>
+        <div class="about-icon">🎮</div>
 
-      <p>
-        Play. Compete. Have fun.
-      </p>
+        <div>
+          <span class="section-label">ABOUT MINI GAMES</span>
 
-    </footer>
+          <h2>Small Games. Big Fun.</h2>
+
+          <p>
+            Mini Games is a collection of simple, fast and fun
+            browser games. Play whenever you want, challenge
+            yourself and try to beat your best scores.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
 
 
-  </div>
+  <!-- FOOTER -->
+  <footer>
+
+    <div class="footer-logo">
+      <span>🎮</span>
+      <strong>MINI GAMES</strong>
+    </div>
+
+    <p>
+      Small games. Big fun.
+    </p>
+
+    <span class="copyright">
+      © 2026 Mini Games
+    </span>
+
+  </footer>
 
 
   <!-- MENU SCRIPT -->
-
   <script>
 
-    const menuButton =
-      document.getElementById("menuButton");
+    const openMenu = document.getElementById("openMenu");
+    const closeMenu = document.getElementById("closeMenu");
+    const sideMenu = document.getElementById("sideMenu");
+    const menuOverlay = document.getElementById("menuOverlay");
 
-    const closeMenu =
-      document.getElementById("closeMenu");
-
-    const sideMenu =
-      document.getElementById("sideMenu");
-
-    const menuOverlay =
-      document.getElementById("menuOverlay");
-
-
-    function openMenu() {
-
-      sideMenu.classList.add("open");
-
-      menuOverlay.classList.add("show");
-
+    function showMenu() {
+      sideMenu.classList.add("active");
+      menuOverlay.classList.add("active");
+      document.body.classList.add("menu-open");
     }
 
-
-    function closeSideMenu() {
-
-      sideMenu.classList.remove("open");
-
-      menuOverlay.classList.remove("show");
-
+    function hideMenu() {
+      sideMenu.classList.remove("active");
+      menuOverlay.classList.remove("active");
+      document.body.classList.remove("menu-open");
     }
 
+    openMenu.addEventListener("click", showMenu);
+    closeMenu.addEventListener("click", hideMenu);
+    menuOverlay.addEventListener("click", hideMenu);
 
-    menuButton.addEventListener(
-      "click",
-      openMenu
-    );
-
-
-    closeMenu.addEventListener(
-      "click",
-      closeSideMenu
-    );
-
-
-    menuOverlay.addEventListener(
-      "click",
-      closeSideMenu
-    );
-
-
-    document
-      .querySelectorAll(".menu-links a")
-      .forEach(link => {
-
-        link.addEventListener(
-          "click",
-          closeSideMenu
-        );
-
-      });
+    document.querySelectorAll(".side-menu a").forEach(link => {
+      link.addEventListener("click", hideMenu);
+    });
 
   </script>
 
-
 </body>
-
 </html>
