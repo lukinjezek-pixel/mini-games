@@ -1,1 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2048 Mini - Mini Games</title>
 
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  background:
+    radial-gradient(circle at top left, rgba(124, 58, 237, 0.25), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.2), transparent 35%),
+    #080b14;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.game-wrapper {
+  width: 100%;
+  max-width: 520px;
+}
+
+.back {
+  display: inline-block;
+  color: #aaa;
+  text-decoration: none;
+  margin-bottom: 18px;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.back:hover {
+  color: white;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.title-area h1 {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+.title-area p {
+  color: #999;
+  margin-top: 4px;
+}
+
+.stats {
+  display: flex;
+  gap: 8px;
+}
+
+.stat {
+  min-width: 75px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  color: #999;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  display: block;
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.game-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 10px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  touch-action: none;
+}
+
+.board {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.cell {
+  background: rgba(255,255,255,0.07);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(22px, 8vw, 42px);
+  font-weight: 900;
+  transition: 0.12s;
+  user-select: none;
+}
+
+.tile-2 {
+  background: #eee4da;
+  color: #3b3027;
+}
+
+.tile-4 {
+  background: #ede0c8;
+  color: #3b3027;
+}
+
+.tile-8 {
+  background: #f2b179;
+  color: white;
+}
+
+.tile-16 {
+  background: #f59563;
+  color: white;
+}
+
+.tile-32 {
+  background: #f67c5f;
+  color: white;
+}
+
+.tile-64 {
+  background: #f65e3b;
+  color: white;
+}
+
+.tile-128 {
+  background: #edcf72;
+  color: white;
+  font-size: clamp(20px, 7vw, 36px);
+}
+
+.tile-256 {
+  background: #edcc61;
+  color: white;
+  font-size: clamp(20px, 7vw, 36px);
+}
+
+.tile-512 {
+  background: #edc850;
+  color: white;
+  font-size: clamp(20px, 7vw, 36px);
+}
+
+.tile-1024 {
+  background: #edc53f;
+  color: white;
+  font-size: clamp(17px, 6vw, 31px);
+}
+
+.tile-2048 {
+  background: #edc22e;
+  color: white;
+  font-size: clamp(17px, 6vw, 31px);
+  box-shadow: 0 0 25px rgba(255, 204, 0, 0.5);
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+button {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  color: white;
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+.hint {
+  text-align: center;
+  color: #777;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  background: rgba(8, 11, 20, 0.82);
+  backdrop-filter: blur(5px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+  z-index: 5;
+}
+
+.overlay.show {
+  display: flex;
+}
+
+.overlay h2 {
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+
+.overlay p {
+  color: #bbb;
+  margin-bottom: 20px;
+}
+
+.overlay button {
+  flex: none;
+  width: 180px;
+}
+
+@media (max-width: 500px) {
+  body {
+    padding: 14px;
+  }
+
+  .title-area h1 {
+    font-size: 40px;
+  }
+
+  .title-area p {
+    font-size: 13px;
+  }
+
+  .stat {
+    min-width: 65px;
+    padding: 8px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+  }
+
+  .board {
+    gap: 7px;
+  }
+
+  .cell {
+    border-radius: 9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="game-wrapper">
+
+  <a href="../index.html" class="back">← Back to Mini Games</a>
+
+  <div class="header">
+    <div class="title-area">
+      <h1>2048</h1>
+      <p>Merge the tiles. Reach 2048.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-label">Score</span>
+        <span class="stat-value" id="score">0</span>
+      </div>
+
+      <div class="stat">
+        <span class="stat-label">Best</span>
+        <span class="stat-value" id="best">0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-box" id="gameBox">
+
+    <div class="board" id="board"></div>
+
+    <div class="overlay" id="overlay">
+      <h2 id="overlayTitle">Game Over</h2>
+      <p id="overlayText">No more moves!</p>
+      <button id="overlayButton">PLAY AGAIN</button>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button id="newGame">NEW GAME</button>
+    <button id="soundButton">🔊 SOUND ON</button>
+  </div>
+
+  <p class="hint">
+    Use arrow keys / WASD or swipe on your phone
+  </p>
+
+</div>
+
+<script>
+const boardElement = document.getElementById("board");
+const scoreElement = document.getElementById("score");
+const bestElement = document.getElementById("best");
+const overlay = document.getElementById("overlay");
+const overlayTitle = document.getElementById("overlayTitle");
+const overlayText = document.getElementById("overlayText");
+const overlayButton = document.getElementById("overlayButton");
+const newGameButton = document.getElementById("newGame");
+const soundButton = document.getElementById("soundButton");
+const gameBox = document.getElementById("gameBox");
+
+let board = [];
+let score = 0;
+let best = Number(localStorage.getItem("miniGames2048Best")) || 0;
+let gameOver = false;
+let won = false;
+let soundOn = true;
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+bestElement.textContent = best;
+
+function createEmptyBoard() {
+  return Array.from({ length: 4 }, () => Array(4).fill(0));
+}
+
+function startGame() {
+  board = createEmptyBoard();
+  score = 0;
+  gameOver = false;
+  won = false;
+
+  overlay.classList.remove("show");
+
+  addRandomTile();
+  addRandomTile();
+
+  updateDisplay();
+}
+
+function addRandomTile() {
+  const empty = [];
+
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      if (board[row][col] === 0) {
+        empty.push({ row, col });
+      }
+    }
+  }
+
+  if (empty.length === 0) return;
+
+  const position = empty[Math.floor(Math.random() * empty.length)];
+
+  board[position.row][position.col] =
+    Math.random() < 0.9 ? 2 : 4;
+}
+
+function updateDisplay() {
+  boardElement.innerHTML = "";
+
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+
+      const cell = document.createElement("div");
+      cell.className = "cell";
+
+      const value = board[row][col];
+
+      if (value !== 0) {
+        cell.textContent = value;
+        cell.classList.add("tile-" + value);
+      }
+
+      boardElement.appendChild(cell);
+    }
+  }
+
+  scoreElement.textContent = score;
+
+  if (score > best) {
+    best = score;
+    localStorage.setItem("miniGames2048Best", best);
+  }
+
+  bestElement.textContent = best;
+}
+
+function move(direction) {
+
+  if (gameOver) return;
+
+  let moved = false;
+  let gained = 0;
+
+  const oldBoard = JSON.stringify(board);
+
+  if (direction === "left") {
+    for (let row = 0; row < 4; row++) {
+      const result = mergeLine(board[row]);
+      board[row] = result.line;
+      gained += result.score;
+    }
+  }
+
+  if (direction === "right") {
+    for (let row = 0; row < 4; row++) {
+      const reversed = [...board[row]].reverse();
+      const result = mergeLine(reversed);
+
+      board[row] = result.line.reverse();
+      gained += result.score;
+    }
+  }
+
+  if (direction === "up") {
+    for (let col = 0; col < 4; col++) {
+
+      const line = [];
+
+      for (let row = 0; row < 4; row++) {
+        line.push(board[row][col]);
+      }
+
+      const result = mergeLine(line);
+
+      for (let row = 0; row < 4; row++) {
+        board[row][col] = result.line[row];
+      }
+
+      gained += result.score;
+    }
+  }
+
+  if (direction === "down") {
+    for (let col = 0; col < 4; col++) {
+
+      const line = [];
+
+      for (let row = 0; row < 4; row++) {
+        line.push(board[row][col]);
+      }
+
+      const reversed = line.reverse();
+      const result = mergeLine(reversed);
+      const finalLine = result.line.reverse();
+
+      for (let row = 0; row < 4; row++) {
+        board[row][col] = finalLine[row];
+      }
+
+      gained += result.score;
+    }
+  }
+
+  moved = JSON.stringify(board) !== oldBoard;
+
+  if (!moved) return;
+
+  score += gained;
+
+  addRandomTile();
+
+  playMoveSound();
+
+  updateDisplay();
+
+  if (!won && has2048()) {
+    won = true;
+    showWin();
+    return;
+  }
+
+  if (!canMove()) {
+    gameOver = true;
+    showGameOver();
+  }
+}
+
+function mergeLine(line) {
+
+  const filtered = line.filter(value => value !== 0);
+  const result = [];
+  let gained = 0;
+
+  for (let i = 0; i < filtered.length; i++) {
+
+    if (
+      i < filtered.length - 1 &&
+      filtered[i] === filtered[i + 1]
+    ) {
+
+      const merged = filtered[i] * 2;
+
+      result.push(merged);
+      gained += merged;
+
+      playMergeSound();
+
+      i++;
+    } else {
+      result.push(filtered[i]);
+    }
+  }
+
+  while (result.length < 4) {
+    result.push(0);
+  }
+
+  return {
+    line: result,
+    score: gained
+  };
+}
+
+function has2048() {
+  return board.some(row => row.includes(2048));
+}
+
+function canMove() {
+
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+
+      if (board[row][col] === 0) {
+        return true;
+      }
+
+      if (
+        col < 3 &&
+        board[row][col] === board[row][col + 1]
+      ) {
+        return true;
+      }
+
+      if (
+        row < 3 &&
+        board[row][col] === board[row + 1][col]
+      ) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function showWin() {
+  overlayTitle.textContent = "🎉 2048!";
+  overlayText.textContent =
+    "You reached 2048! You can keep playing.";
+  overlayButton.textContent = "KEEP PLAYING";
+  overlay.classList.add("show");
+}
+
+function showGameOver() {
+  overlayTitle.textContent = "GAME OVER";
+  overlayText.textContent =
+    "No more moves. Score: " + score;
+  overlayButton.textContent = "PLAY AGAIN";
+  overlay.classList.add("show");
+}
+
+overlayButton.addEventListener("click", () => {
+
+  if (won && !gameOver) {
+    overlay.classList.remove("show");
+    return;
+  }
+
+  startGame();
+});
+
+newGameButton.addEventListener("click", startGame);
+
+soundButton.addEventListener("click", () => {
+  soundOn = !soundOn;
+
+  soundButton.textContent =
+    soundOn ? "🔊 SOUND ON" : "🔇 SOUND OFF";
+});
+
+document.addEventListener("keydown", (event) => {
+
+  const keys = {
+    ArrowLeft: "left",
+    ArrowRight: "right",
+    ArrowUp: "up",
+    ArrowDown: "down",
+    a: "left",
+    d: "right",
+    w: "up",
+    s: "down"
+  };
+
+  const direction = keys[event.key];
+
+  if (!direction) return;
+
+  event.preventDefault();
+  move(direction);
+});
+
+gameBox.addEventListener("touchstart", (event) => {
+
+  const touch = event.changedTouches[0];
+
+  touchStartX = touch.screenX;
+  touchStartY = touch.screenY;
+
+}, { passive: true });
+
+gameBox.addEventListener("touchend", (event) => {
+
+  const touch = event.changedTouches[0];
+
+  const dx = touch.screenX - touchStartX;
+  const dy = touch.screenY - touchStartY;
+
+  const minSwipe = 30;
+
+  if (Math.abs(dx) < minSwipe &&
+      Math.abs(dy) < minSwipe) {
+    return;
+  }
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+
+    if (dx > 0) {
+      move("right");
+    } else {
+      move("left");
+    }
+
+  } else {
+
+    if (dy > 0) {
+      move("down");
+    } else {
+      move("up");
+    }
+  }
+
+}, { passive: true });
+
+let audioContext;
+
+function getAudioContext() {
+
+  if (!audioContext) {
+    audioContext =
+      new (window.AudioContext ||
+      window.webkitAudioContext)();
+  }
+
+  return audioContext;
+}
+
+function playTone(frequency, duration, type = "sine") {
+
+  if (!soundOn) return;
+
+  const ctx = getAudioContext();
+
+  if (ctx.state === "suspended") {
+    ctx.resume();
+  }
+
+  const oscillator = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  oscillator.type = type;
+  oscillator.frequency.value = frequency;
+
+  gain.gain.setValueAtTime(0.08, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,
+    ctx.currentTime + duration
+  );
+
+  oscillator.connect(gain);
+  gain.connect(ctx.destination);
+
+  oscillator.start();
+  oscillator.stop(ctx.currentTime + duration);
+}
+
+function playMoveSound() {
+  playTone(220, 0.05);
+}
+
+function playMergeSound() {
+  playTone(440, 0.08, "triangle");
+}
+
+startGame();
+</script>
+
+</body>
+</html>
