@@ -161,6 +161,7 @@ button:active {
 }
 
 @media (min-width: 700px) {
+
     #controls {
         opacity: .65;
     }
@@ -168,6 +169,33 @@ button:active {
     .control {
         width: 65px;
         height: 65px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    #hud {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+    }
+
+    .hudBox {
+        padding: 8px 12px;
+    }
+
+    .hudValue {
+        font-size: 19px;
+    }
+
+    #controls {
+        bottom: 18px;
+        gap: 12px;
+    }
+
+    .control {
+        width: 68px;
+        height: 68px;
     }
 }
 </style>
@@ -178,6 +206,7 @@ button:active {
 <div id="game"></div>
 
 <div id="hud">
+
     <div class="hudBox">
         <div class="hudLabel">Score</div>
         <div class="hudValue" id="score">0</div>
@@ -187,6 +216,7 @@ button:active {
         <div class="hudLabel">Best</div>
         <div class="hudValue" id="best">0</div>
     </div>
+
 </div>
 
 <a href="../index.html">
@@ -194,8 +224,11 @@ button:active {
 </a>
 
 <div id="menu">
+
     <div class="panel">
+
         <h1>3D RUN</h1>
+
         <p>
             Dodge the obstacles, collect coins and survive as long as possible.
             <br><br>
@@ -205,28 +238,41 @@ button:active {
         </p>
 
         <button id="start">START RUN</button>
+
     </div>
+
 </div>
 
 <div id="gameOver" class="hidden">
+
     <div class="panel">
+
         <h1>GAME OVER</h1>
+
         <p>
             Your score:
             <strong id="finalScore">0</strong>
+
             <br><br>
+
             Best score:
             <strong id="finalBest">0</strong>
         </p>
 
         <button id="restart">RUN AGAIN</button>
+
     </div>
+
 </div>
 
 <div id="controls">
+
     <button class="control" id="left">←</button>
+
     <button class="control" id="jump">↑</button>
+
     <button class="control" id="right">→</button>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
@@ -242,8 +288,13 @@ let obstacles = [];
 let coins = [];
 
 let running = false;
+
 let score = 0;
-let best = Number(localStorage.getItem("3dRunBest")) || 0;
+
+let best =
+    Number(
+        localStorage.getItem("3dRunBest")
+    ) || 0;
 
 let playerX = 0;
 let targetX = 0;
@@ -252,17 +303,98 @@ let velocityY = 0;
 let grounded = true;
 
 let speed = 0.28;
+
 let spawnTimer = 0;
 let coinTimer = 0;
 
-const scoreEl = document.getElementById("score");
-const bestEl = document.getElementById("best");
+const scoreEl =
+    document.getElementById("score");
+
+const bestEl =
+    document.getElementById("best");
 
 bestEl.textContent = best;
 
-const clock = new THREE.Clock();
+const clock =
+    new THREE.Clock();
 
-const lanes = [-3, 0, 3];
+
+/* =========================================================
+   RESPONSIVE LANES
+   ========================================================= */
+
+function getLaneSpacing() {
+
+    /*
+       Mobile screens are narrower, so the lanes
+       move closer together.
+
+       PC keeps the wider classic layout.
+    */
+
+    if (window.innerWidth < 500) {
+
+        return 2.15;
+
+    }
+
+    if (window.innerWidth < 700) {
+
+        return 2.4;
+
+    }
+
+    return 3;
+}
+
+
+let laneSpacing =
+    getLaneSpacing();
+
+let lanes = [
+    -laneSpacing,
+    0,
+    laneSpacing
+];
+
+
+function updateLanes() {
+
+    laneSpacing =
+        getLaneSpacing();
+
+    lanes = [
+        -laneSpacing,
+        0,
+        laneSpacing
+    ];
+
+    /*
+       Keep the player inside the new lanes
+       after changing screen orientation/size.
+    */
+
+    const closestLane =
+        lanes.reduce(
+            (closest, lane) =>
+                Math.abs(lane - targetX) <
+                Math.abs(closest - targetX)
+                    ? lane
+                    : closest,
+            lanes[0]
+        );
+
+    targetX = closestLane;
+
+    playerX =
+        Math.max(
+            -laneSpacing,
+            Math.min(
+                laneSpacing,
+                playerX
+            )
+        );
+}
 
 
 /* =========================================================
@@ -274,16 +406,23 @@ let audioContext = null;
 function initAudio() {
 
     if (!audioContext) {
-        audioContext = new (
-            window.AudioContext ||
-            window.webkitAudioContext
-        )();
+
+        audioContext =
+            new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
     }
 
-    if (audioContext.state === "suspended") {
+    if (
+        audioContext.state ===
+        "suspended"
+    ) {
+
         audioContext.resume();
     }
 }
+
 
 function playSound(type) {
 
@@ -296,7 +435,10 @@ function playSound(type) {
         audioContext.createGain();
 
     oscillator.connect(gain);
-    gain.connect(audioContext.destination);
+
+    gain.connect(
+        audioContext.destination
+    );
 
     let startFrequency = 440;
     let endFrequency = 440;
@@ -382,10 +524,13 @@ function playSound(type) {
 
 function init() {
 
-    scene = new THREE.Scene();
+    scene =
+        new THREE.Scene();
 
     scene.background =
-        new THREE.Color(0x050510);
+        new THREE.Color(
+            0x050510
+        );
 
     scene.fog =
         new THREE.Fog(
@@ -438,10 +583,14 @@ function init() {
 
     document
         .getElementById("game")
-        .appendChild(renderer.domElement);
+        .appendChild(
+            renderer.domElement
+        );
 
     createLights();
+
     createWorld();
+
     createPlayer();
 
     window.addEventListener(
@@ -516,9 +665,17 @@ function createWorld() {
     scene.add(ground);
 
 
-    // Lane lines
+    // Lane lines now match the actual lane positions
 
-    for (let x of [-1.5, 1.5]) {
+    const initialSpacing =
+        getLaneSpacing();
+
+    for (
+        let x of [
+            -initialSpacing / 2,
+            initialSpacing / 2
+        ]
+    ) {
 
         const line =
             new THREE.Mesh(
@@ -544,7 +701,9 @@ function createWorld() {
 
     // Side walls
 
-    for (let x of [-6.2, 6.2]) {
+    for (
+        let x of [-6.2, 6.2]
+    ) {
 
         const wall =
             new THREE.Mesh(
@@ -614,6 +773,7 @@ function createPlayer() {
     player =
         new THREE.Group();
 
+
     const body =
         new THREE.Mesh(
             new THREE.BoxGeometry(
@@ -629,6 +789,7 @@ function createPlayer() {
         );
 
     body.position.y = 1.15;
+
     body.castShadow = true;
 
     player.add(body);
@@ -647,6 +808,7 @@ function createPlayer() {
         );
 
     head.position.y = 2.15;
+
     head.castShadow = true;
 
     player.add(head);
@@ -656,6 +818,7 @@ function createPlayer() {
         new THREE.MeshStandardMaterial({
             color: 0x20204a
         });
+
 
     for (
         let x of [-.3, .3]
@@ -682,6 +845,7 @@ function createPlayer() {
         player.add(leg);
     }
 
+
     player.position.set(
         0,
         0,
@@ -706,9 +870,11 @@ function createObstacle() {
             )
         ];
 
+
     const height =
         .9 +
         Math.random() * 1.3;
+
 
     const obstacle =
         new THREE.Mesh(
@@ -724,16 +890,20 @@ function createObstacle() {
             })
         );
 
+
     obstacle.position.set(
         lane,
         height / 2,
         -45
     );
 
+
     obstacle.castShadow = true;
 
-    // Remember lane for safe coin spawning
-    obstacle.userData.lane = lane;
+
+    obstacle.userData.lane =
+        lane;
+
 
     scene.add(obstacle);
 
@@ -747,43 +917,41 @@ function createObstacle() {
 
 function createCoin() {
 
-    /*
-       Find lanes that do NOT currently have
-       a nearby obstacle.
-
-       This prevents coins from spawning
-       directly inside obstacles.
-    */
-
     const safeLanes =
-        lanes.filter(lane => {
+        lanes.filter(
+            lane => {
 
-            return !obstacles.some(
-                obstacle => {
+                return !obstacles.some(
+                    obstacle => {
 
-                    const sameLane =
-                        Math.abs(
-                            obstacle.position.x -
-                            lane
-                        ) < 0.5;
-
-                    const nearby =
-                        Math.abs(
-                            obstacle.position.z -
-                            (-45)
-                        ) < 18;
-
-                    return (
-                        sameLane &&
-                        nearby
-                    );
-                }
-            );
-        });
+                        const sameLane =
+                            Math.abs(
+                                obstacle.position.x -
+                                lane
+                            ) < 0.5;
 
 
-    // If every lane is blocked, don't spawn a coin
-    if (safeLanes.length === 0) {
+                        const nearby =
+                            Math.abs(
+                                obstacle.position.z -
+                                (-45)
+                            ) < 18;
+
+
+                        return (
+                            sameLane &&
+                            nearby
+                        );
+                    }
+                );
+            }
+        );
+
+
+    if (
+        safeLanes.length === 0
+    ) {
+
         return;
     }
 
@@ -813,6 +981,7 @@ function createCoin() {
             })
         );
 
+
     coin.position.set(
         lane,
         1.3 +
@@ -820,8 +989,10 @@ function createCoin() {
         -45
     );
 
+
     coin.rotation.x =
         Math.PI / 2;
+
 
     scene.add(coin);
 
@@ -840,6 +1011,7 @@ function moveLeft() {
     const index =
         lanes.indexOf(targetX);
 
+
     if (index > 0) {
 
         targetX =
@@ -854,6 +1026,7 @@ function moveRight() {
 
     const index =
         lanes.indexOf(targetX);
+
 
     if (
         index <
@@ -870,9 +1043,11 @@ function jump() {
 
     if (!running) return;
 
+
     if (grounded) {
 
         velocityY = .24;
+
         grounded = false;
 
         playSound("jump");
@@ -886,14 +1061,15 @@ function jump() {
 
 function startGame() {
 
-    // Enable audio after user interaction
     initAudio();
 
     playSound("start");
 
+
     document
         .getElementById("menu")
         .classList.add("hidden");
+
 
     document
         .getElementById("gameOver")
@@ -904,12 +1080,14 @@ function startGame() {
         o => scene.remove(o)
     );
 
+
     coins.forEach(
         c => scene.remove(c)
     );
 
 
     obstacles = [];
+
     coins = [];
 
 
@@ -917,8 +1095,14 @@ function startGame() {
 
     speed = .28;
 
+
+    updateLanes();
+
+
     playerX = 0;
+
     targetX = 0;
+
 
     player.position.set(
         0,
@@ -926,15 +1110,22 @@ function startGame() {
         3
     );
 
+
     velocityY = 0;
+
     grounded = true;
 
+
     spawnTimer = 0;
+
     coinTimer = 0;
+
 
     running = true;
 
-    scoreEl.textContent = "0";
+
+    scoreEl.textContent =
+        "0";
 }
 
 
@@ -946,16 +1137,22 @@ function endGame() {
 
     if (!running) return;
 
+
     running = false;
 
     playSound("hit");
 
+
     const final =
         Math.floor(score);
 
-    if (final > best) {
+
+    if (
+        final > best
+    ) {
 
         best = final;
+
 
         localStorage.setItem(
             "3dRunBest",
@@ -963,11 +1160,13 @@ function endGame() {
         );
     }
 
+
     document
         .getElementById(
             "finalScore"
         )
         .textContent = final;
+
 
     document
         .getElementById(
@@ -975,7 +1174,10 @@ function endGame() {
         )
         .textContent = best;
 
-    bestEl.textContent = best;
+
+    bestEl.textContent =
+        best;
+
 
     document
         .getElementById(
@@ -995,6 +1197,7 @@ function update() {
 
     if (!running) return;
 
+
     const delta =
         Math.min(
             clock.getDelta(),
@@ -1008,6 +1211,7 @@ function update() {
         (targetX - playerX) *
         .18;
 
+
     player.position.x =
         playerX;
 
@@ -1016,8 +1220,10 @@ function update() {
 
     velocityY -= .012;
 
+
     player.position.y +=
         velocityY;
+
 
     if (
         player.position.y <= 0
@@ -1040,9 +1246,13 @@ function update() {
 
     spawnTimer -= delta;
 
-    if (spawnTimer <= 0) {
+
+    if (
+        spawnTimer <= 0
+    ) {
 
         createObstacle();
+
 
         spawnTimer =
             Math.max(
@@ -1057,7 +1267,10 @@ function update() {
 
     coinTimer -= delta;
 
-    if (coinTimer <= 0) {
+
+    if (
+        coinTimer <= 0
+    ) {
 
         createCoin();
 
@@ -1076,6 +1289,7 @@ function update() {
         const obstacle =
             obstacles[i];
 
+
         obstacle.position.z +=
             speed * 60 * delta;
 
@@ -1088,11 +1302,13 @@ function update() {
                 player.position.x
             );
 
+
         const dy =
             Math.abs(
                 obstacle.position.y -
                 (player.position.y + 1)
             );
+
 
         const dz =
             Math.abs(
@@ -1117,9 +1333,14 @@ function update() {
             obstacle.position.z > 12
         ) {
 
-            scene.remove(obstacle);
+            scene.remove(
+                obstacle
+            );
 
-            obstacles.splice(i, 1);
+            obstacles.splice(
+                i,
+                1
+            );
 
             score += 5;
         }
@@ -1137,8 +1358,10 @@ function update() {
         const coin =
             coins[i];
 
+
         coin.position.z +=
             speed * 60 * delta;
+
 
         coin.rotation.z += .08;
 
@@ -1149,11 +1372,13 @@ function update() {
                 player.position.x
             );
 
+
         const dy =
             Math.abs(
                 coin.position.y -
                 (player.position.y + 1.2)
             );
+
 
         const dz =
             Math.abs(
@@ -1172,9 +1397,17 @@ function update() {
 
             playSound("coin");
 
-            scene.remove(coin);
 
-            coins.splice(i, 1);
+            scene.remove(
+                coin
+            );
+
+
+            coins.splice(
+                i,
+                1
+            );
+
 
             continue;
         }
@@ -1184,14 +1417,22 @@ function update() {
             coin.position.z > 12
         ) {
 
-            scene.remove(coin);
+            scene.remove(
+                coin
+            );
 
-            coins.splice(i, 1);
+
+            coins.splice(
+                i,
+                1
+            );
         }
     }
 
 
-    score += delta * 2;
+    score +=
+        delta * 2;
+
 
     scoreEl.textContent =
         Math.floor(score);
@@ -1208,7 +1449,9 @@ function animate() {
         animate
     );
 
+
     update();
+
 
     renderer.render(
         scene,
@@ -1227,12 +1470,17 @@ function resize() {
         window.innerWidth /
         window.innerHeight;
 
+
     camera.updateProjectionMatrix();
+
 
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
+
+
+    updateLanes();
 }
 
 
@@ -1286,12 +1534,14 @@ document
         moveLeft
     );
 
+
 document
     .getElementById("right")
     .addEventListener(
         "pointerdown",
         moveRight
     );
+
 
 document
     .getElementById("jump")
@@ -1300,12 +1550,14 @@ document
         jump
     );
 
+
 document
     .getElementById("start")
     .addEventListener(
         "click",
         startGame
     );
+
 
 document
     .getElementById("restart")
