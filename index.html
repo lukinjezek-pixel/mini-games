@@ -18,17 +18,11 @@
 
 <body>
 
-  <!-- ================================
-       MENU OVERLAY
-  ================================= -->
-
+  <!-- MENU OVERLAY -->
   <div class="menu-overlay" id="menuOverlay"></div>
 
 
-  <!-- ================================
-       SIDE MENU
-  ================================= -->
-
+  <!-- SIDE MENU -->
   <aside class="side-menu" id="sideMenu">
 
     <div class="menu-header">
@@ -121,10 +115,7 @@
   </aside>
 
 
-  <!-- ================================
-       TOP BAR
-  ================================= -->
-
+  <!-- TOP BAR -->
   <header class="topbar">
 
     <div class="topbar-logo">
@@ -154,15 +145,11 @@
   </header>
 
 
-  <!-- ================================
-       MAIN
-  ================================= -->
-
+  <!-- MAIN -->
   <main id="home">
 
 
     <!-- HERO -->
-
     <section class="hero">
 
       <div class="hero-content">
@@ -223,10 +210,7 @@
     </section>
 
 
-    <!-- ================================
-         GAMES
-    ================================= -->
-
+    <!-- GAMES -->
     <section
       class="games-section"
       id="games"
@@ -256,10 +240,7 @@
       <div class="games-grid" id="gamesGrid">
 
 
-        <!-- ================================
-             01 REACTION TEST
-        ================================= -->
-
+        <!-- 01 REACTION TEST -->
         <article
           class="game-card"
           data-category="reflex"
@@ -295,10 +276,7 @@
         </article>
 
 
-        <!-- ================================
-             02 GUESS THE NUMBER
-        ================================= -->
-
+        <!-- 02 GUESS THE NUMBER -->
         <article
           class="game-card"
           data-category="brain"
@@ -334,10 +312,7 @@
         </article>
 
 
-        <!-- ================================
-             03 MEMORY
-        ================================= -->
-
+        <!-- 03 MEMORY -->
         <article
           class="game-card"
           data-category="brain"
@@ -373,10 +348,7 @@
         </article>
 
 
-        <!-- ================================
-             04 IMPOSSIBLE CHOICE
-        ================================= -->
-
+        <!-- 04 IMPOSSIBLE CHOICE -->
         <article
           class="game-card"
           data-category="choice"
@@ -412,10 +384,7 @@
         </article>
 
 
-        <!-- ================================
-             05 TIC TAC TOE
-        ================================= -->
-
+        <!-- 05 TIC TAC TOE -->
         <article
           class="game-card"
           data-category="two-players"
@@ -451,10 +420,7 @@
         </article>
 
 
-        <!-- ================================
-             06 COLOR RUSH
-        ================================= -->
-
+        <!-- 06 COLOR RUSH -->
         <article
           class="game-card"
           data-category="reflex"
@@ -490,10 +456,7 @@
         </article>
 
 
-        <!-- ================================
-             07 TARGET CLICKER
-        ================================= -->
-
+        <!-- 07 TARGET CLICKER -->
         <article
           class="game-card"
           data-category="reflex"
@@ -529,10 +492,7 @@
         </article>
 
 
-        <!-- ================================
-             08 2048
-        ================================= -->
-
+        <!-- 08 2048 -->
         <article
           class="game-card"
           data-category="brain"
@@ -568,10 +528,7 @@
         </article>
 
 
-        <!-- ================================
-             09 DON'T TOUCH RED
-        ================================= -->
-
+        <!-- 09 DON'T TOUCH RED -->
         <article
           class="game-card"
           data-category="action"
@@ -607,10 +564,7 @@
         </article>
 
 
-        <!-- ================================
-             10 QUICK MATH
-        ================================= -->
-
+        <!-- 10 QUICK MATH -->
         <article
           class="game-card"
           data-category="math"
@@ -646,10 +600,7 @@
         </article>
 
 
-        <!-- ================================
-             11 DODGE
-        ================================= -->
-
+        <!-- 11 DODGE -->
         <article
           class="game-card"
           data-category="action"
@@ -685,10 +636,7 @@
         </article>
 
 
-        <!-- ================================
-             12 COIN FLIP
-        ================================= -->
-
+        <!-- 12 COIN FLIP -->
         <article
           class="game-card"
           data-category="choice"
@@ -724,12 +672,15 @@
         </article>
 
 
-        <!-- ================================
-             13 3D OBSTACLE RUN
-        ================================= -->
+        <!-- 3D SECTION DIVIDER -->
+        <div class="games-category-divider">
+          <span>3D GAMES</span>
+        </div>
 
+
+        <!-- 13 3D OBSTACLE RUN -->
         <article
-          class="game-card"
+          class="game-card game-card-3d"
           data-category="3d"
         >
 
@@ -767,7 +718,6 @@
 
 
       <!-- NO RESULTS -->
-
       <div
         class="no-results"
         id="noResults"
@@ -790,10 +740,7 @@
     </section>
 
 
-    <!-- ================================
-         ABOUT
-    ================================= -->
-
+    <!-- ABOUT -->
     <section
       class="about-section"
       id="about"
@@ -831,10 +778,7 @@
   </main>
 
 
-  <!-- ================================
-       FOOTER
-  ================================= -->
-
+  <!-- FOOTER -->
   <footer>
 
     <div class="footer-logo">
@@ -858,15 +802,8 @@
   </footer>
 
 
-  <!-- ================================
-       JAVASCRIPT
-  ================================= -->
-
+  <!-- JAVASCRIPT -->
   <script>
-
-    /* -------------------------------
-       MENU
-    -------------------------------- */
 
     const openMenu =
       document.getElementById("openMenu");
@@ -884,9 +821,7 @@
     function showMenu() {
 
       sideMenu.classList.add("active");
-
       menuOverlay.classList.add("active");
-
       document.body.classList.add("menu-open");
 
     }
@@ -895,9 +830,7 @@
     function hideMenu() {
 
       sideMenu.classList.remove("active");
-
       menuOverlay.classList.remove("active");
-
       document.body.classList.remove("menu-open");
 
     }
@@ -920,10 +853,6 @@
       hideMenu
     );
 
-
-    /* -------------------------------
-       GAME FILTER
-    -------------------------------- */
 
     const categoryLinks =
       document.querySelectorAll(
@@ -957,29 +886,21 @@
 
     const categoryNames = {
 
-      "all":
-        "All Games",
+      all: "All Games",
 
-      "3d":
-        "3D Games",
+      "3d": "3D Games",
 
-      "two-players":
-        "Two Players",
+      "two-players": "Two Players",
 
-      "brain":
-        "Brain & Memory",
+      brain: "Brain & Memory",
 
-      "math":
-        "Math",
+      math: "Math",
 
-      "reflex":
-        "Reflex",
+      reflex: "Reflex",
 
-      "action":
-        "Action",
+      action: "Action",
 
-      "choice":
-        "Luck & Choice"
+      choice: "Luck & Choice"
 
     };
 
@@ -1015,6 +936,36 @@
         }
 
       });
+
+
+      /*
+        The 3D divider is only visible
+        when viewing all games.
+      */
+
+      const divider =
+        document.querySelector(
+          ".games-category-divider"
+        );
+
+
+      if (divider) {
+
+        if (category === "all") {
+
+          divider.classList.remove(
+            "hidden-divider"
+          );
+
+        } else {
+
+          divider.classList.add(
+            "hidden-divider"
+          );
+
+        }
+
+      }
 
 
       gamesTitle.textContent =
@@ -1091,10 +1042,6 @@
     });
 
 
-    /* -------------------------------
-       CLOSE MENU WITH ESC
-    -------------------------------- */
-
     document.addEventListener(
       "keydown",
       event => {
@@ -1108,10 +1055,6 @@
       }
     );
 
-
-    /* -------------------------------
-       INITIAL GAME COUNT
-    -------------------------------- */
 
     filterGames("all");
 
