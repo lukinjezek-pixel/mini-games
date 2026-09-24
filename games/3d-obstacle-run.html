@@ -71,7 +71,11 @@ canvas {
     align-items: center;
     justify-content: center;
     z-index: 10;
-    background: radial-gradient(circle at center, rgba(45,20,90,.65), rgba(3,3,12,.94));
+    background: radial-gradient(
+        circle at center,
+        rgba(45,20,90,.65),
+        rgba(3,3,12,.94)
+    );
 }
 
 .panel {
@@ -102,7 +106,11 @@ h1 {
 button {
     border: none;
     color: white;
-    background: linear-gradient(135deg, #7657ff, #4169ff);
+    background: linear-gradient(
+        135deg,
+        #7657ff,
+        #4169ff
+    );
     padding: 15px 30px;
     border-radius: 15px;
     font-size: 17px;
@@ -160,18 +168,6 @@ button:active {
     box-shadow: none;
 }
 
-@media (min-width: 700px) {
-
-    #controls {
-        opacity: .65;
-    }
-
-    .control {
-        width: 65px;
-        height: 65px;
-    }
-}
-
 @media (max-width: 500px) {
 
     #hud {
@@ -196,6 +192,18 @@ button:active {
     .control {
         width: 68px;
         height: 68px;
+    }
+}
+
+@media (min-width: 700px) {
+
+    #controls {
+        opacity: .65;
+    }
+
+    .control {
+        width: 65px;
+        height: 65px;
     }
 }
 </style>
@@ -325,23 +333,12 @@ const clock =
 
 function getLaneSpacing() {
 
-    /*
-       Mobile screens are narrower, so the lanes
-       move closer together.
-
-       PC keeps the wider classic layout.
-    */
-
     if (window.innerWidth < 500) {
-
         return 2.15;
-
     }
 
     if (window.innerWidth < 700) {
-
         return 2.4;
-
     }
 
     return 3;
@@ -369,11 +366,6 @@ function updateLanes() {
         laneSpacing
     ];
 
-    /*
-       Keep the player inside the new lanes
-       after changing screen orientation/size.
-    */
-
     const closestLane =
         lanes.reduce(
             (closest, lane) =>
@@ -394,6 +386,45 @@ function updateLanes() {
                 playerX
             )
         );
+}
+
+
+/* =========================================================
+   MOBILE CAMERA
+   ========================================================= */
+
+function updateCamera() {
+
+    if (window.innerWidth < 500) {
+
+        camera.position.set(
+            0,
+            6.4,
+            12.5
+        );
+
+    } else if (window.innerWidth < 700) {
+
+        camera.position.set(
+            0,
+            5.9,
+            10.5
+        );
+
+    } else {
+
+        camera.position.set(
+            0,
+            5.5,
+            9
+        );
+    }
+
+    camera.lookAt(
+        0,
+        1,
+        -12
+    );
 }
 
 
@@ -548,17 +579,7 @@ function init() {
             200
         );
 
-    camera.position.set(
-        0,
-        5.5,
-        9
-    );
-
-    camera.lookAt(
-        0,
-        1,
-        -12
-    );
+    updateCamera();
 
     renderer =
         new THREE.WebGLRenderer({
@@ -665,10 +686,14 @@ function createWorld() {
     scene.add(ground);
 
 
-    // Lane lines now match the actual lane positions
-
     const initialSpacing =
         getLaneSpacing();
+
+
+    /*
+       Visual lane separators.
+       They are placed between the 3 playable lanes.
+    */
 
     for (
         let x of [
@@ -900,7 +925,6 @@ function createObstacle() {
 
     obstacle.castShadow = true;
 
-
     obstacle.userData.lane =
         lane;
 
@@ -951,7 +975,6 @@ function createCoin() {
     if (
         safeLanes.length === 0
     ) {
-
         return;
     }
 
@@ -1294,8 +1317,6 @@ function update() {
             speed * 60 * delta;
 
 
-        // Collision
-
         const dx =
             Math.abs(
                 obstacle.position.x -
@@ -1408,7 +1429,6 @@ function update() {
                 1
             );
 
-
             continue;
         }
 
@@ -1481,6 +1501,8 @@ function resize() {
 
 
     updateLanes();
+
+    updateCamera();
 }
 
 
