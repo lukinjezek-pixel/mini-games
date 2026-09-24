@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>2048 Mini - Mini Games</title>
 
 <style>
@@ -16,24 +17,27 @@ body {
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
   color: white;
+
   background:
-    radial-gradient(circle at top left, rgba(124, 58, 237, 0.25), transparent 35%),
-    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.2), transparent 35%),
+    radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.28), transparent 32%),
+    radial-gradient(circle at 90% 90%, rgba(37, 99, 235, 0.22), transparent 35%),
     #080b14;
+
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 20px;
+  padding: 25px 15px 40px;
 }
 
 .game-wrapper {
   width: 100%;
-  max-width: 520px;
+  max-width: 560px;
 }
+
+/* BACK */
 
 .back {
   display: inline-block;
-  color: #aaa;
+  color: #999;
   text-decoration: none;
   margin-bottom: 18px;
   font-size: 15px;
@@ -42,26 +46,37 @@ body {
 
 .back:hover {
   color: white;
+  transform: translateX(-3px);
 }
+
+/* HEADER */
 
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .title-area h1 {
-  font-size: 48px;
-  font-weight: 900;
-  letter-spacing: -2px;
+  font-size: 58px;
+  line-height: 0.9;
+  font-weight: 1000;
+  letter-spacing: -4px;
+
+  background: linear-gradient(135deg, #ffffff, #a78bfa);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .title-area p {
-  color: #999;
-  margin-top: 4px;
+  color: #8f8f9b;
+  margin-top: 9px;
+  font-size: 14px;
 }
+
+/* STATS */
 
 .stats {
   display: flex;
@@ -69,59 +84,143 @@ body {
 }
 
 .stat {
-  min-width: 75px;
+  min-width: 78px;
   padding: 9px 12px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 13px;
+
+  background: rgba(255,255,255,0.075);
+  border: 1px solid rgba(255,255,255,0.09);
+
   text-align: center;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,0.04),
+    0 8px 25px rgba(0,0,0,0.15);
 }
 
 .stat-label {
   display: block;
-  color: #999;
-  font-size: 11px;
+  color: #888;
+  font-size: 10px;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .stat-value {
   display: block;
-  font-size: 20px;
-  font-weight: 800;
-  margin-top: 2px;
+  font-size: 21px;
+  font-weight: 900;
+  margin-top: 3px;
 }
+
+/* BOARD */
 
 .game-box {
   position: relative;
   width: 100%;
   aspect-ratio: 1;
+
   padding: 10px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.09);
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.11),
+      rgba(255,255,255,0.055)
+    );
+
+  border: 1px solid rgba(255,255,255,0.11);
+
+  box-shadow:
+    0 25px 70px rgba(0,0,0,0.45),
+    inset 0 1px rgba(255,255,255,0.05);
+
   touch-action: none;
 }
 
 .board {
   width: 100%;
   height: 100%;
+
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+
   gap: 10px;
 }
 
 .cell {
-  background: rgba(255,255,255,0.07);
-  border-radius: 12px;
+  position: relative;
+
+  background: rgba(255,255,255,0.065);
+
+  border-radius: 13px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: clamp(22px, 8vw, 42px);
-  font-weight: 900;
-  transition: 0.12s;
+
+  font-size: clamp(23px, 8vw, 43px);
+  font-weight: 1000;
+
   user-select: none;
+
+  overflow: hidden;
 }
+
+/* TILE APPEAR */
+
+.tile-pop {
+  animation: tilePop 0.18s cubic-bezier(.2,1.6,.4,1);
+}
+
+@keyframes tilePop {
+
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  65% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* MERGE */
+
+.tile-merge {
+  animation: tileMerge 0.25s cubic-bezier(.15,1.5,.4,1);
+  z-index: 2;
+}
+
+@keyframes tileMerge {
+
+  0% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.32);
+    filter: brightness(1.35);
+  }
+
+  75% {
+    transform: scale(0.92);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* TILES */
 
 .tile-2 {
   background: #eee4da;
@@ -151,128 +250,392 @@ body {
 .tile-64 {
   background: #f65e3b;
   color: white;
+
+  box-shadow:
+    0 0 18px rgba(246,94,59,0.28);
 }
 
 .tile-128 {
   background: #edcf72;
   color: white;
   font-size: clamp(20px, 7vw, 36px);
+
+  box-shadow:
+    0 0 20px rgba(237,207,114,0.25);
 }
 
 .tile-256 {
   background: #edcc61;
   color: white;
   font-size: clamp(20px, 7vw, 36px);
+
+  box-shadow:
+    0 0 22px rgba(237,204,97,0.3);
 }
 
 .tile-512 {
   background: #edc850;
   color: white;
   font-size: clamp(20px, 7vw, 36px);
+
+  box-shadow:
+    0 0 25px rgba(237,200,80,0.32);
 }
 
 .tile-1024 {
   background: #edc53f;
   color: white;
   font-size: clamp(17px, 6vw, 31px);
+
+  box-shadow:
+    0 0 28px rgba(237,197,63,0.38);
 }
 
 .tile-2048 {
-  background: #edc22e;
+  background:
+    linear-gradient(135deg, #ffd83d, #f0a900);
+
   color: white;
+
   font-size: clamp(17px, 6vw, 31px);
-  box-shadow: 0 0 25px rgba(255, 204, 0, 0.5);
+
+  box-shadow:
+    0 0 25px rgba(255,200,0,0.55),
+    0 0 55px rgba(255,180,0,0.22);
+
+  animation:
+    winnerGlow 1.2s infinite alternate;
 }
+
+@keyframes winnerGlow {
+
+  from {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  to {
+    transform: scale(1.045);
+    filter: brightness(1.18);
+  }
+}
+
+/* CONTROLS */
 
 .controls {
   display: flex;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 17px;
 }
 
 button {
   flex: 1;
+
   border: none;
-  border-radius: 12px;
+  border-radius: 13px;
+
   padding: 14px;
+
   color: white;
-  background: linear-gradient(135deg, #7c3aed, #2563eb);
-  font-size: 15px;
-  font-weight: 800;
+
+  background:
+    linear-gradient(135deg, #7c3aed, #2563eb);
+
+  font-size: 14px;
+  font-weight: 900;
+
   cursor: pointer;
+
+  box-shadow:
+    0 8px 25px rgba(37,99,235,0.18);
+
   transition: 0.2s;
 }
 
 button:hover {
   transform: translateY(-2px);
-  filter: brightness(1.1);
+  filter: brightness(1.12);
 }
 
 button:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
+}
+
+/* HOW TO PLAY */
+
+.instructions {
+  margin-top: 20px;
+
+  padding: 18px;
+
+  border-radius: 17px;
+
+  background: rgba(255,255,255,0.055);
+
+  border: 1px solid rgba(255,255,255,0.09);
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,0.18);
+}
+
+.instructions-title {
+  font-size: 17px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.instruction-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.instruction {
+  padding: 13px;
+
+  border-radius: 12px;
+
+  background: rgba(255,255,255,0.045);
+
+  border: 1px solid rgba(255,255,255,0.055);
+}
+
+.instruction-icon {
+  font-size: 23px;
+  margin-bottom: 7px;
+}
+
+.instruction strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.instruction span {
+  color: #999;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* SWIPE DEMO */
+
+.swipe-demo {
+  margin-top: 11px;
+
+  padding: 13px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,0.13),
+      rgba(37,99,235,0.1)
+    );
+
+  border: 1px solid rgba(124,58,237,0.2);
+
+  text-align: center;
+}
+
+.swipe-demo-title {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 7px;
+}
+
+.swipe-arrows {
+  font-size: 21px;
+  letter-spacing: 6px;
+
+  animation: swipePulse 1.5s infinite;
+}
+
+@keyframes swipePulse {
+
+  0%,100% {
+    opacity: 0.55;
+    transform: translateX(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+}
+
+/* DESKTOP KEYBOARD */
+
+.keyboard {
+  margin-top: 11px;
+
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.key {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 8px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(255,255,255,0.08);
+
+  border: 1px solid rgba(255,255,255,0.1);
+
+  color: #ddd;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  box-shadow:
+    0 4px 0 rgba(0,0,0,0.25);
+
+  animation: keyFloat 2s infinite ease-in-out;
+}
+
+.key:nth-child(2) {
+  animation-delay: .15s;
+}
+
+.key:nth-child(3) {
+  animation-delay: .3s;
+}
+
+.key:nth-child(4) {
+  animation-delay: .45s;
+}
+
+@keyframes keyFloat {
+
+  0%,100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
 }
 
 .hint {
   text-align: center;
-  color: #777;
-  font-size: 13px;
-  margin-top: 15px;
+  color: #666;
+  font-size: 12px;
+  margin-top: 13px;
 }
+
+/* OVERLAY */
 
 .overlay {
   position: absolute;
   inset: 0;
-  border-radius: 18px;
-  background: rgba(8, 11, 20, 0.82);
-  backdrop-filter: blur(5px);
+
+  border-radius: 21px;
+
+  background:
+    rgba(7,10,18,0.86);
+
+  backdrop-filter: blur(8px);
+
   display: none;
+
   justify-content: center;
   align-items: center;
+
   flex-direction: column;
+
   text-align: center;
+
   padding: 20px;
-  z-index: 5;
+
+  z-index: 10;
+
+  animation: overlayFade .25s ease;
 }
 
 .overlay.show {
   display: flex;
 }
 
+@keyframes overlayFade {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .overlay h2 {
-  font-size: 38px;
+  font-size: 40px;
   margin-bottom: 8px;
+
+  animation: overlayTitle .35s cubic-bezier(.2,1.5,.4,1);
+}
+
+@keyframes overlayTitle {
+
+  from {
+    transform: scale(.65);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .overlay p {
   color: #bbb;
   margin-bottom: 20px;
+  max-width: 280px;
+  line-height: 1.5;
 }
 
 .overlay button {
   flex: none;
-  width: 180px;
+  width: 190px;
 }
 
-@media (max-width: 500px) {
+/* MOBILE */
+
+@media (max-width: 520px) {
+
   body {
-    padding: 14px;
+    padding: 16px 11px 30px;
+  }
+
+  .header {
+    align-items: center;
   }
 
   .title-area h1 {
-    font-size: 40px;
+    font-size: 45px;
   }
 
   .title-area p {
-    font-size: 13px;
+    font-size: 12px;
+  }
+
+  .stats {
+    gap: 5px;
   }
 
   .stat {
     min-width: 65px;
-    padding: 8px;
+    padding: 8px 7px;
   }
 
   .stat-value {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .board {
@@ -281,6 +644,29 @@ button:active {
 
   .cell {
     border-radius: 9px;
+  }
+
+  .instruction-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .keyboard {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+
+  .title-area h1 {
+    font-size: 39px;
+  }
+
+  .stat {
+    min-width: 58px;
+  }
+
+  .instruction-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
@@ -293,12 +679,14 @@ button:active {
   <a href="../index.html" class="back">← Back to Mini Games</a>
 
   <div class="header">
+
     <div class="title-area">
       <h1>2048</h1>
       <p>Merge the tiles. Reach 2048.</p>
     </div>
 
     <div class="stats">
+
       <div class="stat">
         <span class="stat-label">Score</span>
         <span class="stat-value" id="score">0</span>
@@ -308,7 +696,9 @@ button:active {
         <span class="stat-label">Best</span>
         <span class="stat-value" id="best">0</span>
       </div>
+
     </div>
+
   </div>
 
   <div class="game-box" id="gameBox">
@@ -316,39 +706,130 @@ button:active {
     <div class="board" id="board"></div>
 
     <div class="overlay" id="overlay">
-      <h2 id="overlayTitle">Game Over</h2>
-      <p id="overlayText">No more moves!</p>
-      <button id="overlayButton">PLAY AGAIN</button>
+
+      <h2 id="overlayTitle">GAME OVER</h2>
+
+      <p id="overlayText">
+        No more moves!
+      </p>
+
+      <button id="overlayButton">
+        PLAY AGAIN
+      </button>
+
     </div>
 
   </div>
 
   <div class="controls">
-    <button id="newGame">NEW GAME</button>
-    <button id="soundButton">🔊 SOUND ON</button>
+
+    <button id="newGame">
+      🔄 NEW GAME
+    </button>
+
+    <button id="soundButton">
+      🔊 SOUND ON
+    </button>
+
+  </div>
+
+  <!-- HOW TO PLAY -->
+
+  <div class="instructions">
+
+    <div class="instructions-title">
+      🎮 HOW TO PLAY
+    </div>
+
+    <div class="instruction-grid">
+
+      <div class="instruction">
+
+        <div class="instruction-icon">
+          💻
+        </div>
+
+        <strong>PC / COMPUTER</strong>
+
+        <span>
+          Use <b>W A S D</b> or the
+          <b>Arrow Keys</b> to move the tiles.
+        </span>
+
+      </div>
+
+      <div class="instruction">
+
+        <div class="instruction-icon">
+          📱
+        </div>
+
+        <strong>MOBILE</strong>
+
+        <span>
+          <b>Swipe</b> up, down, left or right
+          on the game board.
+        </span>
+
+      </div>
+
+    </div>
+
+    <div class="keyboard">
+
+      <div class="key">W</div>
+
+    </div>
+
+    <div class="keyboard">
+
+      <div class="key">A</div>
+      <div class="key">S</div>
+      <div class="key">D</div>
+
+    </div>
+
+    <div class="swipe-demo">
+
+      <div class="swipe-demo-title">
+        📱 Swipe in any direction
+      </div>
+
+      <div class="swipe-arrows">
+        ← ↑ ↓ →
+      </div>
+
+    </div>
+
   </div>
 
   <p class="hint">
-    Use arrow keys / WASD or swipe on your phone
+    Combine equal numbers to create bigger tiles.
   </p>
 
 </div>
 
 <script>
+
 const boardElement = document.getElementById("board");
 const scoreElement = document.getElementById("score");
 const bestElement = document.getElementById("best");
+
 const overlay = document.getElementById("overlay");
 const overlayTitle = document.getElementById("overlayTitle");
 const overlayText = document.getElementById("overlayText");
 const overlayButton = document.getElementById("overlayButton");
+
 const newGameButton = document.getElementById("newGame");
 const soundButton = document.getElementById("soundButton");
 const gameBox = document.getElementById("gameBox");
 
 let board = [];
 let score = 0;
-let best = Number(localStorage.getItem("miniGames2048Best")) || 0;
+
+let best =
+  Number(localStorage.getItem("miniGames2048Best")) || 0;
+
 let gameOver = false;
 let won = false;
 let soundOn = true;
@@ -356,14 +837,22 @@ let soundOn = true;
 let touchStartX = 0;
 let touchStartY = 0;
 
+let lastMoveTime = 0;
+
 bestElement.textContent = best;
 
-function createEmptyBoard() {
-  return Array.from({ length: 4 }, () => Array(4).fill(0));
-}
+
+/* =========================
+   START GAME
+========================= */
 
 function startGame() {
-  board = createEmptyBoard();
+
+  board = Array.from(
+    { length: 4 },
+    () => Array(4).fill(0)
+  );
+
   score = 0;
   gameOver = false;
   won = false;
@@ -373,86 +862,158 @@ function startGame() {
   addRandomTile();
   addRandomTile();
 
-  updateDisplay();
+  renderBoard();
 }
 
+
+/* =========================
+   RANDOM TILE
+========================= */
+
 function addRandomTile() {
+
   const empty = [];
 
   for (let row = 0; row < 4; row++) {
+
     for (let col = 0; col < 4; col++) {
+
       if (board[row][col] === 0) {
         empty.push({ row, col });
       }
+
     }
+
   }
 
   if (empty.length === 0) return;
 
-  const position = empty[Math.floor(Math.random() * empty.length)];
+  const position =
+    empty[Math.floor(Math.random() * empty.length)];
 
   board[position.row][position.col] =
     Math.random() < 0.9 ? 2 : 4;
 }
 
-function updateDisplay() {
+
+/* =========================
+   RENDER
+========================= */
+
+function renderBoard() {
+
   boardElement.innerHTML = "";
 
   for (let row = 0; row < 4; row++) {
+
     for (let col = 0; col < 4; col++) {
 
-      const cell = document.createElement("div");
+      const cell =
+        document.createElement("div");
+
       cell.className = "cell";
 
       const value = board[row][col];
 
       if (value !== 0) {
+
         cell.textContent = value;
-        cell.classList.add("tile-" + value);
+
+        cell.classList.add(
+          "tile-" + value,
+          "tile-pop"
+        );
+
       }
 
       boardElement.appendChild(cell);
+
     }
+
   }
+
+  updateStats();
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+function updateStats() {
 
   scoreElement.textContent = score;
 
   if (score > best) {
+
     best = score;
-    localStorage.setItem("miniGames2048Best", best);
+
+    localStorage.setItem(
+      "miniGames2048Best",
+      best
+    );
+
   }
 
   bestElement.textContent = best;
 }
 
+
+/* =========================
+   MOVE
+========================= */
+
 function move(direction) {
 
   if (gameOver) return;
 
-  let moved = false;
+  const now = Date.now();
+
+  if (now - lastMoveTime < 80) return;
+
+  lastMoveTime = now;
+
+  const oldBoard =
+    JSON.stringify(board);
+
   let gained = 0;
 
-  const oldBoard = JSON.stringify(board);
-
   if (direction === "left") {
+
     for (let row = 0; row < 4; row++) {
-      const result = mergeLine(board[row]);
+
+      const result =
+        mergeLine(board[row]);
+
       board[row] = result.line;
+
       gained += result.score;
+
     }
+
   }
 
   if (direction === "right") {
-    for (let row = 0; row < 4; row++) {
-      const reversed = [...board[row]].reverse();
-      const result = mergeLine(reversed);
 
-      board[row] = result.line.reverse();
+    for (let row = 0; row < 4; row++) {
+
+      const reversed =
+        [...board[row]].reverse();
+
+      const result =
+        mergeLine(reversed);
+
+      board[row] =
+        result.line.reverse();
+
       gained += result.score;
+
     }
+
   }
 
   if (direction === "up") {
+
     for (let col = 0; col < 4; col++) {
 
       const line = [];
@@ -461,17 +1022,22 @@ function move(direction) {
         line.push(board[row][col]);
       }
 
-      const result = mergeLine(line);
+      const result =
+        mergeLine(line);
 
       for (let row = 0; row < 4; row++) {
-        board[row][col] = result.line[row];
+        board[row][col] =
+          result.line[row];
       }
 
       gained += result.score;
+
     }
+
   }
 
   if (direction === "down") {
+
     for (let col = 0; col < 4; col++) {
 
       const line = [];
@@ -480,46 +1046,81 @@ function move(direction) {
         line.push(board[row][col]);
       }
 
-      const reversed = line.reverse();
-      const result = mergeLine(reversed);
-      const finalLine = result.line.reverse();
+      const reversed =
+        line.reverse();
+
+      const result =
+        mergeLine(reversed);
+
+      const finalLine =
+        result.line.reverse();
 
       for (let row = 0; row < 4; row++) {
-        board[row][col] = finalLine[row];
+
+        board[row][col] =
+          finalLine[row];
+
       }
 
       gained += result.score;
+
     }
+
   }
 
-  moved = JSON.stringify(board) !== oldBoard;
+  const moved =
+    JSON.stringify(board) !== oldBoard;
 
-  if (!moved) return;
+  if (!moved) {
+
+    playInvalidSound();
+
+    return;
+  }
 
   score += gained;
 
   addRandomTile();
 
+  renderBoard();
+
   playMoveSound();
 
-  updateDisplay();
-
   if (!won && has2048()) {
+
     won = true;
+
+    playWinSound();
+
     showWin();
+
     return;
   }
 
   if (!canMove()) {
+
     gameOver = true;
+
+    playGameOverSound();
+
     showGameOver();
+
   }
+
 }
+
+
+/* =========================
+   MERGE
+========================= */
 
 function mergeLine(line) {
 
-  const filtered = line.filter(value => value !== 0);
+  const filtered =
+    line.filter(value => value !== 0);
+
   const result = [];
+
   let gained = 0;
 
   for (let i = 0; i < filtered.length; i++) {
@@ -529,17 +1130,23 @@ function mergeLine(line) {
       filtered[i] === filtered[i + 1]
     ) {
 
-      const merged = filtered[i] * 2;
+      const merged =
+        filtered[i] * 2;
 
       result.push(merged);
+
       gained += merged;
 
       playMergeSound();
 
       i++;
+
     } else {
+
       result.push(filtered[i]);
+
     }
+
   }
 
   while (result.length < 4) {
@@ -552,13 +1159,28 @@ function mergeLine(line) {
   };
 }
 
+
+/* =========================
+   CHECK 2048
+========================= */
+
 function has2048() {
-  return board.some(row => row.includes(2048));
+
+  return board.some(
+    row => row.includes(2048)
+  );
+
 }
+
+
+/* =========================
+   CHECK MOVES
+========================= */
 
 function canMove() {
 
   for (let row = 0; row < 4; row++) {
+
     for (let col = 0; col < 4; col++) {
 
       if (board[row][col] === 0) {
@@ -567,151 +1189,282 @@ function canMove() {
 
       if (
         col < 3 &&
-        board[row][col] === board[row][col + 1]
+        board[row][col] ===
+        board[row][col + 1]
       ) {
         return true;
       }
 
       if (
         row < 3 &&
-        board[row][col] === board[row + 1][col]
+        board[row][col] ===
+        board[row + 1][col]
       ) {
         return true;
       }
+
     }
+
   }
 
   return false;
 }
 
+
+/* =========================
+   OVERLAYS
+========================= */
+
 function showWin() {
-  overlayTitle.textContent = "🎉 2048!";
+
+  overlayTitle.textContent =
+    "🎉 YOU MADE 2048!";
+
   overlayText.textContent =
-    "You reached 2048! You can keep playing.";
-  overlayButton.textContent = "KEEP PLAYING";
+    "Amazing! You can keep playing or start a new game.";
+
+  overlayButton.textContent =
+    "KEEP PLAYING";
+
   overlay.classList.add("show");
 }
+
 
 function showGameOver() {
-  overlayTitle.textContent = "GAME OVER";
+
+  overlayTitle.textContent =
+    "💀 GAME OVER";
+
   overlayText.textContent =
-    "No more moves. Score: " + score;
-  overlayButton.textContent = "PLAY AGAIN";
+    "No more moves! Final score: " + score;
+
+  overlayButton.textContent =
+    "PLAY AGAIN";
+
   overlay.classList.add("show");
 }
 
-overlayButton.addEventListener("click", () => {
 
-  if (won && !gameOver) {
-    overlay.classList.remove("show");
-    return;
-  }
+overlayButton.addEventListener(
+  "click",
+  () => {
 
-  startGame();
-});
+    if (won && !gameOver) {
 
-newGameButton.addEventListener("click", startGame);
+      overlay.classList.remove("show");
 
-soundButton.addEventListener("click", () => {
-  soundOn = !soundOn;
-
-  soundButton.textContent =
-    soundOn ? "🔊 SOUND ON" : "🔇 SOUND OFF";
-});
-
-document.addEventListener("keydown", (event) => {
-
-  const keys = {
-    ArrowLeft: "left",
-    ArrowRight: "right",
-    ArrowUp: "up",
-    ArrowDown: "down",
-    a: "left",
-    d: "right",
-    w: "up",
-    s: "down"
-  };
-
-  const direction = keys[event.key];
-
-  if (!direction) return;
-
-  event.preventDefault();
-  move(direction);
-});
-
-gameBox.addEventListener("touchstart", (event) => {
-
-  const touch = event.changedTouches[0];
-
-  touchStartX = touch.screenX;
-  touchStartY = touch.screenY;
-
-}, { passive: true });
-
-gameBox.addEventListener("touchend", (event) => {
-
-  const touch = event.changedTouches[0];
-
-  const dx = touch.screenX - touchStartX;
-  const dy = touch.screenY - touchStartY;
-
-  const minSwipe = 30;
-
-  if (Math.abs(dx) < minSwipe &&
-      Math.abs(dy) < minSwipe) {
-    return;
-  }
-
-  if (Math.abs(dx) > Math.abs(dy)) {
-
-    if (dx > 0) {
-      move("right");
-    } else {
-      move("left");
+      return;
     }
 
-  } else {
+    startGame();
 
-    if (dy > 0) {
-      move("down");
-    } else {
-      move("up");
-    }
   }
+);
 
-}, { passive: true });
 
-let audioContext;
+/* =========================
+   BUTTONS
+========================= */
+
+newGameButton.addEventListener(
+  "click",
+  () => {
+
+    playClickSound();
+
+    startGame();
+
+  }
+);
+
+
+soundButton.addEventListener(
+  "click",
+  () => {
+
+    soundOn = !soundOn;
+
+    soundButton.textContent =
+      soundOn
+        ? "🔊 SOUND ON"
+        : "🔇 SOUND OFF";
+
+    if (soundOn) {
+      playClickSound();
+    }
+
+  }
+);
+
+
+/* =========================
+   KEYBOARD
+========================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    const key =
+      event.key.toLowerCase();
+
+    const keys = {
+
+      arrowleft: "left",
+      arrowright: "right",
+      arrowup: "up",
+      arrowdown: "down",
+
+      a: "left",
+      d: "right",
+      w: "up",
+      s: "down"
+
+    };
+
+    const direction =
+      keys[key];
+
+    if (!direction) return;
+
+    event.preventDefault();
+
+    move(direction);
+
+  }
+);
+
+
+/* =========================
+   MOBILE SWIPE
+========================= */
+
+gameBox.addEventListener(
+  "touchstart",
+  event => {
+
+    const touch =
+      event.changedTouches[0];
+
+    touchStartX =
+      touch.screenX;
+
+    touchStartY =
+      touch.screenY;
+
+  },
+  { passive: true }
+);
+
+
+gameBox.addEventListener(
+  "touchend",
+  event => {
+
+    const touch =
+      event.changedTouches[0];
+
+    const dx =
+      touch.screenX - touchStartX;
+
+    const dy =
+      touch.screenY - touchStartY;
+
+    const minSwipe = 25;
+
+    if (
+      Math.abs(dx) < minSwipe &&
+      Math.abs(dy) < minSwipe
+    ) {
+      return;
+    }
+
+    if (
+      Math.abs(dx) >
+      Math.abs(dy)
+    ) {
+
+      if (dx > 0) {
+        move("right");
+      } else {
+        move("left");
+      }
+
+    } else {
+
+      if (dy > 0) {
+        move("down");
+      } else {
+        move("up");
+      }
+
+    }
+
+  },
+  { passive: true }
+);
+
+
+/* =========================
+   AUDIO
+========================= */
+
+let audioContext = null;
 
 function getAudioContext() {
 
   if (!audioContext) {
+
     audioContext =
-      new (window.AudioContext ||
-      window.webkitAudioContext)();
+      new (
+        window.AudioContext ||
+        window.webkitAudioContext
+      )();
+
+  }
+
+  if (
+    audioContext.state ===
+    "suspended"
+  ) {
+
+    audioContext.resume();
+
   }
 
   return audioContext;
 }
 
-function playTone(frequency, duration, type = "sine") {
+
+function playTone(
+  frequency,
+  duration,
+  type = "sine",
+  volume = 0.07
+) {
 
   if (!soundOn) return;
 
-  const ctx = getAudioContext();
+  const ctx =
+    getAudioContext();
 
-  if (ctx.state === "suspended") {
-    ctx.resume();
-  }
+  const oscillator =
+    ctx.createOscillator();
 
-  const oscillator = ctx.createOscillator();
-  const gain = ctx.createGain();
+  const gain =
+    ctx.createGain();
 
-  oscillator.type = type;
-  oscillator.frequency.value = frequency;
+  oscillator.type =
+    type;
 
-  gain.gain.setValueAtTime(0.08, ctx.currentTime);
+  oscillator.frequency.value =
+    frequency;
+
+  gain.gain.setValueAtTime(
+    volume,
+    ctx.currentTime
+  );
+
   gain.gain.exponentialRampToValueAtTime(
     0.001,
     ctx.currentTime + duration
@@ -721,18 +1474,102 @@ function playTone(frequency, duration, type = "sine") {
   gain.connect(ctx.destination);
 
   oscillator.start();
-  oscillator.stop(ctx.currentTime + duration);
+
+  oscillator.stop(
+    ctx.currentTime + duration
+  );
 }
+
 
 function playMoveSound() {
-  playTone(220, 0.05);
+
+  playTone(
+    220,
+    0.045,
+    "sine",
+    0.045
+  );
+
 }
+
 
 function playMergeSound() {
-  playTone(440, 0.08, "triangle");
+
+  playTone(
+    420,
+    0.07,
+    "triangle",
+    0.075
+  );
+
 }
 
+
+function playClickSound() {
+
+  playTone(
+    330,
+    0.06,
+    "sine",
+    0.06
+  );
+
+}
+
+
+function playInvalidSound() {
+
+  playTone(
+    120,
+    0.07,
+    "square",
+    0.035
+  );
+
+}
+
+
+function playWinSound() {
+
+  setTimeout(
+    () => playTone(523, 0.12, "triangle", 0.08),
+    0
+  );
+
+  setTimeout(
+    () => playTone(659, 0.12, "triangle", 0.08),
+    100
+  );
+
+  setTimeout(
+    () => playTone(784, 0.2, "triangle", 0.1),
+    200
+  );
+
+}
+
+
+function playGameOverSound() {
+
+  setTimeout(
+    () => playTone(300, 0.12, "sine", 0.05),
+    0
+  );
+
+  setTimeout(
+    () => playTone(220, 0.2, "sine", 0.05),
+    120
+  );
+
+}
+
+
+/* =========================
+   START
+========================= */
+
 startGame();
+
 </script>
 
 </body>
