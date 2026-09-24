@@ -1,1 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target Clicker - Mini Games</title>
 
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            background:
+                radial-gradient(circle at top, #172554, #050816 55%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .top {
+            margin-bottom: 18px;
+        }
+
+        .back {
+            display: inline-block;
+            color: #a5b4fc;
+            text-decoration: none;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .back:hover {
+            color: white;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .stat {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 12px 20px;
+            min-width: 120px;
+        }
+
+        .stat span {
+            display: block;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .stat strong {
+            font-size: 22px;
+        }
+
+        #gameArea {
+            position: relative;
+            width: 100%;
+            height: 430px;
+            border-radius: 22px;
+            overflow: hidden;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(30,41,59,0.95),
+                    rgba(15,23,42,0.95)
+                );
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+        }
+
+        #target {
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 5px solid white;
+            background: #ef4444;
+            cursor: pointer;
+            display: none;
+            box-shadow:
+                0 0 0 5px rgba(239,68,68,0.2),
+                0 0 25px rgba(239,68,68,0.6);
+            transition: transform 0.08s;
+        }
+
+        #target:active {
+            transform: scale(0.85);
+        }
+
+        .center-message {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px;
+        }
+
+        .center-message h2 {
+            font-size: 28px;
+        }
+
+        .center-message p {
+            color: #94a3b8;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            border-radius: 12px;
+            padding: 13px 25px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            box-shadow: 0 8px 25px rgba(99,102,241,0.3);
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(99,102,241,0.4);
+        }
+
+        .instructions {
+            margin-top: 15px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            #gameArea {
+                height: 380px;
+            }
+
+            #target {
+                width: 58px;
+                height: 58px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="game-container">
+
+    <div class="top">
+        <a href="../index.html" class="back">← Back to Mini Games</a>
+
+        <h1>🎯 Target Clicker</h1>
+        <p class="subtitle">Click the targets as fast as you can!</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <span>SCORE</span>
+            <strong id="score">0</strong>
+        </div>
+
+        <div class="stat">
+            <span>TIME</span>
+            <strong id="time">30</strong>
+        </div>
+
+        <div class="stat">
+            <span>BEST</span>
+            <strong id="best">0</strong>
+        </div>
+    </div>
+
+    <div id="gameArea">
+
+        <div id="startScreen" class="center-message">
+            <h2>Ready?</h2>
+            <p>Hit as many targets as possible in 30 seconds.</p>
+            <button id="startButton">🎯 START GAME</button>
+        </div>
+
+        <div id="gameOverScreen" class="center-message" style="display:none;">
+            <h2>🏆 Time's Up!</h2>
+            <p>Your score: <strong id="finalScore">0</strong></p>
+            <button id="restartButton">🔄 PLAY AGAIN</button>
+        </div>
+
+        <div id="target"></div>
+
+    </div>
+
+    <p class="instructions">
+        The target gets smaller as your score increases!
+    </p>
+
+</div>
+
+<script>
+    const gameArea = document.getElementById("gameArea");
+    const target = document.getElementById("target");
+
+    const startScreen = document.getElementById("startScreen");
+    const gameOverScreen = document.getElementById("gameOverScreen");
+
+    const startButton = document.getElementById("startButton");
+    const restartButton = document.getElementById("restartButton");
+
+    const scoreDisplay = document.getElementById("score");
+    const timeDisplay = document.getElementById("time");
+    const bestDisplay = document.getElementById("best");
+    const finalScore = document.getElementById("finalScore");
+
+    let score = 0;
+    let time = 30;
+    let gameRunning = false;
+    let timer;
+
+    let bestScore = Number(localStorage.getItem("targetClickerBest")) || 0;
+    bestDisplay.textContent = bestScore;
+
+    // Simple sounds using Web Audio API
+    let audioContext;
+
+    function sound(frequency, duration, type = "sine") {
+        try {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const oscillator = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            oscillator.type = type;
+            oscillator.frequency.value = frequency;
+
+            gain.gain.setValueAtTime(0.08, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                audioContext.currentTime + duration
+            );
+
+            oscillator.connect(gain);
+            gain.connect(audioContext.destination);
+
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + duration);
+        } catch (e) {}
+    }
+
+    function moveTarget() {
+        const areaWidth = gameArea.clientWidth;
+        const areaHeight = gameArea.clientHeight;
+
+        const targetSize = target.offsetWidth;
+
+        const maxX = areaWidth - targetSize;
+        const maxY = areaHeight - targetSize;
+
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+
+        target.style.left = x + "px";
+        target.style.top = y + "px";
+    }
+
+    function updateTargetSize() {
+        const newSize = Math.max(35, 65 - score * 1.5);
+
+        target.style.width = newSize + "px";
+        target.style.height = newSize + "px";
+    }
+
+    function startGame() {
+        score = 0;
+        time = 30;
+
+        scoreDisplay.textContent = score;
+        timeDisplay.textContent = time;
+
+        gameRunning = true;
+
+        startScreen.style.display = "none";
+        gameOverScreen.style.display = "none";
+
+        target.style.display = "block";
+
+        updateTargetSize();
+        moveTarget();
+
+        clearInterval(timer);
+
+        timer = setInterval(() => {
+            time--;
+
+            timeDisplay.textContent = time;
+
+            if (time <= 0) {
+                endGame();
+            }
+        }, 1000);
+
+        sound(600, 0.12);
+    }
+
+    function endGame() {
+        gameRunning = false;
+
+        clearInterval(timer);
+
+        target.style.display = "none";
+
+        finalScore.textContent = score;
+        gameOverScreen.style.display = "flex";
+
+        if (score > bestScore) {
+            bestScore = score;
+            localStorage.setItem("targetClickerBest", bestScore);
+            bestDisplay.textContent = bestScore;
+        }
+
+        sound(250, 0.25, "triangle");
+    }
+
+    target.addEventListener("click", (event) => {
+        if (!gameRunning) return;
+
+        event.stopPropagation();
+
+        score++;
+
+        scoreDisplay.textContent = score;
+
+        updateTargetSize();
+        moveTarget();
+
+        // Higher pitch for higher score
+        sound(500 + score * 12, 0.06);
+    });
+
+    startButton.addEventListener("click", startGame);
+    restartButton.addEventListener("click", startGame);
+
+    window.addEventListener("resize", () => {
+        if (gameRunning) {
+            moveTarget();
+        }
+    });
+</script>
+
+</body>
+</html>
