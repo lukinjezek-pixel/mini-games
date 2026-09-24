@@ -1,8 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>2048 Mini - Mini Games</title>
 
 <style>
@@ -36,7 +38,6 @@ body {
     color: #aaa;
     text-decoration: none;
     margin-bottom: 15px;
-    transition: .2s;
 }
 
 .back:hover {
@@ -114,7 +115,9 @@ button:active {
     background: rgba(255,255,255,.09);
 }
 
-/* GAME */
+/* =========================
+   GAME
+========================= */
 
 .game-wrapper {
     position: relative;
@@ -132,6 +135,7 @@ button:active {
     box-shadow:
         0 15px 50px rgba(0,0,0,.4),
         inset 0 0 0 1px rgba(255,255,255,.05);
+
     touch-action: none;
     user-select: none;
 }
@@ -139,9 +143,11 @@ button:active {
 .grid {
     width: 100%;
     height: 100%;
+
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
+
     gap: 10px;
 }
 
@@ -150,22 +156,26 @@ button:active {
     border-radius: 12px;
 }
 
-/*
-    REAL TILE LAYER
-
-    Tiles are positioned absolutely and translated
-    with CSS transforms instead of being recreated
-    during every movement.
-*/
+/* =========================
+   TILE LAYER
+========================= */
 
 .tiles {
     position: absolute;
     inset: 10px;
+
     pointer-events: none;
+
+    /*
+        Důležité:
+        dlaždice zůstávají pořád ve stejné vrstvě.
+        Při pohybu se mění pouze transform.
+    */
 }
 
 .tile {
     position: absolute;
+
     width: calc((100% - 30px) / 4);
     height: calc((100% - 30px) / 4);
 
@@ -178,10 +188,23 @@ button:active {
     font-weight: 900;
     font-size: clamp(25px, 7vw, 42px);
 
+    /*
+        Pozice se ukládá do CSS proměnných.
+        Díky tomu se transform při animaci
+        nepřepisuje jiným způsobem.
+    */
+    --x: 0px;
+    --y: 0px;
+
+    transform: translate3d(var(--x), var(--y), 0);
+
     transition:
-        transform 190ms cubic-bezier(.22,.8,.25,1);
+        transform 190ms cubic-bezier(.16,.78,.24,1);
 
     will-change: transform;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .tile.pop {
@@ -194,32 +217,53 @@ button:active {
 }
 
 @keyframes tilePop {
+
     0% {
         opacity: 0;
-        transform: translate(var(--x), var(--y)) scale(.35);
+        transform:
+            translate3d(var(--x), var(--y), 0)
+            scale(.35);
     }
-    70% {
-        transform: translate(var(--x), var(--y)) scale(1.12);
+
+    65% {
+        opacity: 1;
+        transform:
+            translate3d(var(--x), var(--y), 0)
+            scale(1.12);
     }
+
     100% {
         opacity: 1;
-        transform: translate(var(--x), var(--y)) scale(1);
+        transform:
+            translate3d(var(--x), var(--y), 0)
+            scale(1);
     }
 }
 
 @keyframes tileMerge {
+
     0% {
-        transform: translate(var(--x), var(--y)) scale(1);
+        transform:
+            translate3d(var(--x), var(--y), 0)
+            scale(1);
     }
+
     45% {
-        transform: translate(var(--x), var(--y)) scale(1.22);
+        transform:
+            translate3d(var(--x), var(--y), 0)
+            scale(1.20);
     }
+
     100% {
-        transform: translate(var(--x), var(--y)) scale(1);
+        transform:
+            translate3d(var(--x), var(--y), 0)
+            scale(1);
     }
 }
 
-/* COLORS */
+/* =========================
+   COLORS
+========================= */
 
 .tile-2 {
     background: #eee4da;
@@ -270,23 +314,33 @@ button:active {
 
 .tile-2048 {
     background: linear-gradient(135deg, #ffd700, #ff8c00);
+
     box-shadow:
         0 0 30px rgba(255,180,0,.6),
         0 0 60px rgba(255,100,0,.25);
+
     font-size: clamp(21px, 5.5vw, 34px);
 }
 
-/* OVERLAY */
+/* =========================
+   OVERLAY
+========================= */
 
 .overlay {
     position: absolute;
     inset: 0;
+
     border-radius: 18px;
+
     background: rgba(8,8,18,.78);
+
     backdrop-filter: blur(5px);
+
     display: none;
+
     justify-content: center;
     align-items: center;
+
     z-index: 20;
 }
 
@@ -308,14 +362,21 @@ button:active {
     margin-bottom: 18px;
 }
 
-/* INSTRUCTIONS */
+/* =========================
+   INSTRUCTIONS
+========================= */
 
 .instructions {
     margin-top: 25px;
+
     padding: 20px;
+
     border-radius: 16px;
+
     background: rgba(255,255,255,.045);
+
     border: 1px solid rgba(255,255,255,.07);
+
     text-align: left;
 }
 
@@ -351,35 +412,38 @@ button:active {
 .key {
     width: 38px;
     height: 38px;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 8px;
-    background: #242438;
-    border: 1px solid rgba(255,255,255,.12);
-    font-weight: bold;
-}
 
-.key.space {
-    width: 82px;
+    border-radius: 8px;
+
+    background: #242438;
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    font-weight: bold;
 }
 
 .swipe-demo {
     display: flex;
     justify-content: center;
     align-items: center;
+
     gap: 10px;
+
     margin-top: 9px;
+
     font-size: 24px;
 }
 
-.swipe-demo span {
-    color: white;
-}
-
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 500px) {
+
     body {
         padding-top: 15px;
     }
@@ -416,12 +480,18 @@ button:active {
 
 <div class="container">
 
-    <a href="../index.html" class="back">← Back to Mini Games</a>
+    <a href="../index.html" class="back">
+        ← Back to Mini Games
+    </a>
 
     <h1>2048</h1>
-    <div class="subtitle">Merge the numbers and reach 2048!</div>
+
+    <div class="subtitle">
+        Merge the numbers and reach 2048!
+    </div>
 
     <div class="top">
+
         <div class="stat">
             <span class="stat-label">Score</span>
             <span class="stat-value" id="score">0</span>
@@ -432,19 +502,22 @@ button:active {
             <span class="stat-value" id="best">0</span>
         </div>
 
-        <button id="newGame">New Game</button>
-        <button id="soundBtn">🔊 Sound</button>
+        <button id="newGame">
+            New Game
+        </button>
+
+        <button id="soundBtn">
+            🔊 Sound
+        </button>
+
     </div>
+
 
     <div class="game-wrapper">
 
         <div class="board" id="board">
 
             <div class="grid">
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
 
                 <div class="cell"></div>
                 <div class="cell"></div>
@@ -460,31 +533,59 @@ button:active {
                 <div class="cell"></div>
                 <div class="cell"></div>
                 <div class="cell"></div>
+
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+
             </div>
 
             <div class="tiles" id="tiles"></div>
 
+
             <div class="overlay" id="overlay">
+
                 <div class="overlay-box">
-                    <h2 id="overlayTitle">Game Over</h2>
-                    <p id="overlayText">No more moves!</p>
-                    <button id="overlayButton">Try Again</button>
+
+                    <h2 id="overlayTitle">
+                        Game Over
+                    </h2>
+
+                    <p id="overlayText">
+                        No more moves!
+                    </p>
+
+                    <button id="overlayButton">
+                        Try Again
+                    </button>
+
                 </div>
+
             </div>
 
         </div>
 
     </div>
 
+
     <div class="instructions">
 
-        <h2>🎮 HOW TO PLAY</h2>
+        <h2>
+            🎮 HOW TO PLAY
+        </h2>
+
 
         <div class="instruction-row">
-            <strong>💻 PC / Keyboard</strong>
+
+            <strong>
+                💻 PC / Keyboard
+            </strong>
+
             <span>
                 Use the arrow keys or WASD to move the tiles.
             </span>
+
 
             <div class="keys">
                 <div class="key">W</div>
@@ -502,10 +603,16 @@ button:active {
                 <div class="key">↓</div>
                 <div class="key">→</div>
             </div>
+
         </div>
 
+
         <div class="instruction-row">
-            <strong>📱 Mobile</strong>
+
+            <strong>
+                📱 Mobile
+            </strong>
+
             <span>
                 Swipe your finger across the board to move the tiles.
             </span>
@@ -515,42 +622,85 @@ button:active {
                 <span>👆</span>
                 <span>➡️</span>
             </div>
+
         </div>
 
+
         <div class="instruction-row">
-            <strong>🎯 Goal</strong>
+
+            <strong>
+                🎯 Goal
+            </strong>
+
             <span>
                 Combine matching numbers to create the 2048 tile.
             </span>
+
         </div>
 
     </div>
 
 </div>
 
+
 <script>
-const boardElement = document.getElementById("board");
-const tilesElement = document.getElementById("tiles");
 
-const scoreElement = document.getElementById("score");
-const bestElement = document.getElementById("best");
+/* =========================
+   ELEMENTS
+========================= */
 
-const newGameButton = document.getElementById("newGame");
-const soundButton = document.getElementById("soundBtn");
+const boardElement =
+    document.getElementById("board");
 
-const overlay = document.getElementById("overlay");
-const overlayTitle = document.getElementById("overlayTitle");
-const overlayText = document.getElementById("overlayText");
-const overlayButton = document.getElementById("overlayButton");
+const tilesElement =
+    document.getElementById("tiles");
+
+const scoreElement =
+    document.getElementById("score");
+
+const bestElement =
+    document.getElementById("best");
+
+const newGameButton =
+    document.getElementById("newGame");
+
+const soundButton =
+    document.getElementById("soundBtn");
+
+const overlay =
+    document.getElementById("overlay");
+
+const overlayTitle =
+    document.getElementById("overlayTitle");
+
+const overlayText =
+    document.getElementById("overlayText");
+
+const overlayButton =
+    document.getElementById("overlayButton");
+
+
+/* =========================
+   GAME VARIABLES
+========================= */
 
 let board = [];
+
 let score = 0;
-let best = Number(localStorage.getItem("miniGames2048Best")) || 0;
+
+let best =
+    Number(
+        localStorage.getItem("miniGames2048Best")
+    ) || 0;
 
 let nextId = 1;
+
 let animating = false;
+
 let gameWon = false;
+
 let gameOver = false;
+
 let soundEnabled = true;
 
 bestElement.textContent = best;
@@ -569,14 +719,26 @@ function playSound(type) {
     try {
 
         if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            audioContext =
+                new (
+                    window.AudioContext ||
+                    window.webkitAudioContext
+                )();
+
         }
 
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
+        const oscillator =
+            audioContext.createOscillator();
+
+        const gain =
+            audioContext.createGain();
 
         oscillator.connect(gain);
-        gain.connect(audioContext.destination);
+
+        gain.connect(
+            audioContext.destination
+        );
 
         let frequency = 300;
         let duration = 0.08;
@@ -601,125 +763,256 @@ function playSound(type) {
             duration = 0.3;
         }
 
-        oscillator.frequency.value = frequency;
+        oscillator.frequency.value =
+            frequency;
+
         oscillator.type = "sine";
 
-        gain.gain.setValueAtTime(.0001, audioContext.currentTime);
-        gain.gain.exponentialRampToValueAtTime(.13, audioContext.currentTime + .01);
-        gain.gain.exponentialRampToValueAtTime(.0001, audioContext.currentTime + duration);
+        gain.gain.setValueAtTime(
+            .0001,
+            audioContext.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .13,
+            audioContext.currentTime + .01
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            audioContext.currentTime + duration
+        );
 
         oscillator.start();
-        oscillator.stop(audioContext.currentTime + duration);
+
+        oscillator.stop(
+            audioContext.currentTime + duration
+        );
 
     } catch (e) {}
+
 }
 
 
 /* =========================
-   BOARD HELPERS
+   BOARD
 ========================= */
 
 function createEmptyBoard() {
-    return Array.from({length: 4}, () => Array(4).fill(null));
+
+    return Array.from(
+        {length: 4},
+        () => Array(4).fill(null)
+    );
+
 }
+
 
 function randomEmptyCell() {
 
     const empty = [];
 
     for (let r = 0; r < 4; r++) {
+
         for (let c = 0; c < 4; c++) {
 
             if (board[r][c] === null) {
-                empty.push({r, c});
+
+                empty.push({
+                    r,
+                    c
+                });
+
             }
 
         }
+
     }
 
-    if (!empty.length) return null;
+    if (!empty.length) {
+        return null;
+    }
 
-    return empty[Math.floor(Math.random() * empty.length)];
+    return empty[
+        Math.floor(
+            Math.random() * empty.length
+        )
+    ];
+
 }
 
 
 /* =========================
-   TILE POSITION
+   POSITION SYSTEM
 ========================= */
-
-function getTilePosition(row, col) {
-
-    const gap = 10;
-
-    const x = `calc(${col} * (25% + ${gap}px / 4))`;
-    const y = `calc(${row} * (25% + ${gap}px / 4))`;
-
-    return {x, y};
-}
-
 
 /*
-    This uses percentage positioning instead of
-    rebuilding the tile when it moves.
+    Každá dlaždice se pohybuje přesně o jednu
+    svou šířku + mezeru.
+
+    Používáme CSS proměnné --x a --y.
+    Transform se během hry nepřepisuje
+    jiným způsobem.
 */
 
-function getTransform(row, col) {
+function getPosition(row, col) {
 
-    const x = `calc(${col} * (100% + 10px))`;
-    const y = `calc(${row} * (100% + 10px))`;
+    const x =
+        `calc(${col} * (100% + 10px))`;
 
-    return `translate(${x}, ${y})`;
+    const y =
+        `calc(${row} * (100% + 10px))`;
+
+    return {
+        x,
+        y
+    };
+
+}
+
+
+function setTilePosition(
+    tile,
+    row,
+    col
+) {
+
+    if (!tile.el) return;
+
+    const position =
+        getPosition(row, col);
+
+    tile.el.style.setProperty(
+        "--x",
+        position.x
+    );
+
+    tile.el.style.setProperty(
+        "--y",
+        position.y
+    );
+
 }
 
 
 /* =========================
-   TILE CREATION
+   CREATE TILE
 ========================= */
 
-function createTile(value, row, col, animate = false) {
+function createTile(
+    value,
+    row,
+    col,
+    animate = false
+) {
 
     const tile = {
+
         id: nextId++,
+
         value,
+
         row,
+
         col,
+
         el: null
+
     };
 
-    const element = document.createElement("div");
 
-    element.className = `tile tile-${value}`;
-    element.textContent = value;
+    const element =
+        document.createElement("div");
 
-    element.style.setProperty("--x", getTransform(row, col));
-    element.style.setProperty("--y", "0px");
 
-    element.style.transform = getTransform(row, col);
+    element.className =
+        `tile tile-${value}`;
+
+    element.textContent =
+        value;
+
 
     tile.el = element;
 
-    tilesElement.appendChild(element);
+
+    /*
+        POZOR:
+        Pozici nastavujeme ještě před vložením
+        do DOMu a před spuštěním animace.
+    */
+
+    const position =
+        getPosition(row, col);
+
+
+    element.style.setProperty(
+        "--x",
+        position.x
+    );
+
+    element.style.setProperty(
+        "--y",
+        position.y
+    );
+
+
+    tilesElement.appendChild(
+        element
+    );
+
 
     if (animate) {
+
         element.classList.add("pop");
+
+        setTimeout(() => {
+
+            if (element.isConnected) {
+
+                element.classList.remove(
+                    "pop"
+                );
+
+            }
+
+        }, 200);
+
     }
 
+
     return tile;
+
 }
 
 
 /* =========================
-   UPDATE TILE LOOK
+   UPDATE TILE
 ========================= */
 
 function updateTileElement(tile) {
 
     if (!tile.el) return;
 
-    tile.el.className = `tile tile-${tile.value}`;
-    tile.el.textContent = tile.value;
 
-    tile.el.style.transform = getTransform(tile.row, tile.col);
+    tile.el.className =
+        `tile tile-${tile.value}`;
+
+
+    tile.el.textContent =
+        tile.value;
+
+
+    /*
+        Jen synchronizujeme CSS proměnné.
+        Neděláme nový transform.
+    */
+
+    setTilePosition(
+        tile,
+        tile.row,
+        tile.col
+    );
+
 }
 
 
@@ -727,24 +1020,39 @@ function updateTileElement(tile) {
    SPAWN
 ========================= */
 
-function spawnTile(animate = true) {
+function spawnTile(
+    animate = true
+) {
 
-    const spot = randomEmptyCell();
+    const spot =
+        randomEmptyCell();
 
-    if (!spot) return null;
+    if (!spot) {
+        return null;
+    }
 
-    const value = Math.random() < .9 ? 2 : 4;
 
-    const tile = createTile(
-        value,
-        spot.r,
-        spot.c,
-        animate
-    );
+    const value =
+        Math.random() < .9
+        ? 2
+        : 4;
 
-    board[spot.r][spot.c] = tile;
+
+    const tile =
+        createTile(
+            value,
+            spot.r,
+            spot.c,
+            animate
+        );
+
+
+    board[spot.r][spot.c] =
+        tile;
+
 
     return tile;
+
 }
 
 
@@ -756,19 +1064,25 @@ function addScore(amount) {
 
     score += amount;
 
-    scoreElement.textContent = score;
+    scoreElement.textContent =
+        score;
+
 
     if (score > best) {
 
         best = score;
 
-        bestElement.textContent = best;
+        bestElement.textContent =
+            best;
+
 
         localStorage.setItem(
             "miniGames2048Best",
             best
         );
+
     }
+
 }
 
 
@@ -779,225 +1093,388 @@ function addScore(amount) {
 function newGame() {
 
     animating = false;
+
     gameWon = false;
+
     gameOver = false;
 
     score = 0;
-    scoreElement.textContent = "0";
 
-    overlay.classList.remove("show");
+    scoreElement.textContent =
+        "0";
 
-    tilesElement.innerHTML = "";
+    overlay.classList.remove(
+        "show"
+    );
 
-    board = createEmptyBoard();
+    tilesElement.innerHTML =
+        "";
+
+    board =
+        createEmptyBoard();
+
 
     spawnTile(false);
+
     spawnTile(false);
+
 }
 
 
 /* =========================
-   MOVE CALCULATION
+   GET LINES
 ========================= */
 
 function getLines(direction) {
 
     const lines = [];
 
-    if (direction === "left" || direction === "right") {
 
-        for (let r = 0; r < 4; r++) {
+    if (
+        direction === "left" ||
+        direction === "right"
+    ) {
+
+        for (
+            let r = 0;
+            r < 4;
+            r++
+        ) {
 
             const line = [];
 
-            for (let i = 0; i < 4; i++) {
+
+            for (
+                let i = 0;
+                i < 4;
+                i++
+            ) {
 
                 const c =
                     direction === "left"
                     ? i
                     : 3 - i;
 
-                line.push(board[r][c]);
+
+                line.push(
+                    board[r][c]
+                );
+
             }
 
+
             lines.push(line);
+
         }
 
     } else {
 
-        for (let c = 0; c < 4; c++) {
+        for (
+            let c = 0;
+            c < 4;
+            c++
+        ) {
 
             const line = [];
 
-            for (let i = 0; i < 4; i++) {
+
+            for (
+                let i = 0;
+                i < 4;
+                i++
+            ) {
 
                 const r =
                     direction === "up"
                     ? i
                     : 3 - i;
 
-                line.push(board[r][c]);
+
+                line.push(
+                    board[r][c]
+                );
+
             }
 
+
             lines.push(line);
+
         }
+
     }
 
+
     return lines;
+
 }
 
 
-function getDestination(direction, lineIndex, position) {
+/* =========================
+   DESTINATION
+========================= */
+
+function getDestination(
+    direction,
+    lineIndex,
+    position
+) {
 
     if (direction === "left") {
+
         return {
             row: lineIndex,
             col: position
         };
+
     }
 
+
     if (direction === "right") {
+
         return {
             row: lineIndex,
             col: 3 - position
         };
+
     }
 
+
     if (direction === "up") {
+
         return {
             row: position,
             col: lineIndex
         };
+
     }
+
 
     return {
         row: 3 - position,
         col: lineIndex
     };
-}
 
-
-/*
-    Creates a movement plan without changing the
-    actual board until the animation finishes.
-*/
-
-function calculateMove(direction) {
-
-    const lines = getLines(direction);
-
-    const movements = [];
-    const result = createEmptyBoard();
-
-    let changed = false;
-    let gained = 0;
-    let mergedAnything = false;
-
-    lines.forEach((line, lineIndex) => {
-
-        const tiles = line.filter(Boolean);
-
-        let outputIndex = 0;
-
-        for (let i = 0; i < tiles.length; i++) {
-
-            const current = tiles[i];
-
-            if (
-                i + 1 < tiles.length &&
-                tiles[i + 1].value === current.value
-            ) {
-
-                const other = tiles[i + 1];
-
-                const destination =
-                    getDestination(
-                        direction,
-                        lineIndex,
-                        outputIndex
-                    );
-
-                movements.push({
-                    tile: current,
-                    row: destination.row,
-                    col: destination.col
-                });
-
-                movements.push({
-                    tile: other,
-                    row: destination.row,
-                    col: destination.col,
-                    removeAfter: true
-                });
-
-                const mergedTile = {
-                    id: current.id,
-                    value: current.value * 2,
-                    row: destination.row,
-                    col: destination.col,
-                    el: current.el
-                };
-
-                result[destination.row][destination.col] =
-                    mergedTile;
-
-                gained += mergedTile.value;
-
-                mergedAnything = true;
-                changed = true;
-
-                i++;
-                outputIndex++;
-
-            } else {
-
-                const destination =
-                    getDestination(
-                        direction,
-                        lineIndex,
-                        outputIndex
-                    );
-
-                if (
-                    current.row !== destination.row ||
-                    current.col !== destination.col
-                ) {
-                    changed = true;
-                }
-
-                movements.push({
-                    tile: current,
-                    row: destination.row,
-                    col: destination.col
-                });
-
-                result[destination.row][destination.col] =
-                    current;
-
-                outputIndex++;
-            }
-        }
-    });
-
-    return {
-        changed,
-        gained,
-        mergedAnything,
-        movements,
-        result
-    };
 }
 
 
 /* =========================
-   ANIMATE MOVE
+   CALCULATE MOVE
+========================= */
+
+function calculateMove(direction) {
+
+    const lines =
+        getLines(direction);
+
+
+    const movements = [];
+
+    const result =
+        createEmptyBoard();
+
+
+    let changed = false;
+
+    let gained = 0;
+
+    let mergedAnything = false;
+
+
+    lines.forEach(
+        (line, lineIndex) => {
+
+            const tiles =
+                line.filter(Boolean);
+
+
+            let outputIndex = 0;
+
+
+            for (
+                let i = 0;
+                i < tiles.length;
+                i++
+            ) {
+
+                const current =
+                    tiles[i];
+
+
+                if (
+                    i + 1 < tiles.length &&
+                    tiles[i + 1].value ===
+                    current.value
+                ) {
+
+                    const other =
+                        tiles[i + 1];
+
+
+                    const destination =
+                        getDestination(
+                            direction,
+                            lineIndex,
+                            outputIndex
+                        );
+
+
+                    movements.push({
+
+                        tile: current,
+
+                        row:
+                            destination.row,
+
+                        col:
+                            destination.col
+
+                    });
+
+
+                    movements.push({
+
+                        tile: other,
+
+                        row:
+                            destination.row,
+
+                        col:
+                            destination.col,
+
+                        removeAfter: true
+
+                    });
+
+
+                    const mergedTile = {
+
+                        id: current.id,
+
+                        value:
+                            current.value * 2,
+
+                        row:
+                            destination.row,
+
+                        col:
+                            destination.col,
+
+                        el:
+                            current.el
+
+                    };
+
+
+                    result[
+                        destination.row
+                    ][
+                        destination.col
+                    ] =
+                        mergedTile;
+
+
+                    gained +=
+                        mergedTile.value;
+
+
+                    mergedAnything =
+                        true;
+
+                    changed = true;
+
+
+                    i++;
+
+                    outputIndex++;
+
+
+                } else {
+
+                    const destination =
+                        getDestination(
+                            direction,
+                            lineIndex,
+                            outputIndex
+                        );
+
+
+                    if (
+                        current.row !==
+                        destination.row ||
+                        current.col !==
+                        destination.col
+                    ) {
+
+                        changed = true;
+
+                    }
+
+
+                    movements.push({
+
+                        tile: current,
+
+                        row:
+                            destination.row,
+
+                        col:
+                            destination.col
+
+                    });
+
+
+                    result[
+                        destination.row
+                    ][
+                        destination.col
+                    ] =
+                        current;
+
+
+                    outputIndex++;
+
+                }
+
+            }
+
+        }
+    );
+
+
+    return {
+
+        changed,
+
+        gained,
+
+        mergedAnything,
+
+        movements,
+
+        result
+
+    };
+
+}
+
+
+/* =========================
+   MOVE + ANIMATION
 ========================= */
 
 async function move(direction) {
 
-    if (animating || gameOver) return;
+    if (
+        animating ||
+        gameOver
+    ) {
+        return;
+    }
 
-    const plan = calculateMove(direction);
+
+    const plan =
+        calculateMove(direction);
+
 
     if (!plan.changed) {
 
@@ -1006,7 +1483,9 @@ async function move(direction) {
         return;
     }
 
+
     animating = true;
+
 
     playSound(
         plan.mergedAnything
@@ -1014,132 +1493,246 @@ async function move(direction) {
         : "move"
     );
 
+
     /*
-        Move every existing tile to its new position.
+        HLAVNÍ OPRAVA:
+
+        Neděláme žádné vytváření nových čísel.
+        Existující dlaždice pouze dostanou novou
+        CSS pozici a prohlížeč je plynule přesune.
     */
 
-    plan.movements.forEach(move => {
+    plan.movements.forEach(
+        movement => {
 
-        const element = move.tile.el;
+            const tile =
+                movement.tile;
 
-        if (!element) return;
 
-        element.style.transform =
-            getTransform(
-                move.row,
-                move.col
+            if (!tile.el) {
+                return;
+            }
+
+
+            const position =
+                getPosition(
+                    movement.row,
+                    movement.col
+                );
+
+
+            tile.el.style.setProperty(
+                "--x",
+                position.x
             );
-    });
+
+
+            tile.el.style.setProperty(
+                "--y",
+                position.y
+            );
+
+        }
+    );
+
 
     /*
-        Wait for the actual CSS movement to finish.
+        Počkáme na dokončení skutečné
+        CSS animace.
     */
 
-    await new Promise(resolve => {
-        setTimeout(resolve, 205);
-    });
+    await new Promise(
+        resolve => {
+
+            setTimeout(
+                resolve,
+                205
+            );
+
+        }
+    );
+
 
     /*
-        Remove tiles that were consumed by merges.
+        Odstraníme pouze druhou dlaždici
+        při sloučení.
     */
 
-    plan.movements.forEach(move => {
+    plan.movements.forEach(
+        movement => {
 
-        if (
-            move.removeAfter &&
-            move.tile.el
+            if (
+                movement.removeAfter &&
+                movement.tile.el
+            ) {
+
+                movement.tile.el.remove();
+
+                movement.tile.el =
+                    null;
+
+            }
+
+        }
+    );
+
+
+    /*
+        Teď teprve změníme logický board.
+    */
+
+    board =
+        plan.result;
+
+
+    /*
+        Synchronizujeme pozice.
+        Žádný nový pohyb se zde nespouští.
+    */
+
+    for (
+        let r = 0;
+        r < 4;
+        r++
+    ) {
+
+        for (
+            let c = 0;
+            c < 4;
+            c++
         ) {
 
-            move.tile.el.remove();
-        }
-    });
+            const tile =
+                board[r][c];
 
-    /*
-        Apply final board state.
-    */
 
-    board = plan.result;
+            if (!tile) {
+                continue;
+            }
 
-    /*
-        Update survivors.
-    */
-
-    for (let r = 0; r < 4; r++) {
-
-        for (let c = 0; c < 4; c++) {
-
-            const tile = board[r][c];
-
-            if (!tile) continue;
 
             tile.row = r;
+
             tile.col = c;
 
-            updateTileElement(tile);
+
+            updateTileElement(
+                tile
+            );
+
         }
+
     }
+
+
+    /* =========================
+       MERGE ANIMATION
+    ========================= */
 
     if (plan.gained > 0) {
 
-        addScore(plan.gained);
+        addScore(
+            plan.gained
+        );
+
 
         /*
-            Small merge pop on all resulting
-            merged tiles.
+            Najdeme dlaždice, které vznikly
+            sloučením v tomto tahu.
         */
 
-        for (let r = 0; r < 4; r++) {
+        plan.movements.forEach(
+            movement => {
 
-            for (let c = 0; c < 4; c++) {
+                if (
+                    movement.removeAfter
+                ) {
 
-                const tile = board[r][c];
+                    const row =
+                        movement.row;
 
-                if (!tile) continue;
+                    const col =
+                        movement.col;
 
-                /*
-                    Only larger values created during
-                    this move need the visual pop.
-                */
 
-                if (tile.value >= 4) {
+                    const mergedTile =
+                        board[row][col];
 
-                    const previousClass =
-                        tile.el.className;
 
-                    tile.el.classList.add("merge");
+                    if (
+                        mergedTile &&
+                        mergedTile.el
+                    ) {
 
-                    setTimeout(() => {
+                        mergedTile.el.classList.add(
+                            "merge"
+                        );
 
-                        if (tile.el) {
-                            tile.el.classList.remove("merge");
-                        }
 
-                    }, 230);
+                        setTimeout(
+                            () => {
+
+                                if (
+                                    mergedTile.el
+                                ) {
+
+                                    mergedTile.el.classList.remove(
+                                        "merge"
+                                    );
+
+                                }
+
+                            },
+                            230
+                        );
+
+                    }
+
                 }
+
             }
-        }
+        );
+
     }
 
+
     /*
-        New tile appears AFTER the movement.
-        This is important — it prevents the
-        "numbers respawned" feeling.
+        NOVÁ dlaždice vznikne až teď.
+        Nikdy se tedy neobjeví během pohybu.
     */
 
     spawnTile(true);
 
-    await new Promise(resolve => {
-        setTimeout(resolve, 80);
-    });
+
+    await new Promise(
+        resolve => {
+
+            setTimeout(
+                resolve,
+                80
+            );
+
+        }
+    );
+
 
     checkWin();
 
-    if (!gameWon && !hasMoves()) {
+
+    if (
+        !gameWon &&
+        !hasMoves()
+    ) {
+
         gameOver = true;
+
         showGameOver();
+
     }
 
+
     animating = false;
+
 }
 
 
@@ -1149,11 +1742,22 @@ async function move(direction) {
 
 function checkWin() {
 
-    if (gameWon) return;
+    if (gameWon) {
+        return;
+    }
 
-    for (let r = 0; r < 4; r++) {
 
-        for (let c = 0; c < 4; c++) {
+    for (
+        let r = 0;
+        r < 4;
+        r++
+    ) {
+
+        for (
+            let c = 0;
+            c < 4;
+            c++
+        ) {
 
             if (
                 board[r][c] &&
@@ -1162,17 +1766,24 @@ function checkWin() {
 
                 gameWon = true;
 
+
                 playSound("win");
+
 
                 showOverlay(
                     "🎉 You reached 2048!",
                     "You made it! Keep playing or start a new game."
                 );
 
+
                 return;
+
             }
+
         }
+
     }
+
 }
 
 
@@ -1182,55 +1793,94 @@ function checkWin() {
 
 function hasMoves() {
 
-    for (let r = 0; r < 4; r++) {
+    for (
+        let r = 0;
+        r < 4;
+        r++
+    ) {
 
-        for (let c = 0; c < 4; c++) {
+        for (
+            let c = 0;
+            c < 4;
+            c++
+        ) {
 
-            if (!board[r][c]) {
+            if (
+                !board[r][c]
+            ) {
+
                 return true;
+
             }
 
-            const value = board[r][c].value;
+
+            const value =
+                board[r][c].value;
+
 
             if (
                 c < 3 &&
                 board[r][c + 1] &&
-                board[r][c + 1].value === value
+                board[r][c + 1].value ===
+                value
             ) {
+
                 return true;
+
             }
+
 
             if (
                 r < 3 &&
                 board[r + 1][c] &&
-                board[r + 1][c].value === value
+                board[r + 1][c].value ===
+                value
             ) {
+
                 return true;
+
             }
+
         }
+
     }
 
+
     return false;
+
 }
 
 
 function showGameOver() {
 
-    playSound("gameover");
+    playSound(
+        "gameover"
+    );
+
 
     showOverlay(
         "Game Over",
         "No more moves!"
     );
+
 }
 
 
-function showOverlay(title, text) {
+function showOverlay(
+    title,
+    text
+) {
 
-    overlayTitle.textContent = title;
-    overlayText.textContent = text;
+    overlayTitle.textContent =
+        title;
 
-    overlay.classList.add("show");
+    overlayText.textContent =
+        text;
+
+    overlay.classList.add(
+        "show"
+    );
+
 }
 
 
@@ -1238,27 +1888,51 @@ function showOverlay(title, text) {
    KEYBOARD
 ========================= */
 
-document.addEventListener("keydown", event => {
+document.addEventListener(
+    "keydown",
+    event => {
 
-    const key = event.key.toLowerCase();
+        const key =
+            event.key.toLowerCase();
 
-    const directions = {
-        arrowleft: "left",
-        arrowright: "right",
-        arrowup: "up",
-        arrowdown: "down",
-        a: "left",
-        d: "right",
-        w: "up",
-        s: "down"
-    };
 
-    if (!directions[key]) return;
+        const directions = {
 
-    event.preventDefault();
+            arrowleft: "left",
 
-    move(directions[key]);
-});
+            arrowright: "right",
+
+            arrowup: "up",
+
+            arrowdown: "down",
+
+            a: "left",
+
+            d: "right",
+
+            w: "up",
+
+            s: "down"
+
+        };
+
+
+        if (
+            !directions[key]
+        ) {
+            return;
+        }
+
+
+        event.preventDefault();
+
+
+        move(
+            directions[key]
+        );
+
+    }
+);
 
 
 /* =========================
@@ -1266,19 +1940,28 @@ document.addEventListener("keydown", event => {
 ========================= */
 
 let touchStartX = 0;
+
 let touchStartY = 0;
+
 
 boardElement.addEventListener(
     "touchstart",
     event => {
 
-        const touch = event.changedTouches[0];
+        const touch =
+            event.changedTouches[0];
 
-        touchStartX = touch.clientX;
-        touchStartY = touch.clientY;
+
+        touchStartX =
+            touch.clientX;
+
+        touchStartY =
+            touch.clientY;
 
     },
-    {passive: true}
+    {
+        passive: true
+    }
 );
 
 
@@ -1286,39 +1969,66 @@ boardElement.addEventListener(
     "touchend",
     event => {
 
-        const touch = event.changedTouches[0];
+        const touch =
+            event.changedTouches[0];
 
-        const dx = touch.clientX - touchStartX;
-        const dy = touch.clientY - touchStartY;
+
+        const dx =
+            touch.clientX -
+            touchStartX;
+
+
+        const dy =
+            touch.clientY -
+            touchStartY;
+
 
         const minSwipe = 30;
+
 
         if (
             Math.abs(dx) < minSwipe &&
             Math.abs(dy) < minSwipe
         ) {
+
             return;
+
         }
 
-        if (Math.abs(dx) > Math.abs(dy)) {
+
+        if (
+            Math.abs(dx) >
+            Math.abs(dy)
+        ) {
 
             if (dx > 0) {
+
                 move("right");
+
             } else {
+
                 move("left");
+
             }
 
         } else {
 
             if (dy > 0) {
+
                 move("down");
+
             } else {
+
                 move("up");
+
             }
+
         }
 
     },
-    {passive: true}
+    {
+        passive: true
+    }
 );
 
 
@@ -1331,21 +2041,26 @@ newGameButton.addEventListener(
     newGame
 );
 
+
 overlayButton.addEventListener(
     "click",
     newGame
 );
 
+
 soundButton.addEventListener(
     "click",
     () => {
 
-        soundEnabled = !soundEnabled;
+        soundEnabled =
+            !soundEnabled;
+
 
         soundButton.textContent =
             soundEnabled
             ? "🔊 Sound"
             : "🔇 Sound";
+
     }
 );
 
@@ -1360,3 +2075,4 @@ newGame();
 
 </body>
 </html>
+```
