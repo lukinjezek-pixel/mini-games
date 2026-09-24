@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Mini Games</title>
+
   <meta
     name="description"
     content="Play fun, fast and addictive mini games online for free."
@@ -487,7 +489,7 @@
         ================================= -->
 
         <article
-          class="game-card coming-soon"
+          class="game-card"
           data-category="reflex"
         >
 
@@ -511,9 +513,12 @@
 
           </div>
 
-          <span class="coming-label">
-            COMING SOON
-          </span>
+          <a
+            href="games/target-clicker.html"
+            class="game-button"
+          >
+            PLAY NOW →
+          </a>
 
         </article>
 
@@ -523,7 +528,7 @@
         ================================= -->
 
         <article
-          class="game-card coming-soon"
+          class="game-card"
           data-category="brain"
         >
 
@@ -547,9 +552,12 @@
 
           </div>
 
-          <span class="coming-label">
-            COMING SOON
-          </span>
+          <a
+            href="games/2048.html"
+            class="game-button"
+          >
+            PLAY NOW →
+          </a>
 
         </article>
 
@@ -559,7 +567,7 @@
         ================================= -->
 
         <article
-          class="game-card coming-soon"
+          class="game-card"
           data-category="action"
         >
 
@@ -583,9 +591,12 @@
 
           </div>
 
-          <span class="coming-label">
-            COMING SOON
-          </span>
+          <a
+            href="games/dont-touch-red.html"
+            class="game-button"
+          >
+            PLAY NOW →
+          </a>
 
         </article>
 
@@ -595,7 +606,7 @@
         ================================= -->
 
         <article
-          class="game-card coming-soon"
+          class="game-card"
           data-category="math"
         >
 
@@ -619,9 +630,12 @@
 
           </div>
 
-          <span class="coming-label">
-            COMING SOON
-          </span>
+          <a
+            href="games/quick-math.html"
+            class="game-button"
+          >
+            PLAY NOW →
+          </a>
 
         </article>
 
@@ -631,7 +645,7 @@
         ================================= -->
 
         <article
-          class="game-card coming-soon"
+          class="game-card"
           data-category="action"
         >
 
@@ -655,9 +669,12 @@
 
           </div>
 
-          <span class="coming-label">
-            COMING SOON
-          </span>
+          <a
+            href="games/dodge.html"
+            class="game-button"
+          >
+            PLAY NOW →
+          </a>
 
         </article>
 
@@ -667,7 +684,7 @@
         ================================= -->
 
         <article
-          class="game-card coming-soon"
+          class="game-card"
           data-category="choice"
         >
 
@@ -691,9 +708,12 @@
 
           </div>
 
-          <span class="coming-label">
-            COMING SOON
-          </span>
+          <a
+            href="games/coin-flip.html"
+            class="game-button"
+          >
+            PLAY NOW →
+          </a>
 
         </article>
 
@@ -843,10 +863,12 @@
       showMenu
     );
 
+
     closeMenu.addEventListener(
       "click",
       hideMenu
     );
+
 
     menuOverlay.addEventListener(
       "click",
@@ -863,20 +885,24 @@
         ".category-link"
       );
 
+
     const gameCards =
       document.querySelectorAll(
         ".game-card"
       );
+
 
     const gamesTitle =
       document.getElementById(
         "gamesTitle"
       );
 
+
     const gamesCount =
       document.getElementById(
         "gamesCount"
       );
+
 
     const noResults =
       document.getElementById(
@@ -886,7 +912,8 @@
 
     const categoryNames = {
 
-      "all": "All Games",
+      "all":
+        "All Games",
 
       "two-players":
         "Two Players",
@@ -1036,4 +1063,5 @@
   </script>
 
 </body>
+
 </html>
