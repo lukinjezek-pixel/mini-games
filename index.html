@@ -65,6 +65,11 @@
         <span>All Games</span>
       </button>
 
+      <button class="category-link" data-filter="3d">
+        <span>🧊</span>
+        <span>3D Games</span>
+      </button>
+
       <button class="category-link" data-filter="two-players">
         <span>👥</span>
         <span>Two Players</span>
@@ -242,7 +247,7 @@
         </div>
 
         <p id="gamesCount">
-          12 games available
+          13 games available
         </p>
 
       </div>
@@ -719,6 +724,45 @@
         </article>
 
 
+        <!-- ================================
+             13 3D OBSTACLE RUN
+        ================================= -->
+
+        <article
+          class="game-card"
+          data-category="3d"
+        >
+
+          <div class="game-icon">
+            🧊
+          </div>
+
+          <div class="game-info">
+
+            <span class="game-number">
+              13
+            </span>
+
+            <h3>
+              3D Obstacle Run
+            </h3>
+
+            <p>
+              Run, jump and dodge obstacles in 3D.
+            </p>
+
+          </div>
+
+          <a
+            href="games/3d-obstacle-run.html"
+            class="game-button"
+          >
+            PLAY NOW →
+          </a>
+
+        </article>
+
+
       </div>
 
 
@@ -916,6 +960,9 @@
       "all":
         "All Games",
 
+      "3d":
+        "3D Games",
+
       "two-players":
         "Two Players",
 
@@ -1060,6 +1107,13 @@
 
       }
     );
+
+
+    /* -------------------------------
+       INITIAL GAME COUNT
+    -------------------------------- */
+
+    filterGames("all");
 
   </script>
 
