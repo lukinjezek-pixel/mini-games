@@ -232,6 +232,7 @@ button:active {
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <script>
+
 let scene;
 let camera;
 let renderer;
@@ -263,31 +264,169 @@ const clock = new THREE.Clock();
 
 const lanes = [-3, 0, 3];
 
+
+/* =========================================================
+   SOUND SYSTEM
+   ========================================================= */
+
+let audioContext = null;
+
+function initAudio() {
+
+    if (!audioContext) {
+        audioContext = new (
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
+    }
+
+    if (audioContext.state === "suspended") {
+        audioContext.resume();
+    }
+}
+
+function playSound(type) {
+
+    if (!audioContext) return;
+
+    const oscillator =
+        audioContext.createOscillator();
+
+    const gain =
+        audioContext.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    let startFrequency = 440;
+    let endFrequency = 440;
+    let duration = 0.1;
+    let volume = 0.08;
+
+    if (type === "start") {
+
+        startFrequency = 420;
+        endFrequency = 700;
+        duration = 0.18;
+        volume = 0.07;
+
+        oscillator.type = "sine";
+    }
+
+    if (type === "coin") {
+
+        startFrequency = 700;
+        endFrequency = 1050;
+        duration = 0.12;
+        volume = 0.1;
+
+        oscillator.type = "sine";
+    }
+
+    if (type === "jump") {
+
+        startFrequency = 330;
+        endFrequency = 560;
+        duration = 0.12;
+        volume = 0.06;
+
+        oscillator.type = "sine";
+    }
+
+    if (type === "hit") {
+
+        startFrequency = 130;
+        endFrequency = 55;
+        duration = 0.28;
+        volume = 0.12;
+
+        oscillator.type = "sawtooth";
+    }
+
+    oscillator.frequency.setValueAtTime(
+        startFrequency,
+        audioContext.currentTime
+    );
+
+    oscillator.frequency.exponentialRampToValueAtTime(
+        Math.max(1, endFrequency),
+        audioContext.currentTime + duration
+    );
+
+    gain.gain.setValueAtTime(
+        0.001,
+        audioContext.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        volume,
+        audioContext.currentTime + 0.01
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioContext.currentTime + duration
+    );
+
+    oscillator.start();
+
+    oscillator.stop(
+        audioContext.currentTime + duration
+    );
+}
+
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
 function init() {
 
     scene = new THREE.Scene();
 
-    scene.background = new THREE.Color(0x050510);
+    scene.background =
+        new THREE.Color(0x050510);
 
-    scene.fog = new THREE.Fog(0x050510, 18, 70);
+    scene.fog =
+        new THREE.Fog(
+            0x050510,
+            18,
+            70
+        );
 
-    camera = new THREE.PerspectiveCamera(
-        65,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        200
+    camera =
+        new THREE.PerspectiveCamera(
+            65,
+            window.innerWidth /
+            window.innerHeight,
+            0.1,
+            200
+        );
+
+    camera.position.set(
+        0,
+        5.5,
+        9
     );
 
-    camera.position.set(0, 5.5, 9);
-    camera.lookAt(0, 1, -12);
+    camera.lookAt(
+        0,
+        1,
+        -12
+    );
 
-    renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        powerPreference: "high-performance"
-    });
+    renderer =
+        new THREE.WebGLRenderer({
+            antialias: true,
+            powerPreference:
+                "high-performance"
+        });
 
     renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio, 1.7)
+        Math.min(
+            window.devicePixelRatio,
+            1.7
+        )
     );
 
     renderer.setSize(
@@ -297,171 +436,293 @@ function init() {
 
     renderer.shadowMap.enabled = true;
 
-    document.getElementById("game").appendChild(renderer.domElement);
+    document
+        .getElementById("game")
+        .appendChild(renderer.domElement);
 
     createLights();
     createWorld();
     createPlayer();
 
-    window.addEventListener("resize", resize);
+    window.addEventListener(
+        "resize",
+        resize
+    );
 
     animate();
 }
 
+
+/* =========================================================
+   LIGHTS
+   ========================================================= */
+
 function createLights() {
 
-    const ambient = new THREE.HemisphereLight(
-        0x8899ff,
-        0x111122,
-        2
-    );
+    const ambient =
+        new THREE.HemisphereLight(
+            0x8899ff,
+            0x111122,
+            2
+        );
 
     scene.add(ambient);
 
-    const light = new THREE.DirectionalLight(
-        0xffffff,
-        2.5
+    const light =
+        new THREE.DirectionalLight(
+            0xffffff,
+            2.5
+        );
+
+    light.position.set(
+        5,
+        12,
+        8
     );
 
-    light.position.set(5, 12, 8);
     light.castShadow = true;
 
     scene.add(light);
 }
 
+
+/* =========================================================
+   WORLD
+   ========================================================= */
+
 function createWorld() {
 
-    const ground = new THREE.Mesh(
-        new THREE.BoxGeometry(12, .5, 160),
-        new THREE.MeshStandardMaterial({
-            color: 0x17172d,
-            roughness: .8
-        })
+    const ground =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                12,
+                .5,
+                160
+            ),
+            new THREE.MeshStandardMaterial({
+                color: 0x17172d,
+                roughness: .8
+            })
+        );
+
+    ground.position.set(
+        0,
+        -.25,
+        -60
     );
 
-    ground.position.set(0, -.25, -60);
     ground.receiveShadow = true;
 
     scene.add(ground);
 
+
     // Lane lines
+
     for (let x of [-1.5, 1.5]) {
 
-        const line = new THREE.Mesh(
-            new THREE.BoxGeometry(.08, .03, 160),
-            new THREE.MeshBasicMaterial({
-                color: 0x45457a
-            })
-        );
+        const line =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    .08,
+                    .03,
+                    160
+                ),
+                new THREE.MeshBasicMaterial({
+                    color: 0x45457a
+                })
+            );
 
-        line.position.set(x, .03, -60);
+        line.position.set(
+            x,
+            .03,
+            -60
+        );
 
         scene.add(line);
     }
 
+
     // Side walls
+
     for (let x of [-6.2, 6.2]) {
 
-        const wall = new THREE.Mesh(
-            new THREE.BoxGeometry(.35, 2, 160),
-            new THREE.MeshStandardMaterial({
-                color: 0x2a1f55,
-                emissive: 0x120a2c
-            })
-        );
+        const wall =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    .35,
+                    2,
+                    160
+                ),
+                new THREE.MeshStandardMaterial({
+                    color: 0x2a1f55,
+                    emissive: 0x120a2c
+                })
+            );
 
-        wall.position.set(x, .8, -60);
+        wall.position.set(
+            x,
+            .8,
+            -60
+        );
 
         scene.add(wall);
     }
 
+
     // Decorative lights
-    for (let z = 0; z > -150; z -= 8) {
 
-        for (let x of [-5.5, 5.5]) {
+    for (
+        let z = 0;
+        z > -150;
+        z -= 8
+    ) {
 
-            const light = new THREE.Mesh(
-                new THREE.SphereGeometry(.12, 8, 8),
-                new THREE.MeshBasicMaterial({
-                    color: 0x00d9ff
-                })
+        for (
+            let x of [-5.5, 5.5]
+        ) {
+
+            const light =
+                new THREE.Mesh(
+                    new THREE.SphereGeometry(
+                        .12,
+                        8,
+                        8
+                    ),
+                    new THREE.MeshBasicMaterial({
+                        color: 0x00d9ff
+                    })
+                );
+
+            light.position.set(
+                x,
+                1.7,
+                z
             );
-
-            light.position.set(x, 1.7, z);
 
             scene.add(light);
         }
     }
 }
 
+
+/* =========================================================
+   PLAYER
+   ========================================================= */
+
 function createPlayer() {
 
-    player = new THREE.Group();
+    player =
+        new THREE.Group();
 
-    const body = new THREE.Mesh(
-        new THREE.BoxGeometry(1.15, 1.35, .8),
-        new THREE.MeshStandardMaterial({
-            color: 0x7657ff,
-            roughness: .35,
-            metalness: .15
-        })
-    );
+    const body =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                1.15,
+                1.35,
+                .8
+            ),
+            new THREE.MeshStandardMaterial({
+                color: 0x7657ff,
+                roughness: .35,
+                metalness: .15
+            })
+        );
 
     body.position.y = 1.15;
     body.castShadow = true;
 
     player.add(body);
 
-    const head = new THREE.Mesh(
-        new THREE.SphereGeometry(.48, 20, 20),
-        new THREE.MeshStandardMaterial({
-            color: 0xffc7a7
-        })
-    );
+
+    const head =
+        new THREE.Mesh(
+            new THREE.SphereGeometry(
+                .48,
+                20,
+                20
+            ),
+            new THREE.MeshStandardMaterial({
+                color: 0xffc7a7
+            })
+        );
 
     head.position.y = 2.15;
     head.castShadow = true;
 
     player.add(head);
 
-    const legMaterial = new THREE.MeshStandardMaterial({
-        color: 0x20204a
-    });
 
-    for (let x of [-.3, .3]) {
+    const legMaterial =
+        new THREE.MeshStandardMaterial({
+            color: 0x20204a
+        });
 
-        const leg = new THREE.Mesh(
-            new THREE.BoxGeometry(.25, .75, .3),
-            legMaterial
+    for (
+        let x of [-.3, .3]
+    ) {
+
+        const leg =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    .25,
+                    .75,
+                    .3
+                ),
+                legMaterial
+            );
+
+        leg.position.set(
+            x,
+            .25,
+            0
         );
 
-        leg.position.set(x, .25, 0);
         leg.castShadow = true;
 
         player.add(leg);
     }
 
-    player.position.set(0, 0, 3);
+    player.position.set(
+        0,
+        0,
+        3
+    );
 
     scene.add(player);
 }
 
+
+/* =========================================================
+   OBSTACLE
+   ========================================================= */
+
 function createObstacle() {
 
     const lane =
-        lanes[Math.floor(Math.random() * lanes.length)];
+        lanes[
+            Math.floor(
+                Math.random() *
+                lanes.length
+            )
+        ];
 
     const height =
-        .9 + Math.random() * 1.3;
+        .9 +
+        Math.random() * 1.3;
 
-    const obstacle = new THREE.Mesh(
-        new THREE.BoxGeometry(1.7, height, 1.5),
-        new THREE.MeshStandardMaterial({
-            color: 0xff315d,
-            emissive: 0x4a0617,
-            roughness: .35
-        })
-    );
+    const obstacle =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                1.7,
+                height,
+                1.5
+            ),
+            new THREE.MeshStandardMaterial({
+                color: 0xff315d,
+                emissive: 0x4a0617,
+                roughness: .35
+            })
+        );
 
     obstacle.position.set(
         lane,
@@ -471,60 +732,139 @@ function createObstacle() {
 
     obstacle.castShadow = true;
 
+    // Remember lane for safe coin spawning
+    obstacle.userData.lane = lane;
+
     scene.add(obstacle);
 
     obstacles.push(obstacle);
 }
 
+
+/* =========================================================
+   COIN
+   ========================================================= */
+
 function createCoin() {
 
-    const lane =
-        lanes[Math.floor(Math.random() * lanes.length)];
+    /*
+       Find lanes that do NOT currently have
+       a nearby obstacle.
 
-    const coin = new THREE.Mesh(
-        new THREE.TorusGeometry(.38, .12, 12, 24),
-        new THREE.MeshStandardMaterial({
-            color: 0xffd83d,
-            emissive: 0x5a3c00,
-            metalness: .8,
-            roughness: .2
-        })
-    );
+       This prevents coins from spawning
+       directly inside obstacles.
+    */
+
+    const safeLanes =
+        lanes.filter(lane => {
+
+            return !obstacles.some(
+                obstacle => {
+
+                    const sameLane =
+                        Math.abs(
+                            obstacle.position.x -
+                            lane
+                        ) < 0.5;
+
+                    const nearby =
+                        Math.abs(
+                            obstacle.position.z -
+                            (-45)
+                        ) < 18;
+
+                    return (
+                        sameLane &&
+                        nearby
+                    );
+                }
+            );
+        });
+
+
+    // If every lane is blocked, don't spawn a coin
+    if (safeLanes.length === 0) {
+        return;
+    }
+
+
+    const lane =
+        safeLanes[
+            Math.floor(
+                Math.random() *
+                safeLanes.length
+            )
+        ];
+
+
+    const coin =
+        new THREE.Mesh(
+            new THREE.TorusGeometry(
+                .38,
+                .12,
+                12,
+                24
+            ),
+            new THREE.MeshStandardMaterial({
+                color: 0xffd83d,
+                emissive: 0x5a3c00,
+                metalness: .8,
+                roughness: .2
+            })
+        );
 
     coin.position.set(
         lane,
-        1.3 + Math.random() * .7,
+        1.3 +
+        Math.random() * .7,
         -45
     );
 
-    coin.rotation.x = Math.PI / 2;
+    coin.rotation.x =
+        Math.PI / 2;
 
     scene.add(coin);
 
     coins.push(coin);
 }
 
+
+/* =========================================================
+   MOVEMENT
+   ========================================================= */
+
 function moveLeft() {
 
     if (!running) return;
 
-    const index = lanes.indexOf(targetX);
+    const index =
+        lanes.indexOf(targetX);
 
     if (index > 0) {
-        targetX = lanes[index - 1];
+
+        targetX =
+            lanes[index - 1];
     }
 }
+
 
 function moveRight() {
 
     if (!running) return;
 
-    const index = lanes.indexOf(targetX);
+    const index =
+        lanes.indexOf(targetX);
 
-    if (index < lanes.length - 1) {
-        targetX = lanes[index + 1];
+    if (
+        index <
+        lanes.length - 1
+    ) {
+
+        targetX =
+            lanes[index + 1];
     }
 }
+
 
 function jump() {
 
@@ -534,27 +874,57 @@ function jump() {
 
         velocityY = .24;
         grounded = false;
+
+        playSound("jump");
     }
 }
 
+
+/* =========================================================
+   START
+   ========================================================= */
+
 function startGame() {
 
-    document.getElementById("menu").classList.add("hidden");
-    document.getElementById("gameOver").classList.add("hidden");
+    // Enable audio after user interaction
+    initAudio();
 
-    obstacles.forEach(o => scene.remove(o));
-    coins.forEach(c => scene.remove(c));
+    playSound("start");
+
+    document
+        .getElementById("menu")
+        .classList.add("hidden");
+
+    document
+        .getElementById("gameOver")
+        .classList.add("hidden");
+
+
+    obstacles.forEach(
+        o => scene.remove(o)
+    );
+
+    coins.forEach(
+        c => scene.remove(c)
+    );
+
 
     obstacles = [];
     coins = [];
 
+
     score = 0;
+
     speed = .28;
 
     playerX = 0;
     targetX = 0;
 
-    player.position.set(0, 0, 3);
+    player.position.set(
+        0,
+        0,
+        3
+    );
 
     velocityY = 0;
     grounded = true;
@@ -567,11 +937,21 @@ function startGame() {
     scoreEl.textContent = "0";
 }
 
+
+/* =========================================================
+   GAME OVER
+   ========================================================= */
+
 function endGame() {
+
+    if (!running) return;
 
     running = false;
 
-    const final = Math.floor(score);
+    playSound("hit");
+
+    const final =
+        Math.floor(score);
 
     if (final > best) {
 
@@ -583,47 +963,81 @@ function endGame() {
         );
     }
 
-    document.getElementById("finalScore").textContent = final;
-    document.getElementById("finalBest").textContent = best;
+    document
+        .getElementById(
+            "finalScore"
+        )
+        .textContent = final;
+
+    document
+        .getElementById(
+            "finalBest"
+        )
+        .textContent = best;
 
     bestEl.textContent = best;
 
     document
-        .getElementById("gameOver")
-        .classList.remove("hidden");
+        .getElementById(
+            "gameOver"
+        )
+        .classList.remove(
+            "hidden"
+        );
 }
+
+
+/* =========================================================
+   UPDATE
+   ========================================================= */
 
 function update() {
 
     if (!running) return;
 
-    const delta = Math.min(
-        clock.getDelta(),
-        .033
-    );
+    const delta =
+        Math.min(
+            clock.getDelta(),
+            .033
+        );
+
 
     // Smooth lane movement
-    playerX +=
-        (targetX - playerX) * .18;
 
-    player.position.x = playerX;
+    playerX +=
+        (targetX - playerX) *
+        .18;
+
+    player.position.x =
+        playerX;
+
 
     // Jump physics
+
     velocityY -= .012;
 
-    player.position.y += velocityY;
+    player.position.y +=
+        velocityY;
 
-    if (player.position.y <= 0) {
+    if (
+        player.position.y <= 0
+    ) {
 
         player.position.y = 0;
+
         velocityY = 0;
+
         grounded = true;
     }
 
+
     // Difficulty
+
     speed += .000035;
 
+
     // Obstacles
+
     spawnTimer -= delta;
 
     if (spawnTimer <= 0) {
@@ -633,11 +1047,14 @@ function update() {
         spawnTimer =
             Math.max(
                 .55,
-                .95 - speed * .7
+                .95 -
+                speed * .7
             );
     }
 
+
     // Coins
+
     coinTimer -= delta;
 
     if (coinTimer <= 0) {
@@ -647,23 +1064,42 @@ function update() {
         coinTimer = .75;
     }
 
+
     // Move obstacles
-    for (let i = obstacles.length - 1; i >= 0; i--) {
 
-        const obstacle = obstacles[i];
+    for (
+        let i = obstacles.length - 1;
+        i >= 0;
+        i--
+    ) {
 
-        obstacle.position.z += speed * 60 * delta;
+        const obstacle =
+            obstacles[i];
+
+        obstacle.position.z +=
+            speed * 60 * delta;
+
 
         // Collision
+
         const dx =
-            Math.abs(obstacle.position.x - player.position.x);
+            Math.abs(
+                obstacle.position.x -
+                player.position.x
+            );
 
         const dy =
-            Math.abs(obstacle.position.y -
-                (player.position.y + 1));
+            Math.abs(
+                obstacle.position.y -
+                (player.position.y + 1)
+            );
 
         const dz =
-            Math.abs(obstacle.position.z - player.position.z);
+            Math.abs(
+                obstacle.position.z -
+                player.position.z
+            );
+
 
         if (
             dx < 1.25 &&
@@ -672,28 +1108,46 @@ function update() {
         ) {
 
             endGame();
+
             return;
         }
 
-        if (obstacle.position.z > 12) {
+
+        if (
+            obstacle.position.z > 12
+        ) {
 
             scene.remove(obstacle);
+
             obstacles.splice(i, 1);
 
             score += 5;
         }
     }
 
-    // Coins
-    for (let i = coins.length - 1; i >= 0; i--) {
 
-        const coin = coins[i];
+    // Move coins
 
-        coin.position.z += speed * 60 * delta;
+    for (
+        let i = coins.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const coin =
+            coins[i];
+
+        coin.position.z +=
+            speed * 60 * delta;
+
         coin.rotation.z += .08;
 
+
         const dx =
-            Math.abs(coin.position.x - player.position.x);
+            Math.abs(
+                coin.position.x -
+                player.position.x
+            );
 
         const dy =
             Math.abs(
@@ -707,6 +1161,7 @@ function update() {
                 player.position.z
             );
 
+
         if (
             dx < .9 &&
             dy < 1 &&
@@ -715,18 +1170,26 @@ function update() {
 
             score += 25;
 
+            playSound("coin");
+
             scene.remove(coin);
+
             coins.splice(i, 1);
 
             continue;
         }
 
-        if (coin.position.z > 12) {
+
+        if (
+            coin.position.z > 12
+        ) {
 
             scene.remove(coin);
+
             coins.splice(i, 1);
         }
     }
+
 
     score += delta * 2;
 
@@ -734,9 +1197,16 @@ function update() {
         Math.floor(score);
 }
 
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
 function animate() {
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(
+        animate
+    );
 
     update();
 
@@ -745,6 +1215,11 @@ function animate() {
         camera
     );
 }
+
+
+/* =========================================================
+   RESIZE
+   ========================================================= */
 
 function resize() {
 
@@ -760,49 +1235,92 @@ function resize() {
     );
 }
 
-// Keyboard
-window.addEventListener("keydown", e => {
 
-    if (
-        e.key === "ArrowLeft" ||
-        e.key.toLowerCase() === "a"
-    ) {
-        moveLeft();
+/* =========================================================
+   KEYBOARD
+   ========================================================= */
+
+window.addEventListener(
+    "keydown",
+    e => {
+
+        if (
+            e.key === "ArrowLeft" ||
+            e.key.toLowerCase() === "a"
+        ) {
+
+            moveLeft();
+        }
+
+
+        if (
+            e.key === "ArrowRight" ||
+            e.key.toLowerCase() === "d"
+        ) {
+
+            moveRight();
+        }
+
+
+        if (
+            e.key === "ArrowUp" ||
+            e.key === " "
+        ) {
+
+            e.preventDefault();
+
+            jump();
+        }
     }
+);
 
-    if (
-        e.key === "ArrowRight" ||
-        e.key.toLowerCase() === "d"
-    ) {
-        moveRight();
-    }
 
-    if (
-        e.key === "ArrowUp" ||
-        e.key === " "
-    ) {
-        e.preventDefault();
-        jump();
-    }
-});
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 
-// Buttons
-document.getElementById("left")
-    .addEventListener("pointerdown", moveLeft);
+document
+    .getElementById("left")
+    .addEventListener(
+        "pointerdown",
+        moveLeft
+    );
 
-document.getElementById("right")
-    .addEventListener("pointerdown", moveRight);
+document
+    .getElementById("right")
+    .addEventListener(
+        "pointerdown",
+        moveRight
+    );
 
-document.getElementById("jump")
-    .addEventListener("pointerdown", jump);
+document
+    .getElementById("jump")
+    .addEventListener(
+        "pointerdown",
+        jump
+    );
 
-document.getElementById("start")
-    .addEventListener("click", startGame);
+document
+    .getElementById("start")
+    .addEventListener(
+        "click",
+        startGame
+    );
 
-document.getElementById("restart")
-    .addEventListener("click", startGame);
+document
+    .getElementById("restart")
+    .addEventListener(
+        "click",
+        startGame
+    );
+
+
+/* =========================================================
+   START ENGINE
+   ========================================================= */
 
 init();
+
 </script>
 
 </body>
