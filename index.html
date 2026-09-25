@@ -27,6 +27,7 @@
         #f7f9ff;
       color: #171a2b;
       min-height: 100vh;
+
       transition:
         background 0.3s ease,
         color 0.3s ease;
@@ -48,7 +49,7 @@
       align-items: center;
       justify-content: space-between;
 
-      background: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.84);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
 
@@ -92,8 +93,7 @@
 
       transition:
         background 0.25s ease,
-        transform 0.2s ease,
-        color 0.25s ease;
+        transform 0.2s ease;
     }
 
     .menu-button:hover,
@@ -114,6 +114,7 @@
       height: 2px;
       border-radius: 5px;
       background: #343958;
+
       transition: background 0.3s ease;
     }
 
@@ -135,7 +136,7 @@
 
       padding: 25px 20px;
 
-      background: rgba(255, 255, 255, 0.96);
+      background: rgba(255, 255, 255, 0.97);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
 
@@ -160,8 +161,10 @@
       font-size: 12px;
       font-weight: 800;
       color: #8a91aa;
+
       text-transform: uppercase;
       letter-spacing: 1px;
+
       margin-bottom: 12px;
     }
 
@@ -176,6 +179,7 @@
       color: #555c75;
 
       text-align: left;
+
       font-size: 14px;
       font-weight: 700;
 
@@ -196,13 +200,16 @@
     .category-link.active {
       background: linear-gradient(135deg, #5146e5, #3c91e9);
       color: white;
+
       box-shadow: 0 7px 18px rgba(75, 73, 225, 0.22);
     }
 
     .menu-divider {
       height: 1px;
       background: #e6e9f2;
+
       margin: 20px 0;
+
       transition: background 0.3s ease;
     }
 
@@ -218,8 +225,8 @@
 
     .hero {
       width: min(1150px, calc(100% - 30px));
-      margin: 30px auto 35px;
 
+      margin: 30px auto 35px;
       padding: 55px 30px;
 
       border-radius: 28px;
@@ -230,27 +237,9 @@
         linear-gradient(135deg, #4542e9, #6759f5, #268fe7);
 
       color: white;
-
       text-align: center;
 
       box-shadow: 0 20px 45px rgba(75, 73, 225, 0.23);
-
-      transition:
-        box-shadow 0.3s ease,
-        filter 0.3s ease;
-    }
-
-    .hero h1 {
-      font-size: clamp(38px, 7vw, 72px);
-      font-weight: 950;
-      letter-spacing: -3px;
-      margin-bottom: 12px;
-    }
-
-    .hero p {
-      font-size: 18px;
-      opacity: 0.92;
-      font-weight: 600;
     }
 
     .hero-badge {
@@ -267,6 +256,20 @@
       font-size: 12px;
       font-weight: 800;
       letter-spacing: 0.5px;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 7vw, 72px);
+      font-weight: 950;
+
+      letter-spacing: -3px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      opacity: 0.92;
+      font-weight: 600;
     }
 
     /* =========================
@@ -289,7 +292,9 @@
     .section-header h2 {
       font-size: 28px;
       letter-spacing: -1px;
+
       color: #1d2030;
+
       transition: color 0.3s ease;
     }
 
@@ -297,6 +302,7 @@
       color: #8a91aa;
       font-size: 13px;
       font-weight: 700;
+
       transition: color 0.3s ease;
     }
 
@@ -318,7 +324,7 @@
 
       border-radius: 22px;
 
-      background: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.94);
       border: 1px solid #e7eaf4;
 
       box-shadow: 0 10px 30px rgba(43, 54, 100, 0.07);
@@ -338,7 +344,10 @@
 
     .game-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 17px 35px rgba(43, 54, 100, 0.13);
+
+      box-shadow:
+        0 17px 35px rgba(43, 54, 100, 0.13);
+
       border-color: #cfd5ee;
     }
 
@@ -370,6 +379,7 @@
 
     .game-number {
       position: absolute;
+
       top: 21px;
       right: 22px;
 
@@ -384,6 +394,7 @@
     .game-card h3 {
       font-size: 20px;
       letter-spacing: -0.4px;
+
       margin-bottom: 7px;
 
       color: #202335;
@@ -400,18 +411,6 @@
       transition: color 0.3s ease;
     }
 
-    .coming-soon {
-      margin-top: auto;
-      padding-top: 18px;
-
-      font-size: 11px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-
-      color: #8d95ac;
-    }
-
     /* =========================
        3D DIVIDER
     ========================= */
@@ -419,7 +418,7 @@
     .three-d-divider {
       width: 100%;
 
-      margin: 15px 0 28px;
+      margin: 35px 0 18px;
       padding: 18px 20px;
 
       border-radius: 18px;
@@ -435,8 +434,8 @@
 
       font-size: 15px;
       font-weight: 900;
-      color: #5146e5;
 
+      color: #5146e5;
       letter-spacing: 0.5px;
 
       transition:
@@ -451,8 +450,8 @@
 
     .about-box {
       width: min(1150px, calc(100% - 30px));
-      margin: 0 auto 50px;
 
+      margin: 0 auto 50px;
       padding: 28px;
 
       border-radius: 22px;
@@ -468,6 +467,7 @@
     .about-box h2 {
       font-size: 22px;
       margin-bottom: 9px;
+
       color: #202335;
 
       transition: color 0.3s ease;
@@ -476,6 +476,7 @@
     .about-box p {
       font-size: 14px;
       line-height: 1.65;
+
       color: #737b94;
 
       transition: color 0.3s ease;
@@ -518,7 +519,7 @@
     }
 
     body.dark-mode .topbar {
-      background: rgba(15, 21, 40, 0.88);
+      background: rgba(15, 21, 40, 0.90);
       border-color: #202a46;
     }
 
@@ -537,9 +538,11 @@
     }
 
     body.dark-mode .side-menu {
-      background: rgba(13, 19, 37, 0.97);
+      background: rgba(13, 19, 37, 0.98);
       border-color: #202a46;
-      box-shadow: -15px 0 40px rgba(0,0,0,0.35);
+
+      box-shadow:
+        -15px 0 40px rgba(0,0,0,0.35);
     }
 
     body.dark-mode .menu-title {
@@ -552,7 +555,7 @@
 
     body.dark-mode .category-link:hover {
       background: #192440;
-      color: #ffffff;
+      color: white;
     }
 
     body.dark-mode .menu-divider {
@@ -561,11 +564,6 @@
 
     body.dark-mode .menu-extra {
       color: #9aa6c5;
-    }
-
-    body.dark-mode .hero {
-      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-      filter: saturate(1.05);
     }
 
     body.dark-mode .section-header h2 {
@@ -577,14 +575,18 @@
     }
 
     body.dark-mode .game-card {
-      background: rgba(20, 28, 52, 0.94);
+      background: rgba(20, 28, 52, 0.96);
       border-color: #263250;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+
+      box-shadow:
+        0 12px 30px rgba(0,0,0,0.22);
     }
 
     body.dark-mode .game-card:hover {
       border-color: #3b4a70;
-      box-shadow: 0 18px 38px rgba(0,0,0,0.32);
+
+      box-shadow:
+        0 18px 38px rgba(0,0,0,0.32);
     }
 
     body.dark-mode .game-icon {
@@ -602,10 +604,6 @@
 
     body.dark-mode .game-card p {
       color: #9ca8c6;
-    }
-
-    body.dark-mode .coming-soon {
-      color: #8c98b6;
     }
 
     body.dark-mode .three-d-divider {
@@ -649,6 +647,7 @@
     }
 
     @media (max-width: 600px) {
+
       .topbar {
         height: 65px;
         padding: 0 14px;
@@ -700,7 +699,10 @@
 
 <body>
 
-  <!-- TOP BAR -->
+  <!-- =========================
+       TOP BAR
+  ========================== -->
+
   <header class="topbar">
 
     <div class="logo">
@@ -709,7 +711,7 @@
 
     <div class="topbar-actions">
 
-      <!-- THEME BUTTON -->
+      <!-- LIGHT / DARK MODE -->
       <button
         class="theme-button"
         id="themeToggle"
@@ -719,7 +721,7 @@
         <span id="themeIcon">🌙</span>
       </button>
 
-      <!-- MENU BUTTON -->
+      <!-- MENU -->
       <button
         class="menu-button"
         id="menuButton"
@@ -738,7 +740,10 @@
   </header>
 
 
-  <!-- SIDE MENU -->
+  <!-- =========================
+       SIDE MENU
+  ========================== -->
+
   <aside class="side-menu" id="sideMenu">
 
     <div class="menu-title">
@@ -780,14 +785,17 @@
     <div class="menu-divider"></div>
 
     <div class="menu-extra">
-      More games are coming soon.<br><br>
-      New games will appear here automatically.
+      13 games available.<br><br>
+      More games can be added anytime.
     </div>
 
   </aside>
 
 
-  <!-- HERO -->
+  <!-- =========================
+       HERO
+  ========================== -->
+
   <section class="hero">
 
     <div class="hero-badge">
@@ -803,15 +811,22 @@
   </section>
 
 
-  <!-- GAMES -->
+  <!-- =========================
+       GAMES
+  ========================== -->
+
   <main class="games-section">
 
     <div class="section-header">
-      <h2>Games</h2>
+
+      <h2>
+        Games
+      </h2>
 
       <div class="game-count" id="gameCount">
-        12 games
+        13 games
       </div>
+
     </div>
 
 
@@ -829,7 +844,9 @@
           ⚡
         </div>
 
-        <h3>Reaction Test</h3>
+        <h3>
+          Reaction Test
+        </h3>
 
         <p>
           Test how fast you can react.
@@ -849,7 +866,9 @@
           🔢
         </div>
 
-        <h3>Guess the Number</h3>
+        <h3>
+          Guess the Number
+        </h3>
 
         <p>
           Can you find the hidden number?
@@ -869,7 +888,9 @@
           🧠
         </div>
 
-        <h3>Memory Game</h3>
+        <h3>
+          Memory Game
+        </h3>
 
         <p>
           Match the cards and test your memory.
@@ -889,7 +910,9 @@
           🤯
         </div>
 
-        <h3>Impossible Choice</h3>
+        <h3>
+          Impossible Choice
+        </h3>
 
         <p>
           Choose between two impossible options.
@@ -909,7 +932,9 @@
           ❌
         </div>
 
-        <h3>Tic-Tac-Toe</h3>
+        <h3>
+          Tic-Tac-Toe
+        </h3>
 
         <p>
           Challenge your friend in a classic game.
@@ -929,7 +954,9 @@
           🌈
         </div>
 
-        <h3>Color Rush</h3>
+        <h3>
+          Color Rush
+        </h3>
 
         <p>
           React quickly and choose the correct color.
@@ -938,7 +965,8 @@
 
 
       <!-- 07 -->
-      <div
+      <a
+        href="games/target-clicker.html"
         class="game-card"
         data-category="reflex"
       >
@@ -948,20 +976,19 @@
           🎯
         </div>
 
-        <h3>Target Clicker</h3>
+        <h3>
+          Target Clicker
+        </h3>
 
         <p>
           Hit as many targets as possible.
         </p>
-
-        <div class="coming-soon">
-          Coming Soon
-        </div>
-      </div>
+      </a>
 
 
       <!-- 08 -->
-      <div
+      <a
+        href="games/2048.html"
         class="game-card"
         data-category="brain"
       >
@@ -971,20 +998,19 @@
           🔲
         </div>
 
-        <h3>2048 Mini</h3>
+        <h3>
+          2048 Mini
+        </h3>
 
         <p>
           Combine numbers and reach 2048.
         </p>
-
-        <div class="coming-soon">
-          Coming Soon
-        </div>
-      </div>
+      </a>
 
 
       <!-- 09 -->
-      <div
+      <a
+        href="games/dont-touch-red.html"
         class="game-card"
         data-category="action"
       >
@@ -994,20 +1020,19 @@
           🔴
         </div>
 
-        <h3>Don't Touch Red</h3>
+        <h3>
+          Don't Touch Red
+        </h3>
 
         <p>
           Avoid the dangerous red tiles.
         </p>
-
-        <div class="coming-soon">
-          Coming Soon
-        </div>
-      </div>
+      </a>
 
 
       <!-- 10 -->
-      <div
+      <a
+        href="games/quick-math.html"
         class="game-card"
         data-category="math"
       >
@@ -1017,20 +1042,19 @@
           🧮
         </div>
 
-        <h3>Quick Math</h3>
+        <h3>
+          Quick Math
+        </h3>
 
         <p>
           Solve calculations as quickly as possible.
         </p>
-
-        <div class="coming-soon">
-          Coming Soon
-        </div>
-      </div>
+      </a>
 
 
       <!-- 11 -->
-      <div
+      <a
+        href="games/dodge.html"
         class="game-card"
         data-category="action"
       >
@@ -1040,20 +1064,19 @@
           💨
         </div>
 
-        <h3>Dodge</h3>
+        <h3>
+          Dodge
+        </h3>
 
         <p>
           Avoid obstacles and survive as long as possible.
         </p>
-
-        <div class="coming-soon">
-          Coming Soon
-        </div>
-      </div>
+      </a>
 
 
       <!-- 12 -->
-      <div
+      <a
+        href="games/coin-flip.html"
         class="game-card"
         data-category="choice"
       >
@@ -1063,21 +1086,22 @@
           🪙
         </div>
 
-        <h3>Coin Flip</h3>
+        <h3>
+          Coin Flip
+        </h3>
 
         <p>
           Heads or tails? Let fate decide.
         </p>
-
-        <div class="coming-soon">
-          Coming Soon
-        </div>
-      </div>
+      </a>
 
     </div>
 
 
-    <!-- 3D GAMES -->
+    <!-- =========================
+         3D GAMES
+    ========================== -->
+
     <div class="three-d-divider">
       🧊 3D GAMES
     </div>
@@ -1097,7 +1121,9 @@
           🏙️
         </div>
 
-        <h3>3D Obstacle Run</h3>
+        <h3>
+          3D Obstacle Run
+        </h3>
 
         <p>
           Run through the city, dodge obstacles and collect coins.
@@ -1109,21 +1135,29 @@
   </main>
 
 
-  <!-- ABOUT -->
+  <!-- =========================
+       ABOUT
+  ========================== -->
+
   <section class="about-box">
 
-    <h2>About Mini Games</h2>
+    <h2>
+      About Mini Games
+    </h2>
 
     <p>
       Mini Games is a collection of simple browser games
-      made to be quick, fun and easy to play. More games
-      are coming soon!
+      made to be quick, fun and easy to play.
+      Play whenever you want and discover new challenges.
     </p>
 
   </section>
 
 
-  <!-- FOOTER -->
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
   <footer>
     © 2026 Mini Games • Small games. Big fun.
   </footer>
@@ -1133,19 +1167,25 @@
 
     /* =========================
        MENU
-    ========================= */
+    ========================== */
 
-    const menuButton = document.getElementById("menuButton");
-    const sideMenu = document.getElementById("sideMenu");
+    const menuButton =
+      document.getElementById("menuButton");
+
+    const sideMenu =
+      document.getElementById("sideMenu");
+
 
     menuButton.addEventListener("click", () => {
+
       sideMenu.classList.toggle("open");
+
     });
 
 
     /* =========================
        CATEGORY FILTER
-    ========================= */
+    ========================== */
 
     const categoryLinks =
       document.querySelectorAll(".category-link");
@@ -1161,26 +1201,37 @@
 
       let visibleGames = 0;
 
+
       gameCards.forEach(card => {
 
         const cardCategory =
           card.dataset.category;
 
+
         if (
           category === "all" ||
           cardCategory === category
         ) {
+
           card.classList.remove("hidden");
+
           visibleGames++;
+
         } else {
+
           card.classList.add("hidden");
+
         }
 
       });
 
+
       gameCount.textContent =
         visibleGames +
-        (visibleGames === 1 ? " game" : " games");
+        (visibleGames === 1
+          ? " game"
+          : " games");
+
     }
 
 
@@ -1189,16 +1240,22 @@
       button.addEventListener("click", () => {
 
         categoryLinks.forEach(item => {
+
           item.classList.remove("active");
+
         });
 
+
         button.classList.add("active");
+
 
         filterGames(
           button.dataset.category
         );
 
+
         sideMenu.classList.remove("open");
+
 
         window.scrollTo({
           top: 0,
@@ -1212,7 +1269,7 @@
 
     /* =========================
        LIGHT / DARK MODE
-    ========================= */
+    ========================== */
 
     const themeToggle =
       document.getElementById("themeToggle");
@@ -1226,13 +1283,18 @@
       const isDark =
         theme === "dark";
 
+
       document.body.classList.toggle(
         "dark-mode",
         isDark
       );
 
+
       themeIcon.textContent =
-        isDark ? "☀️" : "🌙";
+        isDark
+          ? "☀️"
+          : "🌙";
+
 
       themeToggle.setAttribute(
         "aria-label",
@@ -1241,6 +1303,7 @@
           : "Switch to dark mode"
       );
 
+
       themeToggle.setAttribute(
         "title",
         isDark
@@ -1248,10 +1311,12 @@
           : "Switch to dark mode"
       );
 
+
       localStorage.setItem(
         "miniGamesTheme",
         theme
       );
+
     }
 
 
@@ -1277,8 +1342,11 @@
             "dark-mode"
           );
 
+
         applyTheme(
-          isDark ? "light" : "dark"
+          isDark
+            ? "light"
+            : "dark"
         );
 
       }
@@ -1287,7 +1355,7 @@
 
     /* =========================
        START
-    ========================= */
+    ========================== */
 
     filterGames("all");
 
